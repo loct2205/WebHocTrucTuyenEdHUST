@@ -32,10 +32,25 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = true)
+    private String contactNumber;
+    @Column(nullable = true)
+    private Boolean active;
+    @Column(nullable = true)
+    private Boolean approve;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id")
+    private Profile profile;
+
+    @ManyToMany(mappedBy = "studentsEnrolled")
+    private List<Course> courses;
+
+    @OneToMany(mappedBy = "user")
+    private List<CourseProgress> courseProgress;
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
     private Date createdAt;
-
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
