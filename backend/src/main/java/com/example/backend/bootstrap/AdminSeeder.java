@@ -15,13 +15,11 @@ import java.util.Optional;
 public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
-
 
     public AdminSeeder(
             RoleRepository roleRepository,
-            UserRepository  userRepository,
+            UserRepository userRepository,
             PasswordEncoder passwordEncoder
     ) {
         this.roleRepository = roleRepository;
@@ -36,7 +34,8 @@ public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
 
     private void createSuperAdministrator() {
         RegisterUserDto userDto = new RegisterUserDto();
-        userDto.setFullName("Super Admin");
+        userDto.setFirstName("Super");
+        userDto.setLastName("Admin");
         userDto.setEmail("super.admin@email.com");
         userDto.setPassword("123456");
 
@@ -48,12 +47,13 @@ public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
         }
 
         var user = new User();
-        user.setFullName(userDto.getFullName());
+        user.setFullName(userDto.getFirstName() + " " + userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setRole(optionalRole.get());
         user.setActive(true);
         user.setApprove(true);
+
         userRepository.save(user);
     }
 }

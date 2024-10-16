@@ -7,13 +7,12 @@ import com.example.backend.entity.RoleEnum;
 import com.example.backend.entity.User;
 import com.example.backend.repository.RoleRepository;
 import com.example.backend.repository.UserRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -42,9 +41,11 @@ public class AuthenticationService {
         if (optionalRole.isEmpty()) {
             return null;
         }
-
+        if (!Objects.equals(input.getPassword(), input.getConfirmPassword())) {
+            throw new RuntimeException("Passwords do not match");
+        }
         var user = new User();
-        user.setFullName(input.getFullName());
+        user.setFullName(input.getFirstName() + " " + input.getLastName());
         user.setEmail(input.getEmail());
         user.setPassword(passwordEncoder.encode(input.getPassword()));
         user.setRole(optionalRole.get());
