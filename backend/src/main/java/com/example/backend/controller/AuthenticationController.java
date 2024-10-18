@@ -2,10 +2,13 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.LoginUserDto;
 import com.example.backend.dto.RegisterUserDto;
+import com.example.backend.dto.SendOTPDto;
 import com.example.backend.entity.User;
 import com.example.backend.model.LoginResponse;
 import com.example.backend.service.AuthenticationService;
 import com.example.backend.service.JwtService;
+import jakarta.mail.MessagingException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,5 +45,15 @@ public class AuthenticationController {
         loginResponse.setToken(jwtToken);
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
         return ResponseEntity.ok(loginResponse);
+    }
+
+    @PostMapping("/send-otp")
+    public ResponseEntity<String> register(@RequestBody SendOTPDto sendOTPDto) {
+        try {
+            String msg = authenticationService.sendOTP(sendOTPDto);
+            return ResponseEntity.ok(msg);
+        } catch (MessagingException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send OTP");
+        }
     }
 }

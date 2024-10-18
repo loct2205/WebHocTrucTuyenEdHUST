@@ -12,5 +12,5 @@ public class RegisterUserDto {
     private String firstName;
     private String lastName;
     private String confirmPassword;
-
+    private String otp;
 }
