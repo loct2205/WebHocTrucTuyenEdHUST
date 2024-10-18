@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.ChangePasswordDto;
 import com.example.backend.dto.LoginUserDto;
 import com.example.backend.dto.RegisterUserDto;
 import com.example.backend.dto.SendOTPDto;
@@ -137,5 +138,25 @@ public class AuthenticationService {
         }
 
         return result.toString().trim();
+    }
+
+    public String changePassword(User currentUser, ChangePasswordDto changePasswordDto) throws MessagingException {
+        if(!passwordEncoder.matches(changePasswordDto.getOldPassword(), currentUser.getPassword())) {
+            throw new RuntimeException("Old password is incorrect");
+        }
+        if(!Objects.equals(changePasswordDto.getNewPassword(), changePasswordDto.getConfirmPassword())) {
+            throw new RuntimeException("The password and confirm password do not match");
+        }
+        currentUser.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
+        userRepository.save(currentUser);
+
+        Context context = new Context();
+        context.setVariable("name", currentUser.getFullName());
+        context.setVariable("email", currentUser.getEmail());
+        String processedString = templateEngine.process("PasswordUpdateTemplate", context);
+        MailRequest mailRequest = new MailRequest(currentUser.getEmail(), "Password for your account has been updated", processedString, true);
+        mailService.sendMail(mailRequest);
+
+        return  "Password updated successfully";
     }
 }
