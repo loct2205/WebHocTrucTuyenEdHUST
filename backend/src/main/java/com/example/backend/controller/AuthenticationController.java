@@ -1,9 +1,6 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.ChangePasswordDto;
-import com.example.backend.dto.LoginUserDto;
-import com.example.backend.dto.RegisterUserDto;
-import com.example.backend.dto.SendOTPDto;
+import com.example.backend.dto.*;
 import com.example.backend.entity.User;
 import com.example.backend.model.LoginResponse;
 import com.example.backend.service.AuthenticationService;
@@ -73,5 +70,24 @@ public class AuthenticationController {
         } catch (MessagingException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to change password");
         }
+    }
+
+    @PostMapping("/reset-password-token")
+    public ResponseEntity<String> resetPasswordToken(@Valid @RequestBody ResetPasswordTokenDto resetPasswordTokenDto) {
+        try {
+            String msg = authenticationService.resetPasswordToken(resetPasswordTokenDto);
+            return ResponseEntity.ok(msg);
+        } catch (MessagingException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send reset password token");
+        }
+    }
+
+    @PostMapping("/reset-password")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<String> resetPassword(@Valid @RequestBody ResetPasswordDto resetPasswordDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+        String msg = authenticationService.resetPassword(currentUser, resetPasswordDto);
+        return ResponseEntity.ok(msg);
     }
 }

@@ -1,9 +1,6 @@
 package com.example.backend.service;
 
-import com.example.backend.dto.ChangePasswordDto;
-import com.example.backend.dto.LoginUserDto;
-import com.example.backend.dto.RegisterUserDto;
-import com.example.backend.dto.SendOTPDto;
+import com.example.backend.dto.*;
 import com.example.backend.entity.OTP;
 import com.example.backend.entity.Role;
 import com.example.backend.entity.RoleEnum;
@@ -39,6 +36,7 @@ public class AuthenticationService {
     private final TemplateEngine templateEngine;
     private final MailService mailService;
     private final OTPRepository otpRepository;
+    private final JwtService jwtService;
 
     public AuthenticationService(
             UserRepository userRepository,
@@ -46,7 +44,8 @@ public class AuthenticationService {
             PasswordEncoder passwordEncoder, RoleRepository roleRepository,
             TemplateEngine templateEngine,
             MailService mailService,
-            OTPRepository otpRepository
+            OTPRepository otpRepository,
+            JwtService jwtService
     ) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
@@ -55,6 +54,7 @@ public class AuthenticationService {
         this.templateEngine = templateEngine;
         this.mailService = mailService;
         this.otpRepository = otpRepository;
+        this.jwtService = jwtService;
     }
 
     public User signup(RegisterUserDto input) {
@@ -158,5 +158,25 @@ public class AuthenticationService {
         mailService.sendMail(mailRequest);
 
         return  "Password updated successfully";
+    }
+    
+    public String resetPasswordToken(ResetPasswordTokenDto resetPasswordTokenDto) throws MessagingException {
+        String email = resetPasswordTokenDto.getEmail();
+        User existingUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        String jwtToken = jwtService.generateToken(existingUser);
+        String url = "http://localhost:3000/update-password/" + jwtToken;
+        MailRequest mailRequest = new MailRequest(email, "Password Reset Link", "Password Reset Link: " + url, false);
+        mailService.sendMail(mailRequest);
+        return "Email sent successfully , Please check your mail box and change password";
+    }
+
+    public String resetPassword(User currentUser, ResetPasswordDto resetPasswordDto) {
+        if(!Objects.equals(resetPasswordDto.getPassword(), resetPasswordDto.getConfirmPassword())) {
+            throw new RuntimeException("The password and confirm password do not match");
+        }
+        currentUser.setPassword(passwordEncoder.encode(resetPasswordDto.getPassword()));
+        userRepository.save(currentUser);
+        return "Password reset successfully";
     }
 }
