@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignore local environment settings
+/src/main/resources/.env.*
+
+# But keep an example for others
+!/src/main/resources/.env.example
