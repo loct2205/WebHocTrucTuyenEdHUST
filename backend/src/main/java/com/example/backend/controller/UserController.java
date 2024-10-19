@@ -1,6 +1,8 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.UserDto;
 import com.example.backend.entity.User;
+import com.example.backend.mapper.UserMapper;
 import com.example.backend.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -16,19 +18,21 @@ import java.util.List;
 @RestController
 public class UserController {
     private final UserService userService;
+    private final UserMapper userMapper;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserMapper userMapper) {
         this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<User> authenticatedUser() {
+    public ResponseEntity<UserDto> authenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         User currentUser = (User) authentication.getPrincipal();
-
-        return ResponseEntity.ok(currentUser);
+        UserDto userDto = userMapper.convertToDto(currentUser);
+        return ResponseEntity.ok(userDto);
     }
 
     @GetMapping
