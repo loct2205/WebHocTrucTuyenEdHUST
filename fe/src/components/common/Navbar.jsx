@@ -28,8 +28,18 @@ const Navbar = () => {
             </div> */}
             {/* Login/SignUp/Dashboard */}
             <div className='flex gap-x-4 items-center'>
-                <button className="px-[12px] py-[8px] text-richblack-100 rounded-md border-[2.5px] border-yellow-50" >Log in</button>
-                <button className=" px-[12px] py-[8px] text-richblack-100 rounded-md border-[2.5px] border-yellow-50">Sign Up</button>
+                <Link to="/login">
+                    <button className="px-[12px] py-[8px] text-richblack-100 rounded-md border-[2.5px] border-yellow-50" >
+                        Đăng nhập
+                    </button>
+                </Link>
+                
+                <Link to="/signup">
+                    <button className=" px-[12px] py-[8px] text-richblack-100 rounded-md border-[2.5px] border-yellow-50">
+                        Đăng ký
+                    </button>
+                </Link>
+                
             </div>
         </nav>
     );
