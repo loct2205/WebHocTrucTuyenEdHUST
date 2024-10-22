@@ -34,8 +34,8 @@ public class UserService {
         return users;
     }
 
-    public User createAdministrator(RegisterUserDto input) {
-        Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.ADMIN);
+    public User createInstructor(RegisterUserDto input) {
+        Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.INSTRUCTOR);
 
         if (optionalRole.isEmpty()) {
             return null;
