@@ -51,7 +51,6 @@ public class Course {
     private Category category; // category
 
     @ElementCollection
-    @Column(name = "tag", nullable = false)
     private List<String> tag;
 
     @Enumerated(EnumType.STRING)
@@ -66,6 +65,8 @@ public class Course {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
+    @ElementCollection
+    private List<String> instructions; // requirements / instructions
     public enum Status {
         DRAFT,
         PUBLISHED

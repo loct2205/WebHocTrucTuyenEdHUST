@@ -43,6 +43,9 @@ public class User implements UserDetails {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
+    @OneToMany(mappedBy = "instructor")
+    private List<Course> managedCourses;
+
     @ManyToMany(mappedBy = "studentsEnrolled")
     private List<Course> courses;
 
