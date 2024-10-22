@@ -16,7 +16,7 @@ public class Profile {
     private String gender;
 
     @Column(name = "dob")
-    private String dob;
+    private String dob; // date of birth
 
     @Column(name = "about")
     private String about;
