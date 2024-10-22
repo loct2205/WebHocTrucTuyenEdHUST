@@ -60,6 +60,7 @@ public class AuthenticationService {
     public User signup(RegisterUserDto input) {
         Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.STUDENT);
 
+
         if (optionalRole.isEmpty()) {
             return null;
         }
