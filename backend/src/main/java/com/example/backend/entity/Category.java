@@ -7,8 +7,8 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "tag")
-public class Tag {
+@Table(name = "category")
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -16,6 +16,6 @@ public class Tag {
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "tag")
+    @OneToMany(mappedBy = "category")
     private List<Course> courses;
 }

@@ -19,5 +19,5 @@ public class CourseDto {
     private String thumbnail;
     private RatingAndReviewDto rating;
     private List<SectionDto> sections;
-    private TagDto tag;
+    private CategoryDto tag;
 }

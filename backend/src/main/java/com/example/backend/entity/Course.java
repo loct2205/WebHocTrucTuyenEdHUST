@@ -3,6 +3,7 @@ package com.example.backend.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -20,14 +21,12 @@ public class Course {
     @Column(name = "course_description")
     private String courseDescription;
 
-    @Column(name = "instructor")
-    private String instructor;
+    @ManyToOne
+    @JoinColumn(name = "instructor_id")
+    private User instructor;
 
     @Column(name = "what_you_will_learn")
     private String whatYouWillLearn;
-
-    @Column(name = "course_content")
-    private String courseContent;
 
     @Column(name = "price")
     private Double price;
@@ -41,14 +40,34 @@ public class Course {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> studentsEnrolled;
 
-    @ManyToOne
-    @JoinColumn(name = "rating_id")
-    private RatingAndReviews rating;
+    @OneToMany(mappedBy = "course")
+    private List<RatingAndReview> rating;
 
     @OneToMany(mappedBy = "course")
-    private List<Section> sections;
+    private List<Section> sections; // courseContent
 
     @ManyToOne
-    @JoinColumn(name = "tag_id")
-    private Tag tag;
+    @JoinColumn(name = "category_id")
+    private Category category; // category
+
+    @ElementCollection
+    @Column(name = "tag", nullable = false)
+    private List<String> tag;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private Status status;
+
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
+
+    public enum Status {
+        DRAFT,
+        PUBLISHED
+    }
 }
