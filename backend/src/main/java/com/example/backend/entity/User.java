@@ -26,6 +26,12 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String fullName;
 
+    @Column(nullable = false)
+    private String lastName;
+
+    @Column(nullable = false)
+    private String firstName;
+
     @Column(unique = true, length = 100, nullable = false)
     private String email;
 
@@ -33,11 +39,16 @@ public class User implements UserDetails {
     private String password;
 
     @Column(nullable = true)
-    private String contactNumber;
-    @Column(nullable = true)
     private Boolean active;
+
     @Column(nullable = true)
     private Boolean approve;
+
+    @Column(nullable = true)
+    private String imageKey;
+
+    @Column(nullable = true)
+    private String imageUrl;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_id")
