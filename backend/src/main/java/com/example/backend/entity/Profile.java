@@ -1,5 +1,6 @@
 package com.example.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,5 +26,6 @@ public class Profile {
     private String contactNumber;
 
     @OneToOne(mappedBy = "profile")
+    @JsonIgnore
     private User user;
 }

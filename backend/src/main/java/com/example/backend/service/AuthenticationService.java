@@ -80,6 +80,8 @@ public class AuthenticationService {
         }
         var user = new User();
         user.setFullName(input.getFirstName() + " " + input.getLastName());
+        user.setFirstName(input.getFirstName());
+        user.setLastName(input.getLastName());
         user.setEmail(input.getEmail());
         user.setPassword(passwordEncoder.encode(input.getPassword()));
         user.setRole(optionalRole.get());

@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.UserDto;
 import com.example.backend.dto.profile.UpdateProfileDto;
+import com.example.backend.dto.profile.UserDetailDto;
 import com.example.backend.entity.User;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.service.ProfileService;
@@ -16,11 +17,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ProfileController {
     private final ProfileService _profileService;
-    private final UserMapper _userMapper;
 
-    public ProfileController(ProfileService profileService, UserMapper userMapper) {
+    public ProfileController(ProfileService profileService) {
         _profileService = profileService;
-        _userMapper = userMapper;
     }
 
     @PatchMapping
@@ -30,6 +29,20 @@ public class ProfileController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User currentUser = (User) authentication.getPrincipal();
             var response = _profileService.updateProfile(currentUser, request);
+            return ResponseEntity.ok(response);
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UserDetailDto> getUserDetail() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = (User) authentication.getPrincipal();
+            var response = _profileService.getUserDetail(currentUser);
             return ResponseEntity.ok(response);
         }
         catch (Exception e) {
