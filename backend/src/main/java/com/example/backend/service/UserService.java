@@ -6,6 +6,7 @@ import com.example.backend.entity.RoleEnum;
 import com.example.backend.entity.User;
 import com.example.backend.repository.RoleRepository;
 import com.example.backend.repository.UserRepository;
+import com.example.backend.utils.constants.ImageDefault;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +47,8 @@ public class UserService {
         user.setEmail(input.getEmail());
         user.setPassword(passwordEncoder.encode(input.getPassword()));
         user.setRole(optionalRole.get());
+        user.setImageKey(ImageDefault.DEFAULT_IMAGE_KEY);
+        user.setImageUrl(ImageDefault.DEFAULT_IMAGE_URL);
 
         return userRepository.save(user);
     }
