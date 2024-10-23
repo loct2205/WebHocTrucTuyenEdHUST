@@ -39,6 +39,12 @@ public class User implements UserDetails {
     @Column(nullable = true)
     private Boolean approve;
 
+    @Column(nullable = true)
+    private String imageKey;
+
+    @Column(nullable = true)
+    private String imageUrl;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_id")
     private Profile profile;
