@@ -54,13 +54,13 @@ public class User implements UserDetails {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
-    @OneToMany(mappedBy = "instructor")
+    @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL)
     private List<Course> managedCourses;
 
     @ManyToMany(mappedBy = "studentsEnrolled")
     private List<Course> courses;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<CourseProgress> courseProgress;
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")

@@ -18,5 +18,7 @@ public class UserDetailDto {
     private String lastName;
     private String firstName;
     private String email;
+    private String imageKey;
+    private String imageUrl;
     private Profile profile;
 }
