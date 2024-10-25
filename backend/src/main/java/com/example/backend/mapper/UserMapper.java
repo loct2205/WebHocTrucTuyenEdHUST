@@ -7,6 +7,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class UserMapper {
     @Autowired
@@ -22,5 +24,9 @@ public class UserMapper {
 
     public User convertToEntity(UserDto userDTO) {
         return modelMapper.map(userDTO, User.class);
+    }
+
+    public List<UserDto> convertToUserDtoList(List<User> users) {
+        return users.stream().map(user -> modelMapper.map(user, UserDto.class)).toList();
     }
 }

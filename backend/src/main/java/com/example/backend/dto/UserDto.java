@@ -25,4 +25,5 @@ public class UserDto {
     private Date createdAt;
     private Date updatedAt;
     private List<CourseDto> courses;
+    private Profile profile;
 }
