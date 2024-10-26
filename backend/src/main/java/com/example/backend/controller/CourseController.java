@@ -26,7 +26,7 @@ public class CourseController {
     public ResponseEntity<CourseDto> createCourse(@RequestPart CourseDto courseDto, @RequestParam("file") MultipartFile file) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
-        CourseDto newCourse = courseService.createCourse(courseDto, file, currentUser.getId().longValue());
+        CourseDto newCourse = courseService.createCourse(courseDto, file, currentUser.getId());
         return ResponseEntity.ok(newCourse);
     }
 }

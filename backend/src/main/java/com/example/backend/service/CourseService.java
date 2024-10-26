@@ -26,7 +26,7 @@ public class CourseService {
     private final CourseMapper courseMapper;
     private final UserRepository userRepository;
     private final Uploader uploader;
-    public CourseDto createCourse(CourseDto courseDto, MultipartFile file, Long userId) {
+    public CourseDto createCourse(CourseDto courseDto, MultipartFile file, Integer userId) {
         Category category = categoryRepository.findByName(courseDto.getCategoryName());
         String fileUrl = uploader.uploadFile(file);
         User instructor = userRepository.findById(userId)
