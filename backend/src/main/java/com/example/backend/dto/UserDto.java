@@ -1,5 +1,6 @@
 package com.example.backend.dto;
 
+import com.example.backend.entity.Course;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,5 +22,6 @@ public class UserDto {
     private Boolean approve;
     private Date createdAt;
     private Date updatedAt;
-    private List<CourseDto> courses;
+    private List<Long> courseEnrolled; // id
+    private List<Long> managedCourses; // id
 }

@@ -38,3 +38,4 @@ build/
 # But keep an example for others
 !/src/main/resources/.env.example
 .env
+/src/main/resources/firebase.config.json

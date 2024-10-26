@@ -1,13 +1,17 @@
 package com.example.backend.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import org.springframework.web.ErrorResponse;
 
 import java.util.List;
 
 @Entity
 @Data
 @Table(name = "section")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Section {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,4 +27,6 @@ public class Section {
 
     @OneToMany(mappedBy = "section")
     private List<SubSection> subSections;
+
+
 }
