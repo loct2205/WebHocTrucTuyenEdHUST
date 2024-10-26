@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/subsections")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class SubSectionController {
     private final SubSectionService subSectionService;
     // ================ create new subsection ================

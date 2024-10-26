@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RequestMapping("/profiles")
 @RestController
+@CrossOrigin("*")
 public class ProfileController {
     private final ProfileService _profileService;
 
