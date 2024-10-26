@@ -4,6 +4,7 @@ import com.example.backend.dto.RegisterUserDto;
 import com.example.backend.entity.*;
 import com.example.backend.repository.RoleRepository;
 import com.example.backend.repository.UserRepository;
+import com.example.backend.utils.constants.ImageDefault;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,11 +49,15 @@ public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
 
         var user = new User();
         user.setFullName(userDto.getFirstName() + " " + userDto.getLastName());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setRole(optionalRole.get());
         user.setActive(true);
         user.setApprove(true);
+        user.setImageKey(ImageDefault.DEFAULT_IMAGE_KEY);
+        user.setImageUrl(ImageDefault.DEFAULT_IMAGE_URL);
 
         userRepository.save(user);
     }

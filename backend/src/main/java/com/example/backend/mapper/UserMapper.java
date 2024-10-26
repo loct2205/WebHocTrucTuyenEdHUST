@@ -2,6 +2,7 @@ package com.example.backend.mapper;
 
 import com.example.backend.dto.UserDto;
 import com.example.backend.entity.Course;
+import com.example.backend.dto.profile.UserDetailDto;
 import com.example.backend.entity.User;
 import com.example.backend.repository.CourseRepository;
 import lombok.Getter;
@@ -80,5 +81,13 @@ public class UserMapper {
         }
 
         return user;
+    }
+    public UserDetailDto convertToUserDetailDto(User user) {
+        return modelMapper.map(user, UserDetailDto.class);
+    }
+
+
+    public List<UserDto> convertToUserDtoList(List<User> users) {
+        return users.stream().map(user -> modelMapper.map(user, UserDto.class)).toList();
     }
 }

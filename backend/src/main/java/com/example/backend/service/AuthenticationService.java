@@ -9,6 +9,7 @@ import com.example.backend.model.MailRequest;
 import com.example.backend.repository.OTPRepository;
 import com.example.backend.repository.RoleRepository;
 import com.example.backend.repository.UserRepository;
+import com.example.backend.utils.constants.ImageDefault;
 import jakarta.mail.MessagingException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -79,9 +80,13 @@ public class AuthenticationService {
         }
         var user = new User();
         user.setFullName(input.getFirstName() + " " + input.getLastName());
+        user.setFirstName(input.getFirstName());
+        user.setLastName(input.getLastName());
         user.setEmail(input.getEmail());
         user.setPassword(passwordEncoder.encode(input.getPassword()));
         user.setRole(optionalRole.get());
+        user.setImageKey(ImageDefault.DEFAULT_IMAGE_KEY);
+        user.setImageUrl(ImageDefault.DEFAULT_IMAGE_URL);
 
         return userRepository.save(user);
     }
