@@ -12,6 +12,7 @@ import java.io.IOException;
 
 @RequestMapping("/storages")
 @RestController
+@CrossOrigin("*")
 public class StorageController {
     private final StorageService _storageService;
 

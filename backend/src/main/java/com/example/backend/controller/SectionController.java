@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/sections")
 @RestController
 @AllArgsConstructor
+@CrossOrigin("*")
 public class SectionController {
     private final SectionService sectionService;
     // ================ create new section ================\

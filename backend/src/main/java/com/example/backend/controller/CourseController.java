@@ -18,6 +18,7 @@ import java.util.List;
 @RequestMapping("/courses")
 @RestController
 @AllArgsConstructor
+@CrossOrigin("*")
 public class CourseController {
     private final CourseService courseService;
     private final Uploader uploader;
