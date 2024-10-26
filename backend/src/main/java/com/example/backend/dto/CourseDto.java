@@ -1,5 +1,6 @@
 package com.example.backend.dto;
 
+import com.example.backend.entity.User;
 import lombok.*;
 
 import java.util.List;
@@ -12,12 +13,15 @@ public class CourseDto {
     private Long id;
     private String courseName;
     private String courseDescription;
-    private String instructor;
+    private UserDto instructor;
     private String whatYouWillLearn;
-    private String courseContent;
+    private List<UserDto> studentsEnrolled;
+    private String status;
+    private String categoryName;
+    private List<String> instructions;
     private Double price;
     private String thumbnail;
-    private RatingAndReviewDto rating;
+    private List<RatingAndReviewDto> rating;
     private List<SectionDto> sections;
-    private CategoryDto tag;
+    private List<String> tag;
 }

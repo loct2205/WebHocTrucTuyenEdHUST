@@ -24,6 +24,7 @@ public class UserDto {
     private Boolean approve;
     private Date createdAt;
     private Date updatedAt;
-    private List<CourseDto> courses;
+    private List<Long> courseEnrolled; // id
+    private List<Long> managedCourses; // id
     private Profile profile;
 }

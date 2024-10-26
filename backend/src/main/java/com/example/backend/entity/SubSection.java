@@ -1,11 +1,17 @@
 package com.example.backend.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "sub_section")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SubSection {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -37,7 +37,8 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String password;
-
+    @Column(nullable = false)
+    private String contactNumber;
     @Column(nullable = true)
     private Boolean active;
 

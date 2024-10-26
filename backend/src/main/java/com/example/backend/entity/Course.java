@@ -1,14 +1,15 @@
 package com.example.backend.entity;
-
 import jakarta.persistence.*;
-import lombok.Data;
-
+import lombok.*;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Data
 @Table(name = "course")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,13 +45,15 @@ public class Course {
     private List<RatingAndReview> rating;
 
     @OneToMany(mappedBy = "course")
-    private List<Section> sections; // courseContent
+    private List<Section> sections;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private Category category; // category
+    private Category category;
 
     @ElementCollection
+    @CollectionTable(name = "course_tags", joinColumns = @JoinColumn(name = "course_id"))
+    @Column(name = "tag")
     private List<String> tag;
 
     @Enumerated(EnumType.STRING)
@@ -66,9 +69,23 @@ public class Course {
     private Date updatedAt;
 
     @ElementCollection
-    private List<String> instructions; // requirements / instructions
+    @CollectionTable(name = "course_instructions", joinColumns = @JoinColumn(name = "course_id"))
+    @Column(name = "instruction")
+    private List<String> instructions;
+
     public enum Status {
         DRAFT,
         PUBLISHED
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+        updatedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = new Date();
     }
 }

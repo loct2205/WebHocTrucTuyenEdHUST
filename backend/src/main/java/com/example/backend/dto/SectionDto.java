@@ -9,6 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 public class SectionDto {
     private Long id;
-    private String title;
+    private String sectionName;
+    private Long courseId;
     private List<SubSectionDto> subSections;
 }
