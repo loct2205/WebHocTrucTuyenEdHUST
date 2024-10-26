@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -61,5 +62,23 @@ public class CourseService {
                 .orElseThrow(() -> new RuntimeException("Section not found"));
         course.getSections().add(section);
         courseRepository.save(course);
+    }
+
+    public List<CourseDto> getAllCourses() {
+        List<Course> courses = courseRepository.findAll();
+        return courses.stream().map(courseMapper::convertToDto).toList();
+    }
+
+    public CourseDto getCourseById(Long id) {
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+        return courseMapper.convertToDto(course);
+    }
+
+    public List<CourseDto> getCoursesByInstructorId(Integer instructorId) {
+        User instructor = userRepository.findById(instructorId)
+                .orElseThrow(() -> new RuntimeException("Instructor not found"));
+        List<Course> courses = courseRepository.findByInstructorId(instructorId);
+        return courses.stream().map(courseMapper::convertToDto).toList();
     }
 }
