@@ -16,7 +16,7 @@ jobs:
       - name: Create firebase.config.json
         # Creates firebase.config.json from secret
         run: |
-          printf '%s' "${{ secrets.FIREBASE_CONFIG_JSON }}" > backend/src/main/resources/firebase.config.json
+           echo "${{ secrets.FIREBASE_CONFIG_JSON }}" | base64 -d > backend/src/main/resources/firebase.config.json
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
