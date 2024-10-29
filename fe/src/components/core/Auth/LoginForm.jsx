@@ -3,9 +3,6 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 import { useDispatch } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 
-//Ket noi API backend
-//import { login } from "../../../services/operations/authAPI"
-
 function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -14,12 +11,12 @@ function LoginForm() {
     password: "",
   });
 
-  //Mac dinh an mat khau
+  //Ẩn mật khẩu
   const [showPassword, setShowPassword] = useState(false);
 
   const { email, password } = formData;
 
-  //Xu ly thay doi truong form
+  //Xử lý Form
   const handleOnChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -27,11 +24,10 @@ function LoginForm() {
     }))
   }
 
-  //xu ly submit
+  //Xử lý Submit
   const handleOnSubmit = (e) => {
     e.preventDefault();
     console.log("Biểu mẫu đã được gửi", { email, password });
-    //dispatch(login(email, password, navigate))
   }
 
   return (
