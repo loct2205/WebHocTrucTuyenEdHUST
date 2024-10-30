@@ -1,8 +1,6 @@
 
 import LoginForm from "./LoginForm"
 import SignupForm from "./SignupForm"
-//import Img from './../../common/Img';
-
 
 function Template({ title, description, image, formType }) {
   return (
@@ -20,14 +18,6 @@ function Template({ title, description, image, formType }) {
           {formType === "signup" ? <SignupForm /> : <LoginForm />}
         </div>
 
-
-        {/* <div className="relative max-w-[550px] md:mx-0 my-0">
-          <Img
-            src={image}
-            alt={formType}
-            className={' min-w-[105%] h-full text-white'}
-          />
-        </div> */}
       </div>
     </div>
   )
