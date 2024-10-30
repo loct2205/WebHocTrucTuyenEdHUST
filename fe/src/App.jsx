@@ -2,15 +2,16 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Navbar from './components/common/Navbar';
-
-import Home from './pages/Home';
 import Footer from './components/common/Footer';
 
+import Home from './pages/Home';
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPassword from './pages/ForgotPassword';
 import VerifyEmail from './pages/VerifyEmail';
 import UpdatePassword from './pages/UpdatePassword';
+
+import Dashboard from './pages/Dashboard';
 
 const App = () => {
   return (
@@ -25,6 +26,11 @@ const App = () => {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/update-password" element={<UpdatePassword />} />
+
+          <Route path="/dashboard" element={<Dashboard />}>
+            {/* <Route path="my-profile" element={<MyProfile />} />
+            <Route path="settings" element={<Settings />} /> */}
+          </Route>
 
         </Routes>
       </div>
