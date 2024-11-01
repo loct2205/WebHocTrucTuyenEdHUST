@@ -1,11 +1,13 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.UserDto;
+import com.example.backend.dto.profile.CourseEnrolledDto;
 import com.example.backend.dto.profile.UpdateProfileDto;
 import com.example.backend.dto.profile.UserDetailDto;
 import com.example.backend.entity.User;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.service.ProfileService;
+import com.example.backend.utils.types.CourseDataWithStats;
 import com.example.backend.utils.types.GetAllInstructorsResponse;
 import com.example.backend.utils.types.GetAllStudentResponse;
 import jakarta.validation.Valid;
@@ -15,6 +17,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RequestMapping("/profiles")
 @RestController
@@ -99,6 +103,35 @@ public class ProfileController {
     public ResponseEntity<GetAllInstructorsResponse> getAllInstructor() {
         try {
             var response = _profileService.getAllInstructors();
+            return ResponseEntity.ok(response);
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/course-enrolled")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<CourseEnrolledDto>> getEnrolledCourse() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = (User) authentication.getPrincipal();
+            var response = _profileService.getEnrolledCourse(currentUser.getId());
+            return ResponseEntity.ok(response);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/instructor-dashboard")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
+    public ResponseEntity<List<CourseDataWithStats>> getInstructorDashboard() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = (User) authentication.getPrincipal();
+            var response = _profileService.getInstructorDashboard(currentUser);
             return ResponseEntity.ok(response);
         }
         catch (Exception e) {

@@ -1,5 +1,6 @@
 package com.example.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -59,6 +60,7 @@ public class User implements UserDetails {
     private List<Course> managedCourses;
 
     @ManyToMany(mappedBy = "studentsEnrolled")
+    @JsonBackReference
     private List<Course> courses;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
