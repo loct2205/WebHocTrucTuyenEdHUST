@@ -1,10 +1,13 @@
 package com.example.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Table(name = "sub_section")
@@ -36,4 +39,8 @@ public class SubSection {
     @ManyToOne
     @JoinColumn(name = "section_id")
     private Section section;
+
+    @ManyToMany(mappedBy = "completedVideos")
+    @JsonBackReference
+    private List<CourseProgress> courseProgresses;
 }
