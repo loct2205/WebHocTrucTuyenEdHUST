@@ -1,5 +1,6 @@
 package com.example.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,5 +26,6 @@ public class CourseProgress {
     @JoinTable(name = "completed_videos",
             joinColumns = @JoinColumn(name = "progress_id"),
             inverseJoinColumns = @JoinColumn(name = "sub_section_id"))
+    @JsonManagedReference
     private List<SubSection> completedVideos;
 }
