@@ -1,4 +1,5 @@
 package com.example.backend.entity;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Date;
@@ -39,6 +40,7 @@ public class Course {
     @JoinTable(name = "students_enrolled",
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JsonManagedReference
     private List<User> studentsEnrolled;
 
     @OneToMany(mappedBy = "course")

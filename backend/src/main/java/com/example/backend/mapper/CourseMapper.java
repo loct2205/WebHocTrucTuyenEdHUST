@@ -4,6 +4,7 @@ import com.example.backend.dto.CourseDto;
 import com.example.backend.dto.RatingAndReviewDto;
 import com.example.backend.dto.SectionDto;
 import com.example.backend.dto.UserDto;
+import com.example.backend.dto.profile.CourseEnrolledDto;
 import com.example.backend.entity.*;
 import com.example.backend.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
@@ -100,4 +101,25 @@ public class CourseMapper {
         return course;
     }
 
+    public CourseEnrolledDto convertToCourseEnrolledDtoList(Course course) {
+        CourseEnrolledDto.CourseEnrolledDtoBuilder builder = CourseEnrolledDto.builder()
+                .id(course.getId())
+                .courseName(course.getCourseName())
+                .courseDescription(course.getCourseDescription())
+                .whatYouWillLearn(course.getWhatYouWillLearn())
+                .status(course.getStatus().toString())
+                .instructions(course.getInstructions() != null ? new ArrayList<>(course.getInstructions()) : new ArrayList<>())
+                .price(course.getPrice())
+                .thumbnail(course.getThumbnail())
+                .tag(course.getTag() != null ? new ArrayList<>(course.getTag()) : new ArrayList<>());
+
+        if (course.getInstructor() != null) {
+            builder.instructor(userMapper.convertToDto(course.getInstructor()));
+        }
+        if(course.getCategory() != null) {
+            builder.categoryName(course.getCategory().getName());
+        }
+
+        return builder.build();
+    }
 }
