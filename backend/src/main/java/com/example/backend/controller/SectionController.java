@@ -21,4 +21,19 @@ public class SectionController {
         SectionDto newSection = sectionService.createSection(sectionDto, courseId);
         return ResponseEntity.ok(newSection);
     }
+    // ================ update section ================
+    @PatchMapping("/update-name/{id}")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR', 'ADMIN')")
+    public ResponseEntity<String> updateSectionName(@RequestParam String newName, @PathVariable Long id) {
+        String response = sectionService.updateSectionName(newName, id);
+        return ResponseEntity.ok(response);
+    }
+
+    // ================ delete section ================
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR', 'ADMIN')")
+    public ResponseEntity<String> deleteSection(@PathVariable Long id) {
+        sectionService.deleteSection(id);
+        return ResponseEntity.ok("Section deleted successfully");
+    }
 }

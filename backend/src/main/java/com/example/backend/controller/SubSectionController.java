@@ -21,4 +21,26 @@ public class SubSectionController {
         SubSectionDto newSubSection = subSectionService.createSubSection(subSectionDto, file, sectionId);
         return ResponseEntity.ok(newSubSection);
     }
+    // ================ update subsection ================
+    @PutMapping("/update/{id}")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR', 'ADMIN')")
+    public ResponseEntity<SubSectionDto> updateSubSection(@RequestBody SubSectionDto subSectionDto, @PathVariable Long id, @RequestParam Long sectionId) {
+        SubSectionDto updatedSubSection = subSectionService.updateSubSection(subSectionDto, id, sectionId);
+        return ResponseEntity.ok(updatedSubSection);
+    }
+
+    // ================ update video subsection ================
+    @PutMapping("/update-video/{id}")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR', 'ADMIN')")
+    public ResponseEntity<SubSectionDto> updateVideoSubSection(@RequestParam("file") MultipartFile file, @PathVariable Long id, @RequestParam Long sectionId) {
+        SubSectionDto updatedSubSection = subSectionService.updateVideoSubSection(file, id, sectionId);
+        return ResponseEntity.ok(updatedSubSection);
+    }
+    // ================ delete subsection ================
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR', 'ADMIN')")
+    public ResponseEntity<String> deleteSubSection(@PathVariable Long id) {
+        subSectionService.deleteSubSection(id);
+        return ResponseEntity.ok("Subsection deleted successfully");
+    }
 }

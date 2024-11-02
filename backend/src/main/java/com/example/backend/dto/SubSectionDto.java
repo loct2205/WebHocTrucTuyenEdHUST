@@ -11,4 +11,7 @@ public class SubSectionDto {
     private String title;
     private String videoUrl;
     private String description;
+    private Long sectionId;
+    private String timeDuration;
+    private String additionalUrl;
 }
