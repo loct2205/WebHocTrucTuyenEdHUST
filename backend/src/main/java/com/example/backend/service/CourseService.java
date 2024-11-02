@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -81,4 +82,55 @@ public class CourseService {
         List<Course> courses = courseRepository.findByInstructorId(instructorId);
         return courses.stream().map(courseMapper::convertToDto).toList();
     }
+
+    public CourseDto updateCourse(Long id, CourseDto courseDto, MultipartFile file, Integer instructorId) {
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+        Category category = categoryRepository.findByName(courseDto.getCategoryName());
+        User instructor = userRepository.findById(instructorId)
+                .orElseThrow(() -> new RuntimeException("Instructor not found"));
+        if (instructor.getRole().getName() != RoleEnum.INSTRUCTOR && instructor.getRole().getName() != RoleEnum.ADMIN) {
+            throw new RuntimeException("Only instructors or admins can update courses");
+        }
+        String fileUrl = uploader.uploadFile(file);
+        course.setCourseName(courseDto.getCourseName());
+        course.setCourseDescription(courseDto.getCourseDescription());
+        course.setThumbnail(fileUrl);
+        course.setPrice(courseDto.getPrice());
+        course.setTag(courseDto.getTag());
+        course.setWhatYouWillLearn(courseDto.getWhatYouWillLearn());
+        course.setInstructions(courseDto.getInstructions());
+        course.setCategory(category);
+        course.setUpdatedAt(new Date());
+        List<Section> currentSections  =  sectionRepository.findAllByCourseId(course.getId());
+        course.setSections(currentSections);
+        return courseMapper.convertToDto(courseRepository.save(course));
+    }
+
+    public void deleteSectionFromCourse(Long courseId, Long sectionId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        // Find the section within the course
+        Optional<Section> sectionOptional = course.getSections().stream()
+                .filter(section -> section.getId().equals(sectionId))
+                .findFirst();
+
+        // If the section exists, remove it
+        if (sectionOptional.isPresent()) {
+            Section section = sectionOptional.get();
+
+            // Remove the section from the course's sections list
+            course.getSections().remove(section);
+
+            // Optional: If bidirectional, remove the course reference from the section
+            section.setCourse(null);
+
+            // Save the course to persist the removal
+            courseRepository.save(course);
+        } else {
+            throw new RuntimeException("Section not associated with this course");
+        }
+    }
+
 }
