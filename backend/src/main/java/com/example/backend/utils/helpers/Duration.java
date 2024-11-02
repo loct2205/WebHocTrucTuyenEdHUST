@@ -4,6 +4,8 @@ import io.github.cdimascio.dotenv.Dotenv;
 import net.bramp.ffmpeg.FFprobe;
 import net.bramp.ffmpeg.probe.FFmpegProbeResult;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -14,11 +16,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
-
+@Component
 public class Duration {
-    private static final Dotenv dotenv = Dotenv.configure()
-            .filename(".env.local")
-            .load();
+    @Value("${ffprobe.path}")
+    private String ffprobePath;
+
     public static String convertSecondsToDuration(int totalSeconds) {
         int hours = totalSeconds / 3600;
         int minutes = (totalSeconds % 3600) / 60;
@@ -32,9 +34,8 @@ public class Duration {
             return seconds + "s";
         }
     }
-    public static String extractVideoDuration(MultipartFile file) {
-        // Define the path to the ffprobe executable
-        String ffprobePath = dotenv.get("FFPROBE_PATH", "/usr/bin/ffprobe");
+    public String extractVideoDuration(MultipartFile file) {
+
 
         try {
             // Save the MultipartFile to a temporary file
@@ -63,7 +64,7 @@ public class Duration {
         return "00:00:00";
     }
 
-    private static String formatDuration(long durationMs) {
+    private String formatDuration(long durationMs) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         return sdf.format(new Date(durationMs));

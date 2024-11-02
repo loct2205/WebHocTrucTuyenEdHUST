@@ -18,11 +18,12 @@ public class SubSectionService {
     private final SectionRepository sectionRepository;
     private final SubSectionRepository subSectionRepository;
     private final SectionService sectionService;
+    private final Duration duration;
     public SubSectionDto createSubSection(SubSectionDto subSectionDto, MultipartFile file, Long sectionId) {
         String url = uploader.uploadFile(file);
         Section section = sectionRepository.findById(sectionId)
                 .orElseThrow(() -> new RuntimeException("Section not found"));
-        String timeDuration = Duration.extractVideoDuration(file);
+        String timeDuration = duration.extractVideoDuration(file);
         SubSection newSubsection = SubSection.builder()
                 .title(subSectionDto.getTitle())
                 .description(subSectionDto.getDescription())
@@ -67,7 +68,7 @@ public class SubSectionService {
         // delete the old video
         uploader.deleteFile(subSection.getVideoUrl());
         String url = uploader.uploadFile(file);
-        String timeDuration = Duration.extractVideoDuration(file);
+        String timeDuration = duration.extractVideoDuration(file);
         subSection.setVideoUrl(url);
         subSection.setTimeDuration(timeDuration);
         subSectionRepository.save(subSection);
