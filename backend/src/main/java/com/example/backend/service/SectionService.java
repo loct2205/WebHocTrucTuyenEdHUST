@@ -8,6 +8,7 @@ import com.example.backend.mapper.SectionMapper;
 import com.example.backend.repository.CourseRepository;
 import com.example.backend.repository.SectionRepository;
 import com.example.backend.repository.SubSectionRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +17,13 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class SectionService {
     private final SectionRepository sectionRepository;
     private final SubSectionRepository subSectionRepository;
     private final CourseRepository courseRepository;
     private final SectionMapper sectionMapper;
-    private final CourseService courseService;
-
+    private final SubSectionService subSectionService;
 
 
     // ================ create new section ================
@@ -37,8 +37,6 @@ public class SectionService {
 
         sectionDto.setId(sectionRepository.save(newSection).getId());
         sectionDto.setCourseId(courseId);
-        // Update course
-        courseService.updateSectionToCourse(courseId, newSection.getId());
         return sectionDto;
     }
 
@@ -115,10 +113,7 @@ public class SectionService {
         Section section = sectionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Section not found"));
         // Delete all subsections
-        subSectionRepository.deleteAll(section.getSubSections());
-        // Clear references from course
-        courseService.deleteSectionFromCourse(section.getCourse().getId(), id);
-
+        section.getSubSections().forEach(subSection -> subSectionService.deleteSubSection(subSection.getId()));
         // Delete the section
         sectionRepository.delete(section);
 

@@ -7,7 +7,9 @@ import com.example.backend.repository.SectionRepository;
 import com.example.backend.repository.SubSectionRepository;
 import com.example.backend.util.Uploader;
 import com.example.backend.utils.helpers.Duration;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,8 +19,9 @@ public class SubSectionService {
     private final Uploader uploader;
     private final SectionRepository sectionRepository;
     private final SubSectionRepository subSectionRepository;
-    private final SectionService sectionService;
     private final Duration duration;
+
+
     public SubSectionDto createSubSection(SubSectionDto subSectionDto, MultipartFile file, Long sectionId) {
         String url = uploader.uploadFile(file);
         Section section = sectionRepository.findById(sectionId)
@@ -37,8 +40,6 @@ public class SubSectionService {
         subSectionDto.setVideoUrl(url);
         subSectionDto.setSectionId(sectionId);
         subSectionDto.setTimeDuration(timeDuration);
-        // update section
-        sectionService.addSubsectionToSection(newSubsection.getId(), sectionId);
 
         return subSectionDto;
     }
@@ -48,8 +49,6 @@ public class SubSectionService {
                 .orElseThrow(() -> new RuntimeException("Subsection not found"));
         subSection.setTitle(subSectionDto.getTitle());
         subSection.setDescription(subSectionDto.getDescription());
-        // update section
-        sectionService.updateSubsectionOnSection(subsectionId, sectionId);
         subSectionRepository.save(subSection);
 
         // Convert to DTO
@@ -72,8 +71,6 @@ public class SubSectionService {
         subSection.setVideoUrl(url);
         subSection.setTimeDuration(timeDuration);
         subSectionRepository.save(subSection);
-        // Update section
-        sectionService.updateSubsectionOnSection(id, sectionId);
 
         // Convert to DTO
         SubSectionDto subSectionDto = new SubSectionDto();
@@ -92,8 +89,6 @@ public class SubSectionService {
         // delete the video
         uploader.deleteFile(subSection.getVideoUrl());
 
-        // Delete subsection from section
-        sectionService.deleteSubSectionOnSection(id, subSection.getSection().getId());
         subSectionRepository.delete(subSection);
     }
 }
