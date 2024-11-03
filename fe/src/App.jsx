@@ -15,6 +15,7 @@ import Dashboard from './pages/Dashboard';
 
 const App = () => {
   return (
+    <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
     <Router>
       <Navbar />
       <div className="min-h-[calc(100vh-3.5rem)]"> 
@@ -36,6 +37,7 @@ const App = () => {
       </div>
       <Footer />
     </Router>
+    </div>
   );
 };
 export default App;
