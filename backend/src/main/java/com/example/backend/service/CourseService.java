@@ -3,13 +3,13 @@ package com.example.backend.service;
 import com.example.backend.dto.CourseDto;
 import com.example.backend.entity.*;
 import com.example.backend.mapper.CourseMapper;
-import com.example.backend.repository.CategoryRepository;
-import com.example.backend.repository.CourseRepository;
-import com.example.backend.repository.SectionRepository;
-import com.example.backend.repository.UserRepository;
+import com.example.backend.repository.*;
 import com.example.backend.util.Uploader;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,10 +24,14 @@ public class CourseService {
     private final CategoryRepository categoryRepository;
     private final CourseRepository courseRepository;
     private final SectionRepository sectionRepository;
+    private final SubSectionRepository subSectionRepository;
     private final ModelMapper modelMapper;
     private final CourseMapper courseMapper;
     private final UserRepository userRepository;
     private final Uploader uploader;
+    private final SectionService sectionService;
+
+
     public CourseDto createCourse(CourseDto courseDto, MultipartFile file, Integer userId) {
         Category category = categoryRepository.findByName(courseDto.getCategoryName());
         String fileUrl = uploader.uploadFile(file);
@@ -133,4 +137,17 @@ public class CourseService {
         }
     }
 
+    public void deleteCourse(Long courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        // Delete the sections associated with the course
+        course.getSections().forEach(section -> sectionService.deleteSection(section.getId()));
+
+        // Delete the thumbnail
+        uploader.deleteFile(course.getThumbnail());
+        // Delete the course
+        courseRepository.delete(course);
+
+    }
 }
