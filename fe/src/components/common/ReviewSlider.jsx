@@ -14,14 +14,16 @@ function ReviewSlider() {
   const truncateWords = 25;
 
   return (
-    <div className="text-white relative">
+    <div className="text-white relative w-full">
       <div className="my-[50px] h-[184px] max-w-maxContentTab lg:max-w-maxContent">
         <Swiper
-          modules={[Navigation]} 
+          // modules={[Navigation]} 
           breakpoints={{
             640: { slidesPerView: 1 },
             768: { slidesPerView: 2 },
-            1024: { slidesPerView: 4 },
+            1024: { slidesPerView: 3 },
+            1280: { slidesPerView: 4,
+            },
           }}
           spaceBetween={25}
           loop={true}
@@ -77,8 +79,8 @@ function ReviewSlider() {
               </SwiperSlide>
             );
           })}
-          <div className="swiper-button-next text-white/50 hover:text-white transition duration-300"></div>
-          <div className="swiper-button-prev text-white/50 hover:text-white transition duration-300"></div>
+          {/* <div className="swiper-button-next text-white/50 hover:text-white transition duration-300"></div>
+          <div className="swiper-button-prev text-white/50 hover:text-white transition duration-300"></div> */}
         </Swiper>
       </div>
     </div>
