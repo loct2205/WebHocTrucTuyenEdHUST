@@ -5,7 +5,7 @@ import Navbar from './components/common/Navbar';
 
 import Home from './pages/Home';
 import Footer from './components/common/Footer';
-
+import ReviewSlider from './components/common/ReviewSlider';
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
@@ -15,6 +15,7 @@ import Signup from "./pages/Signup";
 
 const App = () => {
   return (
+    <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
     <Router>
       <Navbar />
       <Routes>
@@ -25,8 +26,8 @@ const App = () => {
         <Route path="/courses" element={<Courses />} />
         <Route path="/contact" element={<Contact />} /> */}
       </Routes>
-      <Footer />
     </Router>
+    </div>
   );
 };
 export default App;
