@@ -18,13 +18,14 @@ public class SectionMapper {
     @Autowired
     private ModelMapper modelMapper;
     private final CourseRepository courseRepository;
+    private final SubSectionMapper subSectionMapper;
     public SectionDto convertToDto(Section section) {
         SectionDto newSectionDto = new SectionDto().builder()
                 .id(section.getId())
                 .sectionName(section.getSectionName())
                 .courseId(section.getCourse().getId())
                 .subSections(section.getSubSections().stream()
-                        .map(element -> modelMapper.map(element, SubSectionDto.class))
+                        .map(subSectionMapper::convertToDto)
                         .toList())
                 .build();
         return newSectionDto;
@@ -37,7 +38,7 @@ public class SectionMapper {
         section.setSectionName(sectionDto.getSectionName());
         section.setCourse(course);
         section.setSubSections(sectionDto.getSubSections().stream()
-                .map(element -> modelMapper.map(element, SubSection.class))
+                .map(subSectionMapper::convertToEntity)
                 .toList());
         return section;
     }
