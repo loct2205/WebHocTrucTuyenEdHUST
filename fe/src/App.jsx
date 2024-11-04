@@ -12,6 +12,7 @@ import VerifyEmail from './pages/VerifyEmail';
 import UpdatePassword from './pages/UpdatePassword';
 
 import Dashboard from './pages/Dashboard';
+import Settings from './components/core/Dashboard/Settings/Settings';
 
 const App = () => {
   return (
@@ -28,8 +29,8 @@ const App = () => {
           <Route path="/update-password" element={<UpdatePassword />} />
 
           <Route path="/dashboard" element={<Dashboard />}>
-            {/* <Route path="my-profile" element={<MyProfile />} />
-            <Route path="settings" element={<Settings />} /> */}
+            {/* <Route path="my-profile" element={<MyProfile />} /> */}
+            <Route path="settings" element={<Settings />} />
           </Route>
 
         </Routes>
