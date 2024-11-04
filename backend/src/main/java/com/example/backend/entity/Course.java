@@ -1,4 +1,5 @@
 package com.example.backend.entity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -44,6 +45,7 @@ public class Course {
     private List<User> studentsEnrolled;
 
     @OneToMany(mappedBy = "course")
+    @JsonBackReference
     private List<RatingAndReview> rating;
 
     @OneToMany(mappedBy = "course")
