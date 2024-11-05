@@ -9,8 +9,7 @@ import com.example.backend.mapper.UserMapper;
 import com.example.backend.repository.CourseRepository;
 import com.example.backend.repository.RatingAndReviewRepository;
 import com.example.backend.repository.UserRepository;
-import com.example.backend.utils.types.AverageRatingResponse;
-import com.example.backend.utils.types.RatingResponse;
+import com.example.backend.utils.types.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -85,5 +84,33 @@ public class RatingService {
                     .totalRatings(ratings.size())
                     .build();
         }
+    }
+
+    public List<AllRatingReviewResponse> getAllRatingReview() {
+        List<RatingAndReview> ratingAndReviews = _ratingAndReviewRepository.findAll();
+        List<AllRatingReviewResponse> allRatingReviewResponses = new ArrayList<>();
+        for(RatingAndReview ratingAndReview : ratingAndReviews) {
+            AllRatingReviewResponse allRatingReviewResponse = new AllRatingReviewResponse();
+            allRatingReviewResponse.setId(ratingAndReview.getId());
+            allRatingReviewResponse.setRating(ratingAndReview.getRating());
+            allRatingReviewResponse.setReview(ratingAndReview.getReview());
+            allRatingReviewResponse.setCourse(
+                    CourseInfo.builder()
+                            .courseName(ratingAndReview.getCourse().getCourseName())
+                            .id(ratingAndReview.getCourse().getId())
+                            .build()
+            );
+            allRatingReviewResponse.setUser(
+                    UserInfo.builder()
+                            .email(ratingAndReview.getUser().getEmail())
+                            .firstName(ratingAndReview.getUser().getFirstName())
+                            .lastName(ratingAndReview.getUser().getLastName())
+                            .imageKey(ratingAndReview.getUser().getImageKey())
+                            .imageUrl(ratingAndReview.getUser().getImageUrl())
+                            .build()
+            );
+            allRatingReviewResponses.add(allRatingReviewResponse);
+        }
+        return allRatingReviewResponses;
     }
 }
