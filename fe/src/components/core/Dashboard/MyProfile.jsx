@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 import { formattedDate } from "../../../utils/dateFormatter";
 import IconBtn from "../../common/IconBtn";
-import Img from "./../../common/Img";
 
 export default function MyProfile() {
   const navigate = useNavigate();
@@ -24,8 +23,6 @@ export default function MyProfile() {
     },
   };
 
-  const navigate = useNavigate();
-  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -53,7 +50,7 @@ export default function MyProfile() {
 
         <IconBtn
           text="Chỉnh sửa"
-          onclick={() => {
+          onClick={() => {
             navigate("/dashboard/settings");
           }}
         >
@@ -67,8 +64,9 @@ export default function MyProfile() {
           <p className="text-lg font-semibold text-richblack-5">Giới thiệu</p>
           <IconBtn
             text="Chỉnh sửa"
-            onclick={() => {
+            onClick={() => {
               navigate("/dashboard/settings");
+            }}
           >
             <RiEditBoxLine />
           </IconBtn>
@@ -92,7 +90,7 @@ export default function MyProfile() {
           </p>
           <IconBtn
             text="Chỉnh sửa"
-            onclick={() => {
+            onClick={() => {
               navigate("/dashboard/settings");
             }}
           >
