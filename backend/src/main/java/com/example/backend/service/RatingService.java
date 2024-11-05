@@ -9,10 +9,12 @@ import com.example.backend.mapper.UserMapper;
 import com.example.backend.repository.CourseRepository;
 import com.example.backend.repository.RatingAndReviewRepository;
 import com.example.backend.repository.UserRepository;
+import com.example.backend.utils.types.AverageRatingResponse;
 import com.example.backend.utils.types.RatingResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -62,5 +64,26 @@ public class RatingService {
                 .user(_userMapper.convertToUserDetailDto(user))
                 .course(_courseMapper.convertToDto(course))
                 .build();
+    }
+
+    public AverageRatingResponse getAverageRating(Long courseId) {
+        Course course = _courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
+        List<RatingAndReview> ratings = course.getRating();
+        if(ratings == null || ratings.isEmpty()) {
+            return AverageRatingResponse.builder()
+                    .averageRating(0.0)
+                    .totalRatings(0)
+                    .build();
+        }
+        else {
+            double averageRating = ratings.stream()
+                    .mapToDouble(RatingAndReview::getRating)
+                    .average()
+                    .orElse(0.0);
+            return AverageRatingResponse.builder()
+                    .averageRating(averageRating)
+                    .totalRatings(ratings.size())
+                    .build();
+        }
     }
 }
