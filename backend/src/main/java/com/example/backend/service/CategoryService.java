@@ -2,17 +2,26 @@ package com.example.backend.service;
 
 import com.example.backend.dto.CategoryDto;
 import com.example.backend.entity.Category;
+import com.example.backend.entity.Course;
+import com.example.backend.mapper.CourseMapper;
 import com.example.backend.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
+    private final CourseMapper courseMapper;
     public CategoryDto createCategory(CategoryDto categoryDto) {
+        // Check existing name
+        Optional<Category> existingCategory = Optional.ofNullable(categoryRepository.findByName(categoryDto.getName()));
+        if (existingCategory.isPresent()) {
+            throw new RuntimeException("Category with the same name already exists");
+        }
         Category category = Category.builder()
                 .name(categoryDto.getName())
                 .description(categoryDto.getDescription())
@@ -27,6 +36,7 @@ public class CategoryService {
                         .id(category.getId())
                         .name(category.getName())
                         .description(category.getDescription())
+                        .courseId(category.getCourses().stream().map(Course::getId).toList())
                         .build())
                 .toList();
     }
@@ -38,6 +48,7 @@ public class CategoryService {
                 .id(category.getId())
                 .name(category.getName())
                 .description(category.getDescription())
+                .courseId(category.getCourses().stream().map(Course::getId).toList())
                 .build();
     }
 

@@ -56,7 +56,6 @@ public class CourseService {
             instructor.setManagedCourses(new ArrayList<>());
         }
         instructor.getManagedCourses().add(newCourse);
-        userRepository.save(instructor);
         newCourse.setInstructor(instructor);
         return courseMapper.convertToDto(courseRepository.save(newCourse));
     }
