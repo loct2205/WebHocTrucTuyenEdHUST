@@ -44,7 +44,7 @@ export default function Sidebar() {
             <Link to="/dashboard/settings" className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700">
               Cài đặt
             </Link>
-            <Link to="/dashboard/profile" className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700">
+            <Link to="/dashboard/my-profile" className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700">
               Hồ sơ
             </Link>
           </div>
