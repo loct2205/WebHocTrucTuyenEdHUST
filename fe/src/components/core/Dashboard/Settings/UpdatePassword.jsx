@@ -134,7 +134,7 @@ export default function UpdatePassword() {
           >
             Hủy
           </button>
-          <IconBtn type="submit" text="Cập nhật" />
+          <IconBtn type="submit" text="Lưu" />
         </div>
       </form>
     </>

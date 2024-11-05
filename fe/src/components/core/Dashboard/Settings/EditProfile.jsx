@@ -41,7 +41,7 @@ export default function EditProfile() {
               />
               {errors.firstName && (
                 <span className="-mt-1 text-[12px] text-yellow-100">
-                  Vui lòng điền tên.
+                  Vui lòng nhập tên.
                 </span>
               )}
             </div>
@@ -54,13 +54,13 @@ export default function EditProfile() {
                 type="text"
                 name="lastName"
                 id="lastName"
-                placeholder="Điền họ"
+                placeholder="Nhập họ"
                 className="form-style"
                 {...register("lastName", { required: true })}
               />
               {errors.lastName && (
                 <span className="-mt-1 text-[12px] text-yellow-100">
-                  Vui lòng điền họ.
+                  Vui lòng nhập họ.
                 </span>
               )}
             </div>
@@ -79,11 +79,11 @@ export default function EditProfile() {
                 {...register("dateOfBirth", {
                   required: {
                     value: true,
-                    message: "Vui lòng điền ngày sinh.",
+                    message: "Vui lòng nhập ngày sinh.",
                   },
                   max: {
                     value: new Date().toISOString().split("T")[0],
-                    message: "Ngày sinh không thể trong tương lai.",
+                    message: "Ngày sinh không hợp lệ.",
                   },
                 })}
               />
@@ -154,13 +154,13 @@ export default function EditProfile() {
                 type="text"
                 name="about"
                 id="about"
-                placeholder="Nhập mô tả tiểu sử"
+                placeholder="Nhập nội dung"
                 className="form-style"
                 {...register("about", { required: true })}
               />
               {errors.about && (
                 <span className="-mt-1 text-[12px] text-yellow-100">
-                  Nhập nội dung giới thiệu bản thân.
+                  Vui lòng nhập nội dung.
                 </span>
               )}
             </div>
