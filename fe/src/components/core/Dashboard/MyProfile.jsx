@@ -24,6 +24,8 @@ export default function MyProfile() {
     },
   };
 
+  const navigate = useNavigate();
+  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -59,6 +61,7 @@ export default function MyProfile() {
         </IconBtn>
       </div>
 
+      {/* Section: Giới thiệu */}
       <div className="my-10 flex flex-col gap-y-10 rounded-2xl border-[1px] border-richblack-700 bg-richblack-800 p-8 px-7 sm:px-12">
         <div className="flex w-full items-center justify-between">
           <p className="text-lg font-semibold text-richblack-5">Giới thiệu</p>
@@ -66,12 +69,10 @@ export default function MyProfile() {
             text="Chỉnh sửa"
             onclick={() => {
               navigate("/dashboard/settings");
-            }}
           >
             <RiEditBoxLine />
           </IconBtn>
         </div>
-
         <p
           className={`${
             user.additionalDetails.about
@@ -83,6 +84,7 @@ export default function MyProfile() {
         </p>
       </div>
 
+      {/* Section: Thông tin Cá nhân */}
       <div className="my-10 flex flex-col gap-y-10 rounded-2xl border-[1px] border-richblack-700 bg-richblack-800 p-8 px-7 sm:px-12">
         <div className="flex w-full items-center justify-between">
           <p className="text-lg font-semibold text-richblack-5">
