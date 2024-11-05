@@ -24,8 +24,6 @@ export default function MyProfile() {
     },
   };
 
-  const navigate = useNavigate();
-  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -69,6 +67,7 @@ export default function MyProfile() {
             text="Chỉnh sửa"
             onclick={() => {
               navigate("/dashboard/settings");
+            }}
           >
             <RiEditBoxLine />
           </IconBtn>
