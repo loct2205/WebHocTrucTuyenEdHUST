@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ProgressBar from "@ramonak/react-progress-bar";
-import Img from '../../common/Img';
+import Img from "../../common/Img";
 
 export default function EnrolledCourses() {
   // Dữ liệu mẫu cho khóa học đã đăng ký
@@ -39,7 +39,7 @@ export default function EnrolledCourses() {
     return (
       <div className="flex border border-richblack-700 px-5 py-3 w-full">
         <div className="flex flex-1 gap-x-4">
-          <div className='h-14 w-14 rounded-lg skeleton '></div>
+          <div className="h-14 w-14 rounded-lg skeleton "></div>
           <div className="flex flex-col w-[40%] ">
             <p className="h-2 w-[50%] rounded-xl  skeleton"></p>
             <p className="h-2 w-[70%] rounded-xl mt-3 skeleton"></p>
@@ -64,11 +64,13 @@ export default function EnrolledCourses() {
 
   return (
     <>
-      <div className="text-4xl text-richblack-5 font-boogaloo text-center sm:text-left">Khóa Học Đã Đăng Ký</div>
+      <div className="text-4xl text-richblack-5 font-boogaloo text-center sm:text-left">
+        Khóa Học
+      </div>
       <div className="my-8 text-richblack-5">
         {/* Tiêu đề */}
         <div className="flex rounded-t-2xl bg-richblack-800 ">
-          <p className="w-[45%] px-5 py-3">Tên Khóa Học</p>
+          <p className="w-[45%] px-5 py-3">Khóa Học</p>
           <p className="w-1/4 px-2 py-3">Thời Gian</p>
           <p className="flex-1 px-2 py-3">Tiến Độ</p>
         </div>
@@ -87,7 +89,11 @@ export default function EnrolledCourses() {
         {/* Hiển Thị Danh Sách Khóa Học */}
         {enrolledCourses.map((course, i) => (
           <div
-            className={`flex flex-col sm:flex-row sm:items-center border border-richblack-700 ${i === enrolledCourses.length - 1 ? "rounded-b-2xl" : "rounded-none"}`}
+            className={`flex flex-col sm:flex-row sm:items-center border border-richblack-700 ${
+              i === enrolledCourses.length - 1
+                ? "rounded-b-2xl"
+                : "rounded-none"
+            }`}
             key={course.id}
           >
             <div className="flex sm:w-[45%] cursor-pointer items-center gap-4 px-5 py-3">
@@ -107,7 +113,7 @@ export default function EnrolledCourses() {
             </div>
 
             {/* Mobile*/}
-            <div className='sm:hidden'>
+            <div className="sm:hidden">
               <div className="px-2 py-3">{course.totalDuration}</div>
               <div className="flex sm:w-2/5 flex-col gap-2 px-2 py-3">
                 <p>Tiến Độ: {course.progressPercentage || 0}%</p>
@@ -120,7 +126,9 @@ export default function EnrolledCourses() {
             </div>
 
             {/* Big Device */}
-            <div className="hidden w-1/5 sm:flex px-2 py-3">{course.totalDuration}</div>
+            <div className="hidden w-1/5 sm:flex px-2 py-3">
+              {course.totalDuration}
+            </div>
             <div className="hidden sm:flex w-1/5 flex-col gap-2 px-2 py-3">
               <p>Tiến Độ: {course.progressPercentage || 0}%</p>
               <ProgressBar
