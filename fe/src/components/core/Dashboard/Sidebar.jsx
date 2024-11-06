@@ -41,10 +41,16 @@ export default function Sidebar() {
             <Link to="/dashboard/home" className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700">
               Trang chủ
             </Link>
+            <Link to="/dashboard/my-profile" className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700">
+              Hồ sơ
+            </Link>
+            <Link to="/dashboard/enrolled-courses" className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700">
+              Khóa học đã đăng ký
+            </Link>
             <Link to="/dashboard/settings" className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700">
               Cài đặt
             </Link>
-            <Link to="/dashboard/profile" className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700">
+            <Link to="/dashboard/my-profile" className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700">
               Hồ sơ
             </Link>
           </div>

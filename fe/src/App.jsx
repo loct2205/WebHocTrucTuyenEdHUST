@@ -12,6 +12,9 @@ import VerifyEmail from './pages/VerifyEmail';
 import UpdatePassword from './pages/UpdatePassword';
 
 import Dashboard from './pages/Dashboard';
+import Settings from './components/core/Dashboard/Settings/Settings';
+import MyProfile from './components/core/Dashboard/MyProfile';
+import EnrolledCourses from './components/core/Dashboard/EnrolledCourses';
 
 const App = () => {
   return (
@@ -29,13 +32,13 @@ const App = () => {
           <Route path="/update-password" element={<UpdatePassword />} />
 
           <Route path="/dashboard" element={<Dashboard />}>
-            {/* <Route path="my-profile" element={<MyProfile />} />
-            <Route path="settings" element={<Settings />} /> */}
+            <Route path="my-profile" element={<MyProfile />} />
+            <Route path="enrolled-courses" element={<EnrolledCourses />} />
+            <Route path="settings" element={<Settings />} />
           </Route>
 
         </Routes>
       </div>
-      <Footer />
     </Router>
     </div>
   );
