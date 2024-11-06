@@ -5,7 +5,7 @@ import { NavbarLinks } from '../../../data/navbar-links';
 
 const Navbar = () => {
     return (
-        <nav className="flex items-center justify-between p-4 bg-blue-500 text-white">
+        <nav className="z-[10] flex items-center justify-between p-4 bg-blue-500 border-b-richblack-700 text-white">
             {/* Logo */}
             <div className="text-2xl font-bold">
                 <Link to="/">EdHUST</Link>
