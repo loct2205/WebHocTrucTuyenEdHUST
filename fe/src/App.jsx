@@ -17,6 +17,7 @@ import MyProfile from './components/core/Dashboard/MyProfile';
 import EnrolledCourses from './components/core/Dashboard/EnrolledCourses';
 import AddCourse from './components/core/Dashboard/AddCourse/AddCourse';
 import Instructor from './components/core/Dashboard/Instructor';
+import MyCourses from './components/core/Dashboard/MyCourses';
 
 const App = () => {
   return (
@@ -38,6 +39,7 @@ const App = () => {
             <Route path="enrolled-courses" element={<EnrolledCourses />} />
             <Route path="instructor" element={<Instructor />} />
             <Route path="add-course" element={<AddCourse />} />
+            <Route path="my-courses" element={<MyCourses />} />
             <Route path="settings" element={<Settings />} />
           </Route>
 
