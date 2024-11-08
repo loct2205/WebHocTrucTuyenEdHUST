@@ -50,6 +50,12 @@ export default function Sidebar() {
               Khóa học
             </Link>
             <Link
+              to="/dashboard/instructor"
+              className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700"
+            >
+              Bảng điều khiển
+            </Link>
+            <Link
               to="/dashboard/add-course"
               className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700"
             >
