@@ -47,7 +47,7 @@ export default function Sidebar() {
               to="/dashboard/enrolled-courses"
               className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700"
             >
-              Khóa học
+              Khóa học Đã tham gia
             </Link>
             <Link
               to="/dashboard/instructor"
@@ -60,6 +60,12 @@ export default function Sidebar() {
               className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700"
             >
               Thêm khóa học
+            </Link>
+            <Link
+              to="/dashboard/my-courses"
+              className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700"
+            >
+              Khóa học của tôi
             </Link>
           </div>
 
