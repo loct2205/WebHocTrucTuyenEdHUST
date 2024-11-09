@@ -37,7 +37,7 @@ public class SecurityConfiguration {
         http.csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/**", "/mails/**")
+                .requestMatchers("/auth/**", "/mails/**", "payments/vnpay-payment-return")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
