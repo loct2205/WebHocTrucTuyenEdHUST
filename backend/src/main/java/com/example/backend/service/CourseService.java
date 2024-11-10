@@ -91,9 +91,36 @@ public class CourseService {
                 .build()).toList();
     }
 
-    public CourseDto getCourseById(Long id) {
+    public CourseDto getCourseById(Long id, Integer userId) {
         Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
+        boolean enrolled = false;
+        for (User student : course.getStudentsEnrolled()) {
+            if (student.getId().equals(userId)) {
+                enrolled = true;
+                break;
+            }
+        }
+        if (!enrolled) {
+            return CourseDto.builder()
+                    .id(course.getId())
+                    .courseName(course.getCourseName())
+                    .courseDescription(course.getCourseDescription())
+                    .instructor(userMapper.convertToDto(course.getInstructor()))
+                    .whatYouWillLearn(course.getWhatYouWillLearn())
+                    .categoryName(course.getCategory().getName())
+                    .instructions(course.getInstructions() != null ?
+                            new ArrayList<>(course.getInstructions()) : new ArrayList<>())
+                    .price(course.getPrice())
+                    .thumbnail(course.getThumbnail())
+                    .rating(course.getRating() != null ?
+                            course.getRating().stream()
+                                    .map(element -> modelMapper.map(element, RatingAndReviewDto.class))
+                                    .toList() : new ArrayList<>())
+                    .tag(course.getTag() != null ?
+                            new ArrayList<>(course.getTag()) : new ArrayList<>())
+                    .build();
+        }
         return courseMapper.convertToDto(course);
     }
 

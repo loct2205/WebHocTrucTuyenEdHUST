@@ -44,7 +44,9 @@ public class CourseController {
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CourseDto> getCourseDetail(@PathVariable Long id) {
-        CourseDto course = courseService.getCourseById(id);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+        CourseDto course = courseService.getCourseById(id, currentUser.getId());
         return ResponseEntity.ok(course);
     }
 
