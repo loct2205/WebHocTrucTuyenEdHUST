@@ -21,6 +21,9 @@ import MyCourses from "./components/core/Dashboard/MyCourses";
 import EditCourse from "./components/core/Dashboard/EditCourse/EditCourse";
 import Cart from "./components/core/Dashboard/Cart/Cart";
 
+import ViewCourse from "./pages/ViewCourse";
+import VideoDetails from "./components/core/ViewCourse/VideoDetails";
+
 const App = () => {
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
@@ -34,6 +37,7 @@ const App = () => {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/update-password" element={<UpdatePassword />} />
+            <Route path="/viewcourse" element={<ViewCourse />} />
 
             <Route path="/dashboard" element={<Dashboard />}>
               <Route path="my-profile" element={<MyProfile />} />
