@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { HiOutlineCurrencyRupee } from "react-icons/hi";
 import { MdNavigateNext } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -11,8 +10,10 @@ import RequirementsField from "./RequirementField.jsx";
 
 export default function CourseInformationForm() {
   const dispatch = useDispatch();
-  const { course = {}, editCourse = false } = useSelector((state) => state.course || {});
-  
+  const { course = {}, editCourse = false } = useSelector(
+    (state) => state.course || {}
+  );
+
   const {
     register,
     handleSubmit,
@@ -62,7 +63,8 @@ export default function CourseInformationForm() {
       currentValues.courseTags.toString() !== (course.tag || []).toString() ||
       currentValues.courseBenefits !== (course.whatYouWillLearn || "") ||
       currentValues.courseCategory !== (course.category?._id || "") ||
-      currentValues.courseRequirements?.toString() !== (course.instructions || []).toString() ||
+      currentValues.courseRequirements?.toString() !==
+        (course.instructions || []).toString() ||
       currentValues.courseImage !== (course.thumbnail || "")
     );
   };
@@ -135,9 +137,8 @@ export default function CourseInformationForm() {
                 value: /^(0|[1-9]\d*)(\.\d+)?$/,
               },
             })}
-            className="form-style w-full !pl-12"
+            className="form-style w-full"
           />
-          <HiOutlineCurrencyRupee className="absolute left-3 top-1/2 inline-block -translate-y-1/2 text-2xl text-richblack-400" />
         </div>
         {errors.coursePrice && (
           <span className="ml-2 text-xs tracking-wide text-pink-200">
