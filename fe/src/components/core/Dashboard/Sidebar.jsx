@@ -44,6 +44,12 @@ export default function Sidebar() {
               Hồ sơ
             </Link>
             <Link
+              to="/dashboard/cart"
+              className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700"
+            >
+              Giỏ hàng
+            </Link>
+            <Link
               to="/dashboard/enrolled-courses"
               className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700"
             >

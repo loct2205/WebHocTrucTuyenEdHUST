@@ -19,6 +19,7 @@ import AddCourse from "./components/core/Dashboard/AddCourse/AddCourse";
 import Instructor from "./components/core/Dashboard/Instructor";
 import MyCourses from "./components/core/Dashboard/MyCourses";
 import EditCourse from "./components/core/Dashboard/EditCourse/EditCourse";
+import Cart from "./components/core/Dashboard/Cart/Cart";
 
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
 
             <Route path="/dashboard" element={<Dashboard />}>
               <Route path="my-profile" element={<MyProfile />} />
+              <Route path="cart" element={<Cart />} />
               <Route path="enrolled-courses" element={<EnrolledCourses />} />
               <Route path="instructor" element={<Instructor />} />
               <Route path="add-course" element={<AddCourse />} />
