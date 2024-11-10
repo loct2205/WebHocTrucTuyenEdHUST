@@ -56,6 +56,7 @@ public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
         user.setRole(optionalRole.get());
         user.setActive(true);
         user.setApprove(true);
+        user.setContactNumber("1234567890");
         user.setImageKey(ImageDefault.DEFAULT_IMAGE_KEY);
         user.setImageUrl(ImageDefault.DEFAULT_IMAGE_URL);
 
