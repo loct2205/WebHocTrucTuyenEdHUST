@@ -35,8 +35,7 @@ public class CourseController {
 
     // ================ get all courses ================
     @GetMapping()
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<CourseDto>> getAllCourses() {
+    public ResponseEntity<List<CourseDto>> getAllCoursesPreview() {
         List<CourseDto> courses = courseService.getAllCourses();
         return ResponseEntity.ok(courses);
     }

@@ -1,8 +1,10 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.CourseDto;
+import com.example.backend.dto.RatingAndReviewDto;
 import com.example.backend.entity.*;
 import com.example.backend.mapper.CourseMapper;
+import com.example.backend.mapper.UserMapper;
 import com.example.backend.repository.*;
 import com.example.backend.util.Uploader;
 import lombok.AllArgsConstructor;
@@ -28,6 +30,7 @@ public class CourseService {
     private final ModelMapper modelMapper;
     private final CourseMapper courseMapper;
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
     private final Uploader uploader;
     private final SectionService sectionService;
 
@@ -70,7 +73,22 @@ public class CourseService {
 
     public List<CourseDto> getAllCourses() {
         List<Course> courses = courseRepository.findAll();
-        return courses.stream().map(courseMapper::convertToDto).toList();
+        return courses.stream().map(course -> CourseDto.builder()
+                .id(course.getId())
+                .categoryName(course.getCategory().getName())
+                .courseDescription(course.getCourseDescription())
+                .instructor(userMapper.convertToDto(course.getInstructor()))
+                .courseName(course.getCourseName())
+                .tag(course.getTag())
+                .price(course.getPrice())
+                .thumbnail(course.getThumbnail())
+                .whatYouWillLearn(course.getWhatYouWillLearn())
+                .instructions(course.getInstructions())
+                .rating(course.getRating().stream().map(ratingAndReview -> RatingAndReviewDto.builder()
+                        .rating((double) ratingAndReview.getRating())
+                        .review(ratingAndReview.getReview())
+                        .build()).toList())
+                .build()).toList();
     }
 
     public CourseDto getCourseById(Long id) {
