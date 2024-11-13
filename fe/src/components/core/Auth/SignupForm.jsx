@@ -4,9 +4,9 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
-//import { sendOtp } from "../../../services/operations/authAPI"
-//import { setSignupData } from "../../../slices/authSlice"
-//import { ACCOUNT_TYPE } from "../../../utils/constants"
+import { sendOtp } from "../../../services/operations/authAPI"
+import { setSignupData } from "../../../slices/authSlice"
+import { ACCOUNT_TYPE } from "../../../utils/constants.js"
 import Tab from "../../common/Tab"
 
 
@@ -16,7 +16,7 @@ function SignupForm() {
   const dispatch = useDispatch();
 
   // sinh vien / giao vien
-  const [accountType, setAccountType] = useState("student");
+  const [accountType, setAccountType] = useState(ACCOUNT_TYPE.STUDENT);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -53,11 +53,9 @@ function SignupForm() {
       accountType,
     };
 
-    console.log("Đăng ký thành công", signupData);
+    dispatch(setSignupData(signupData));
 
-    //dispatch(setSignupData(signupData));
-
-    //dispatch(sendOtp(formData.email, navigate));
+    dispatch(sendOtp(formData.email, navigate));
 
     // Reset dữ liệu trong form
     setFormData({
@@ -67,7 +65,7 @@ function SignupForm() {
       password: "",
       confirmPassword: "",
     })
-    setAccountType("student");
+    setAccountType(ACCOUNT_TYPE.STUDENT);
   };
 
   // Dữ liệu của Tab
@@ -75,12 +73,12 @@ function SignupForm() {
     {
       id: 1,
       tabName: "Sinh viên",
-      type: "student",
+      type: ACCOUNT_TYPE.STUDENT,
     },
     {
       id: 2,
       tabName: "Giáo viên",
-      type: "instructor",
+      type: ACCOUNT_TYPE.INSTRUCTOR,
     },
   ];
 
