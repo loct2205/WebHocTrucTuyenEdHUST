@@ -1,31 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { RiEditBoxLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
-
 import { formattedDate } from "../../../utils/dateFormatter";
 import IconBtn from "../../common/IconBtn";
 
 export default function MyProfile() {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
 
-  // Dữ liệu mẫu tĩnh cho user
-  const user = {
-    firstName: "Long",
-    lastName: "Nguyễn",
-    email: "long@gmail.com",
-    accountType: "Tiêu chuẩn",
-    image: "/path/to/default/profile-image.jpg",
-    additionalDetails: {
-      about: "Tôi là sinh viên CNTT.",
-      gender: "Nam",
-      contactNumber: "0969396505",
-      dateOfBirth: "2003-05-29",
-    },
-  };
-
+  // Load user data from localStorage
   useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    setUser(storedUser);
     window.scrollTo(0, 0);
   }, []);
+
+  // Handle if user data is not yet loaded
+  if (!user) return <p>Loading...</p>;
 
   return (
     <>
@@ -36,7 +27,7 @@ export default function MyProfile() {
       <div className="flex items-center justify-between rounded-2xl border-[1px] border-richblack-700 bg-richblack-800 p-8 px-3 sm:px-12">
         <div className="flex items-center gap-x-4">
           <img
-            src={user.image}
+            src={user.imageUrl}
             alt={`profile-${user.firstName}`}
             className="aspect-square w-[78px] rounded-full object-cover"
           />
@@ -50,9 +41,7 @@ export default function MyProfile() {
 
         <IconBtn
           text="Chỉnh sửa"
-          onClick={() => {
-            navigate("/dashboard/settings");
-          }}
+          onClick={() => navigate("/dashboard/settings")}
         >
           <RiEditBoxLine />
         </IconBtn>
@@ -62,38 +51,20 @@ export default function MyProfile() {
       <div className="my-10 flex flex-col gap-y-10 rounded-2xl border-[1px] border-richblack-700 bg-richblack-800 p-8 px-7 sm:px-12">
         <div className="flex w-full items-center justify-between">
           <p className="text-lg font-semibold text-richblack-5">Giới thiệu</p>
-          <IconBtn
-            text="Chỉnh sửa"
-            onClick={() => {
-              navigate("/dashboard/settings");
-            }}
-          >
+          <IconBtn text="Chỉnh sửa" onClick={() => navigate("/dashboard/settings")}>
             <RiEditBoxLine />
           </IconBtn>
         </div>
-        <p
-          className={`${
-            user.additionalDetails.about
-              ? "text-richblack-5"
-              : "text-richblack-400"
-          } text-sm font-medium`}
-        >
-          {user.additionalDetails.about ?? "Viết thông tin về bạn"}
+        <p className={`text-sm font-medium ${user.profile?.about ? "text-richblack-5" : "text-richblack-400"}`}>
+          {user.profile?.about ?? "Viết thông tin về bạn"}
         </p>
       </div>
 
       {/* Section: Thông tin Cá nhân */}
       <div className="my-10 flex flex-col gap-y-10 rounded-2xl border-[1px] border-richblack-700 bg-richblack-800 p-8 px-7 sm:px-12">
         <div className="flex w-full items-center justify-between">
-          <p className="text-lg font-semibold text-richblack-5">
-            Thông tin Cá nhân
-          </p>
-          <IconBtn
-            text="Chỉnh sửa"
-            onClick={() => {
-              navigate("/dashboard/settings");
-            }}
-          >
+          <p className="text-lg font-semibold text-richblack-5">Thông tin Cá nhân</p>
+          <IconBtn text="Chỉnh sửa" onClick={() => navigate("/dashboard/settings")}>
             <RiEditBoxLine />
           </IconBtn>
         </div>
@@ -121,7 +92,7 @@ export default function MyProfile() {
             <div>
               <p className="mb-2 text-sm text-richblack-600">Giới tính</p>
               <p className="text-sm font-semibold text-richblack-5">
-                {user.additionalDetails.gender ?? "Add Gender"}
+                {user.profile?.gender ?? "Add Gender"}
               </p>
             </div>
           </div>
@@ -136,14 +107,13 @@ export default function MyProfile() {
             <div>
               <p className="mb-2 text-sm text-richblack-600">Số điện thoại</p>
               <p className="text-sm font-semibold text-richblack-5">
-                {user.additionalDetails.contactNumber ?? "Thêm số điện thoại"}
+                {user.profile?.contactNumber ?? "Thêm số điện thoại"}
               </p>
             </div>
             <div>
               <p className="mb-2 text-sm text-richblack-600">Ngày sinh</p>
               <p className="text-sm font-semibold text-richblack-5">
-                {formattedDate(user.additionalDetails.dateOfBirth) ??
-                  "Thêm ngày sinh"}
+                {formattedDate(user.profile?.dob) ?? "Thêm ngày sinh"}
               </p>
             </div>
           </div>

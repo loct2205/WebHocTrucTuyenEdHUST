@@ -1,7 +1,8 @@
-import { useState } from "react"
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
-import { useDispatch } from "react-redux"
-import { Link, useNavigate } from "react-router-dom"
+import { useState } from "react";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../../../services/operations/authAPI.js";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -11,33 +12,33 @@ function LoginForm() {
     password: "",
   });
 
-  //Ẩn mật khẩu
   const [showPassword, setShowPassword] = useState(false);
 
   const { email, password } = formData;
 
-  //Xử lý Form
+  // Handle form change
   const handleOnChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
       [e.target.name]: e.target.value,
-    }))
-  }
+    }));
+  };
 
-  //Xử lý Submit
+  // Handle form submission
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    console.log("Biểu mẫu đã được gửi", { email, password });
-  }
+    console.log("Form submitted", { email, password });
+
+    // Pass email and password directly to avoid nesting issues
+    dispatch(login(email, password, navigate));
+  };
 
   return (
-    <form
-      onSubmit={handleOnSubmit}
-      className="mt-6 flex w-full flex-col gap-y-4"
-    >
+    <form onSubmit={handleOnSubmit} className="mt-6 flex w-full flex-col gap-y-4">
+      {/* Form fields remain unchanged */}
       <label className="w-full">
         <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-          Địa chỉ Email <sup className="text-pink-200">*</sup>
+        Địa chỉ Email <sup className="text-pink-200">*</sup>
         </p>
         <input
           required
@@ -46,16 +47,13 @@ function LoginForm() {
           value={email}
           onChange={handleOnChange}
           placeholder="Nhập địa chỉ Email"
-          style={{
-            boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
-          }}
           className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] text-richblack-5 outline-none"
         />
       </label>
 
       <label className="relative">
         <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-          Mật khẩu <sup className="text-pink-200">*</sup>
+        Mật khẩu <sup className="text-pink-200">*</sup>
         </p>
         <input
           required
@@ -64,9 +62,6 @@ function LoginForm() {
           value={password}
           onChange={handleOnChange}
           placeholder="Nhập mật khẩu"
-          style={{
-            boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
-          }}
           className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] pr-12 text-richblack-5 outline-none"
         />
         <span
@@ -81,11 +76,10 @@ function LoginForm() {
         </span>
         <Link to="/forgot-password">
           <p className="mt-1 ml-auto max-w-max text-xs text-blue-100">
-            Quên mật khẩu
+          Quên mật khẩu?
           </p>
         </Link>
       </label>
-
 
       <button
         type="submit"
@@ -94,7 +88,7 @@ function LoginForm() {
         Đăng nhập
       </button>
     </form>
-  )
+  );
 }
 
-export default LoginForm
+export default LoginForm;
