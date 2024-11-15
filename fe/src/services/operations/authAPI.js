@@ -1,7 +1,6 @@
 import { toast } from "react-hot-toast"
 import { apiConnector } from "../apiConnector"
 import { setLoading, setToken } from "../../slices/authSlice"
-import { setUser } from "../../slices/profileSlice"
 import { endpoints, profileEndpoints } from "../apis"
 const {
     SENDOTP_API,
@@ -31,18 +30,8 @@ export function login(email, password, navigate) {
   
         toast.success("Login Successful")
         dispatch(setToken(response.data.token))
-        // Call API to get user data
-        const userResponse = await apiConnector("GET", GET_USER_DETAILS_API);
-        const userImage = userResponse.data?.imageUrl
-           ? userResponse.data.imageUrl
-           : `https://api.dicebear.com/5.x/initials/svg?seed=${userResponse.data.firstName} ${userResponse.data.lastName}`
-  
-        dispatch(setUser({ ...userResponse.data, image: userImage }));
-        console.log('User data - ', userResponse.data);
         localStorage.setItem("token", JSON.stringify(response.data?.token));
-  
-        localStorage.setItem("user", JSON.stringify({ ...userResponse.data}));
-  
+          
         navigate("/dashboard/my-profile");
       } catch (error) {
         console.log("LOGIN API ERROR.......", error)

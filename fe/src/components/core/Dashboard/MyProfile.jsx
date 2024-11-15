@@ -3,15 +3,37 @@ import { RiEditBoxLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { formattedDate } from "../../../utils/dateFormatter";
 import IconBtn from "../../common/IconBtn";
+import { apiConnector } from "../../../services/apiConnector"
+import { profileEndpoints } from "../../../services/apis"
 
 export default function MyProfile() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-
+  const {
+    GET_USER_DETAILS_API,
+  } = profileEndpoints
   // Load user data from localStorage
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    setUser(storedUser);
+    const fetchUserDetails = async () => {
+      try {
+        const token = JSON.parse(localStorage.getItem("token"));
+        if (!token) {
+          throw new Error("No token found");
+        }
+        const userResponse = await apiConnector("GET", GET_USER_DETAILS_API, null, {
+          Authorization: `Bearer ${token}`
+        });
+        const userImage = userResponse.data?.imageUrl
+          ? userResponse.data.imageUrl
+          : `https://api.dicebear.com/5.x/initials/svg?seed=${userResponse.data.firstName} ${userResponse.data.lastName}`;
+        const userData = { ...userResponse.data, image: userImage };
+        setUser(userData);
+        localStorage.setItem("user", JSON.stringify(userData));
+      } catch (error) {
+        console.error("Failed to fetch user details", error);
+      }
+    };
+    fetchUserDetails();
     window.scrollTo(0, 0);
   }, []);
 
