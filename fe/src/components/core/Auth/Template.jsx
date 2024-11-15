@@ -1,6 +1,6 @@
-
-import LoginForm from "./LoginForm"
-import SignupForm from "./SignupForm"
+import Img from "../../common/Img";
+import LoginForm from "./LoginForm";
+import SignupForm from "./SignupForm";
 
 function Template({ title, description, image, formType }) {
   return (
@@ -12,15 +12,22 @@ function Template({ title, description, image, formType }) {
           </h1>
 
           <p className="mt-4 text-[1.125rem] leading-[1.625rem] text-richblack-100">
-              {description}
+            {description}
           </p>
 
           {formType === "signup" ? <SignupForm /> : <LoginForm />}
         </div>
 
+        <div className="relative max-w-[550px] md:mx-0 my-0">
+          <Img
+            src={image}
+            alt={formType}
+            className={" min-w-[105%] h-full text-white"}
+          />
+        </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Template
+export default Template;
