@@ -171,7 +171,7 @@ public class AuthenticationService {
         User existingUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         String jwtToken = jwtService.generateToken(existingUser);
-        String url = "http://localhost:3000/update-password/" + jwtToken;
+        String url = "http://localhost:5173/update-password/" + jwtToken;
         MailRequest mailRequest = new MailRequest(email, "Password Reset Link", "Password Reset Link: " + url, false);
         mailService.sendMail(mailRequest);
         return "Email sent successfully , Please check your mail box and change password";
