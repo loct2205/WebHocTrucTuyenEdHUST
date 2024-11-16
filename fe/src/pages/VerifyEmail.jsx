@@ -4,14 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
 import { RxCountdownTimer } from "react-icons/rx";
 import Loading from './../components/common/Loading';
+import { useDispatch, useSelector } from "react-redux";
+import { signUp } from "../services/operations/authAPI";
 
 function VerifyEmail() {
   const [otp, setOtp] = useState("");
-
-  const [loading, setLoading] = useState(false);
-  const [signupData] = useState({ email: "exam@exam.com" });
-  
+  const { signupData, loading } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
 // Điều hướng
   useEffect(() => {
@@ -23,18 +23,16 @@ function VerifyEmail() {
 // Xử lý
   const handleVerifyAndSignup = (e) => {
     e.preventDefault();
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      alert("Xác thực Email thành công!");
-    }, 1000);
+    const { accountType, firstName, lastName, email, password, confirmPassword, } = signupData;
+
+    dispatch(signUp(accountType, firstName, lastName, email, password, confirmPassword, otp, navigate));
   };
 
 // ResendOTP
-  const handleResendOtp = () => {
-    setOtp("");
-    alert("Mã OTP đã được đến Email của bạn!");
-  };
+  // const handleResendOtp = () => {
+  //   setOtp("");
+  //   alert("Mã OTP đã được đến Email của bạn!");
+  // };
 
   return (
     <div className="min-h-[calc(100vh-3.5rem)] grid place-items-center">
@@ -86,7 +84,7 @@ function VerifyEmail() {
 
             <button
               className="flex items-center text-blue-100 gap-x-2"
-              onClick={handleResendOtp}
+              onClick={() => dispatch(sendOtp(signupData.email, navigate), setOtp(''))}
             >
               <RxCountdownTimer />
               Gửi lại mã OTP

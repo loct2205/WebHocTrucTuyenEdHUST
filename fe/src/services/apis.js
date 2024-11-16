@@ -13,14 +13,14 @@ export const endpoints = {
 // PROFILE ENDPOINTS
 export const profileEndpoints = {
   GET_USER_DETAILS_API: BASE_URL + "/profiles",
-  GET_USER_ENROLLED_COURSES_API: BASE_URL + "/profile/getEnrolledCourses",
-  GET_INSTRUCTOR_DATA_API: BASE_URL + "/profile/instructorDashboard",
+  GET_USER_ENROLLED_COURSES_API: BASE_URL + "/profiles/course-enrolled",
+  GET_INSTRUCTOR_DATA_API: BASE_URL + "/profiles/instructor-dashboard",
 }
 
 // ADMIN ENDPOINTS
 export const adminEndPoints = {
-  GET_ALL_STUDENTS_DATA_API: BASE_URL + "/auth/all-students",
-  GET_ALL_INSTRUCTORS_DATA_API: BASE_URL + "/auth/all-instructors",
+  GET_ALL_STUDENTS_DATA_API: BASE_URL + "/profiles/all-student",
+  GET_ALL_INSTRUCTORS_DATA_API: BASE_URL + "/profiles/all-instructor",
 }
 
 
@@ -55,7 +55,7 @@ export const courseEndpoints = {
 
 // RATINGS AND REVIEWS
 export const ratingsEndpoints = {
-  REVIEWS_DETAILS_API: BASE_URL + "/course/getReviews",
+  REVIEWS_DETAILS_API: BASE_URL + "/ratings",
 }
 
 // CATAGORIES API
@@ -74,8 +74,8 @@ export const contactusEndpoint = {
 
 // SETTINGS PAGE API
 export const settingsEndpoints = {
-  UPDATE_DISPLAY_PICTURE_API: BASE_URL + "/profile/updateUserProfileImage",
-  UPDATE_PROFILE_API: BASE_URL + "/profile/updateProfile",
-  CHANGE_PASSWORD_API: BASE_URL + "/auth/changepassword",
-  DELETE_PROFILE_API: BASE_URL + "/profile/deleteProfile",
+  UPDATE_DISPLAY_PICTURE_API: BASE_URL + "/profiles/avatar",
+  UPDATE_PROFILE_API: BASE_URL + "/profiles",
+  CHANGE_PASSWORD_API: BASE_URL + "/auth/change-password",
+  DELETE_PROFILE_API: BASE_URL + "/profiles",
 }
