@@ -1,12 +1,17 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { updateProfile } from "../../../../services/operations/SettingsAPI";
 
 import IconBtn from "../../../common/IconBtn";
 
 const genders = ["Nam", "Nữ", "Khác"];
 
 export default function EditProfile() {
-  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.profile)
+  const { token } = useSelector((state) => state.auth)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const {
     register,
@@ -14,10 +19,15 @@ export default function EditProfile() {
     formState: { errors },
   } = useForm();
 
-  const submitProfileForm = (data) => {
-    console.log("Form Data - ", data);
-  };
-
+  const submitProfileForm = async (data) => {
+    // console.log("Form Data - ", data)
+    try {
+      dispatch(updateProfile(token, data))
+    } catch (error) {
+      console.log("ERROR MESSAGE - ", error.message)
+    }
+  }
+  console.log(user);
   return (
     <>
       <form onSubmit={handleSubmit(submitProfileForm)}>
@@ -38,6 +48,7 @@ export default function EditProfile() {
                 placeholder="Nhập tên"
                 className="form-style"
                 {...register("firstName", { required: true })}
+                defaultValue={user?.firstName}
               />
               {errors.firstName && (
                 <span className="-mt-1 text-[12px] text-yellow-100">
@@ -57,6 +68,7 @@ export default function EditProfile() {
                 placeholder="Nhập họ"
                 className="form-style"
                 {...register("lastName", { required: true })}
+                defaultValue={user?.lastName}
               />
               {errors.lastName && (
                 <span className="-mt-1 text-[12px] text-yellow-100">
@@ -68,15 +80,15 @@ export default function EditProfile() {
 
           <div className="flex flex-col gap-5 lg:flex-row">
             <div className="flex flex-col gap-2 lg:w-[48%]">
-              <label htmlFor="dateOfBirth" className="lable-style">
+              <label htmlFor="dob" className="lable-style">
                 Ngày sinh
               </label>
               <input
                 type="date"
-                name="dateOfBirth"
-                id="dateOfBirth"
+                name="dob"
+                id="dob"
                 className="form-style"
-                {...register("dateOfBirth", {
+                {...register("dob", {
                   required: {
                     value: true,
                     message: "Vui lòng nhập ngày sinh.",
@@ -86,10 +98,11 @@ export default function EditProfile() {
                     message: "Ngày sinh không hợp lệ.",
                   },
                 })}
+                defaultValue={user?.profile?.dob}
               />
-              {errors.dateOfBirth && (
+              {errors.dob && (
                 <span className="-mt-1 text-[12px] text-yellow-100">
-                  {errors.dateOfBirth.message}
+                  {errors.dob.message}
                 </span>
               )}
             </div>
@@ -104,6 +117,7 @@ export default function EditProfile() {
                 id="gender"
                 className="form-style"
                 {...register("gender", { required: true })}
+                defaultValue={user?.profile?.gender}
               >
                 {genders.map((ele, i) => (
                   <option key={i} value={ele}>
@@ -138,6 +152,7 @@ export default function EditProfile() {
                   maxLength: { value: 12, message: "Không hợp lệ" },
                   minLength: { value: 10, message: "Không hợp lệ" },
                 })}
+                defaultValue={user?.profile?.contactNumber}
               />
               {errors.contactNumber && (
                 <span className="-mt-1 text-[12px] text-yellow-100">
@@ -157,6 +172,7 @@ export default function EditProfile() {
                 placeholder="Nhập nội dung"
                 className="form-style"
                 {...register("about", { required: true })}
+                defaultValue={user?.profile?.about}
               />
               {errors.about && (
                 <span className="-mt-1 text-[12px] text-yellow-100">

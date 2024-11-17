@@ -5,9 +5,13 @@ import { formattedDate } from "../../../utils/dateFormatter";
 import IconBtn from "../../common/IconBtn";
 import { apiConnector } from "../../../services/apiConnector"
 import { profileEndpoints } from "../../../services/apis"
+import { ACCOUNT_TYPE } from "../../../utils/constants";
+import { useDispatch } from "react-redux";
+import { setUser as setUserSlice } from "../../../slices/profileSlice";
 
 export default function MyProfile() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [user, setUser] = useState(null);
   const {
     GET_USER_DETAILS_API,
@@ -28,6 +32,7 @@ export default function MyProfile() {
           : `https://api.dicebear.com/5.x/initials/svg?seed=${userResponse.data.firstName} ${userResponse.data.lastName}`;
         const userData = { ...userResponse.data, image: userImage };
         setUser(userData);
+        dispatch(setUserSlice(userData));
         localStorage.setItem("user", JSON.stringify(userData));
       } catch (error) {
         console.error("Failed to fetch user details", error);
