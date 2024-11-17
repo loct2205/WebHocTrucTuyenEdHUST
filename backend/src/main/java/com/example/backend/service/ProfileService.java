@@ -78,7 +78,9 @@ public class ProfileService {
     }
 
     public UserDetailDto getUserDetail(User currentUser) {
-        return _userMapper.convertToUserDetailDto(currentUser);
+        UserDetailDto userDetailDto = _userMapper.convertToUserDetailDto(currentUser);
+        userDetailDto.setAccountType(String.valueOf(currentUser.getRole().getName()).toLowerCase());
+        return userDetailDto;
     }
 
     public String deleteAccount(User currentUser) throws IOException {

@@ -79,7 +79,7 @@ public class User implements UserDetails {
 
         return List.of(authority);
     }
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne()
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
