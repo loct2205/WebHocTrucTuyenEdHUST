@@ -11,9 +11,6 @@ import ForgotPassword from './pages/ForgotPassword';
 import VerifyEmail from './pages/VerifyEmail';
 import UpdatePassword from './pages/UpdatePassword';
 import About from "./pages/About";
-import ForgotPassword from "./pages/ForgotPassword";
-import VerifyEmail from "./pages/VerifyEmail";
-import UpdatePassword from "./pages/UpdatePassword";
 
 import Dashboard from "./pages/Dashboard";
 import Settings from "./components/core/Dashboard/Settings/Settings";
@@ -31,18 +28,6 @@ import VideoDetails from "./components/core/ViewCourse/VideoDetails";
 const App = () => {
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
-    <Router>
-      <Navbar />
-      <div className="min-h-[calc(100vh-3.5rem)]"> 
-        <Routes>
-          
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/verify-email" element={<VerifyEmail />} />
-          <Route path="/update-password" element={<UpdatePassword />} />
-          <Route path="/about" element={<About />} />
       <Router>
         <Navbar />
         <div className="min-h-[calc(100vh-3.5rem)]">
@@ -73,4 +58,5 @@ const App = () => {
     </div>
   );
 };
+
 export default App;
