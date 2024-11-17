@@ -2,6 +2,7 @@ import { toast } from "react-hot-toast";
 import { apiConnector } from "../apiConnector";
 import { setLoading, setToken } from "../../slices/authSlice";
 import { endpoints, profileEndpoints } from "../apis";
+import { setUser } from "../../slices/profileSlice";
 const {
   SENDOTP_API,
   SIGNUP_API,
@@ -164,5 +165,18 @@ export function resetPassword(password, confirmPassword, token, navigate) {
     }
     toast.dismiss(toastId)
     dispatch(setLoading(false))
+  }
+}
+
+// ================ Logout ================
+export function logout(navigate) {
+  return (dispatch) => {
+    dispatch(setToken(null))
+    dispatch(setUser(null))
+    // dispatch(resetCart())
+    localStorage.removeItem("token")
+    localStorage.removeItem("user")
+    toast.success("Logged Out")
+    navigate("/")
   }
 }
