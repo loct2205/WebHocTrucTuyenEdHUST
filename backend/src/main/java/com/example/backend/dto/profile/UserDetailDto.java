@@ -1,6 +1,7 @@
 package com.example.backend.dto.profile;
 
 import com.example.backend.entity.Profile;
+import com.example.backend.entity.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,4 +22,5 @@ public class UserDetailDto {
     private String imageKey;
     private String imageUrl;
     private Profile profile;
+    private String accountType;
 }
