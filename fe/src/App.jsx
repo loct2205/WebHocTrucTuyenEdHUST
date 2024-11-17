@@ -10,6 +10,7 @@ import Signup from "./pages/Signup";
 import ForgotPassword from './pages/ForgotPassword';
 import VerifyEmail from './pages/VerifyEmail';
 import UpdatePassword from './pages/UpdatePassword';
+import About from "./pages/About";
 
 import Dashboard from './pages/Dashboard';
 
@@ -27,6 +28,7 @@ const App = () => {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/update-password" element={<UpdatePassword />} />
+          <Route path="/about" element={<About />} />
 
           <Route path="/dashboard" element={<Dashboard />}>
             {/* <Route path="my-profile" element={<MyProfile />} />
