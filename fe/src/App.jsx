@@ -7,9 +7,10 @@ import Footer from "./components/common/Footer";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import ForgotPassword from "./pages/ForgotPassword";
-import VerifyEmail from "./pages/VerifyEmail";
-import UpdatePassword from "./pages/UpdatePassword";
+import ForgotPassword from './pages/ForgotPassword';
+import VerifyEmail from './pages/VerifyEmail';
+import UpdatePassword from './pages/UpdatePassword';
+import About from "./pages/About";
 
 import Dashboard from "./pages/Dashboard";
 import Settings from "./components/core/Dashboard/Settings/Settings";
@@ -38,6 +39,7 @@ const App = () => {
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/update-password/:id" element={<UpdatePassword />} />
             <Route path="/viewcourse" element={<ViewCourse />} />
+            <Route path="/about" element={<About />} />
 
             <Route path="/dashboard" element={<Dashboard />}>
               <Route path="my-profile" element={<MyProfile />} />
@@ -56,4 +58,5 @@ const App = () => {
     </div>
   );
 };
+
 export default App;
