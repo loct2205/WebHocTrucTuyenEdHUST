@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/common/Navbar";
 import Footer from "./components/common/Footer";
@@ -28,33 +28,31 @@ import VideoDetails from "./components/core/ViewCourse/VideoDetails";
 const App = () => {
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
-      <Router>
-        <Navbar />
-        <div className="min-h-[calc(100vh-3.5rem)]">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/verify-email" element={<VerifyEmail />} />
-            <Route path="/update-password" element={<UpdatePassword />} />
-            <Route path="/viewcourse" element={<ViewCourse />} />
-            <Route path="/about" element={<About />} />
+      <Navbar />
+      <div className="min-h-[calc(100vh-3.5rem)]">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/update-password" element={<UpdatePassword />} />
+          <Route path="/viewcourse" element={<ViewCourse />} />
+          <Route path="/about" element={<About />} />
 
-            <Route path="/dashboard" element={<Dashboard />}>
-              <Route path="my-profile" element={<MyProfile />} />
-              <Route path="cart" element={<Cart />} />
-              <Route path="enrolled-courses" element={<EnrolledCourses />} />
-              <Route path="instructor" element={<Instructor />} />
-              <Route path="add-course" element={<AddCourse />} />
-              <Route path="my-courses" element={<MyCourses />} />
-              <Route path="edit-course/:courseId" element={<EditCourse />} />
-              <Route path="settings" element={<Settings />} />
-            </Route>
-          </Routes>
-        </div>
-        <Footer />
-      </Router>
+          <Route path="/dashboard" element={<Dashboard />}>
+            <Route path="my-profile" element={<MyProfile />} />
+            <Route path="cart" element={<Cart />} />
+            <Route path="enrolled-courses" element={<EnrolledCourses />} />
+            <Route path="instructor" element={<Instructor />} />
+            <Route path="add-course" element={<AddCourse />} />
+            <Route path="my-courses" element={<MyCourses />} />
+            <Route path="edit-course/:courseId" element={<EditCourse />} />
+            <Route path="settings" element={<Settings />} />
+          </Route>
+        </Routes>
+      </div>
+      <Footer />
     </div>
   );
 };

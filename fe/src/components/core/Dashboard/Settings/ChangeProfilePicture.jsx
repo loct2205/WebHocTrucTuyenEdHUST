@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FiUpload } from "react-icons/fi";
-
 import IconBtn from "../../../common/IconBtn";
-
-// URL hình ảnh placeholder
-const placeholderImageUrl = "https://via.placeholder.com/150";
+import Img from "../../../common/Img";
 
 export default function ChangeProfilePicture() {
   const [loading, setLoading] = useState(false);
@@ -36,14 +33,12 @@ export default function ChangeProfilePicture() {
   const handleFileUpload = () => {
     try {
       setLoading(true);
-      console.log("Đã tải lên ảnh", profileImage?.name);
       setTimeout(() => {
         setLoading(false);
-        alert("Ảnh đã được tải lên thành công");
+        console.log("Tải lên thành công:", profileImage);
       }, 1000);
     } catch (error) {
-      console.log("ERROR MESSAGE - ", error.message);
-      setLoading(false);
+      console.log("Lỗi khi tải lên:", error.message);
     }
   };
 
@@ -56,8 +51,8 @@ export default function ChangeProfilePicture() {
   return (
     <div className="flex items-center justify-between rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-3 sm:px-12 text-richblack-5">
       <div className="flex items-center gap-x-4">
-        <img
-          src={previewSource || placeholderImageUrl}
+        <Img
+          src={previewSource || "/default-profile.png"}
           alt="profile-preview"
           className="aspect-square w-[78px] rounded-full object-cover"
         />
@@ -82,7 +77,7 @@ export default function ChangeProfilePicture() {
             </button>
 
             <IconBtn
-              text={loading ? "Đang tải..." : "Tải ảnh"}
+              text={loading ? "Đang tải lên..." : "Tải lên"}
               onclick={handleFileUpload}
             >
               {!loading && <FiUpload className="text-lg" />}
