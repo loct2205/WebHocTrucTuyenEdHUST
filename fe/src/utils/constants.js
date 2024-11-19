@@ -1,10 +1,10 @@
 export const ACCOUNT_TYPE = {
-    STUDENT: "Student",
-    INSTRUCTOR: "Instructor",
-    ADMIN: "Admin",
+    STUDENT: "Sinh viên",
+    INSTRUCTOR: "Giảng viên",
+    ADMIN: "Quản trị viên",
   }
   
   export const COURSE_STATUS = {
-    DRAFT: "Draft",
-    PUBLISHED: "Published",
+    DRAFT: "Bản nháp",
+    PUBLISHED: "Đã xuất bản",
   }
