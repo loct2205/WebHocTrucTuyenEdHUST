@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom"
 import Footer from "../components/common/Footer"
 import Course_Card from '../components/core/Catalog/Course_Card'
 import Course_Slider from "../components/core/Catalog/Course_Slider"
+import Navbar from "../components/common/Navbar";
 import Loading from './../components/common/Loading';
 
 import { getCatalogPageData } from '../services/operations/pageAndComponentData'
@@ -16,7 +17,7 @@ import { sampleCatalogData } from "../../data/sampleCatalogData"
 
 function Catalog() {
 
-    const { catalogName } = useParams()
+    const { catalogName } = useParams() 
     const [active, setActive] = useState(1)
     const [catalogPageData, setCatalogPageData] = useState(sampleCatalogData) // hard code
     const [categoryId, setCategoryId] = useState("")
@@ -72,7 +73,7 @@ function Catalog() {
     if (!catalogPageData) {
         return (
             <div className="text-white text-4xl flex justify-center items-center mt-[20%]">
-                No Courses found for selected Category
+                Không tìm thấy khóa học nào cho Danh mục đã chọn
             </div>)
     }
 
@@ -82,12 +83,12 @@ function Catalog() {
             {/* Hero Section */}
             <div className=" box-content bg-richblack-800 px-4">
                 <div className="mx-auto flex min-h-[260px] max-w-maxContentTab flex-col justify-center gap-4 lg:max-w-maxContent ">
-                    <p className="text-sm text-richblack-300">
-                        {`Home / Catalog / `}
-                        <span className="text-yellow-25">
+                    {/* <p className="text-sm text-richblack-300"> */}
+                        {/* {`Trang chủ / Chủ đề / `} */}
+                        {/* <span className="text-yellow-25">
                             {catalogPageData?.selectedCategory?.name}
-                        </span>
-                    </p>
+                        </span> */}
+                    {/* </p> */}
                     <p className="text-3xl text-richblack-5">
                         {catalogPageData?.selectedCategory?.name}
                     </p>
@@ -99,7 +100,7 @@ function Catalog() {
 
             {/* Section 1 */}
             <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
-                <div className="section_heading">Courses to get you started</div>
+                <div className="section_heading">Các khóa học cho người mới</div>
                 <div className="my-4 flex border-b border-b-richblack-600 text-sm">
                     <p
                         className={`px-4 py-2 ${active === 1
@@ -108,7 +109,7 @@ function Catalog() {
                             } cursor-pointer`}
                         onClick={() => setActive(1)}
                     >
-                        Most Populer
+                        Phổ biến
                     </p>
                     <p
                         className={`px-4 py-2 ${active === 2
@@ -117,12 +118,12 @@ function Catalog() {
                             } cursor-pointer`}
                         onClick={() => setActive(2)}
                     >
-                        New
+                        Mới
                     </p>
                 </div>
                 <div>
                     <Course_Slider
-                        Courses={catalogPageData?.selectedCategory?.courses}
+                        Courses={catalogPageData?.selectedCategory[selectedCategoryIndex]?.courses}
                     />
                 </div>
             </div>
@@ -130,18 +131,18 @@ function Catalog() {
             {/* Section 2 */}
             <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
                 <div className="section_heading">
-                    Top courses in {catalogPageData?.differentCategory?.name}
+                    Khóa học hot về {catalogPageData?.differentCategory[selectedCategoryIndex]?.name}
                 </div>
                 <div>
                     <Course_Slider
-                        Courses={catalogPageData?.differentCategory?.courses}
+                        Courses={catalogPageData?.differentCategory[selectedCategoryIndex]?.courses}
                     />
                 </div>
             </div>
 
             {/* Section 3 */}
             <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
-                <div className="section_heading">Frequently Bought</div>
+                <div className="section_heading">Khóa học được mua nhiều</div>
                 <div className="py-8">
                     <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                         {catalogPageData?.mostSellingCourses
