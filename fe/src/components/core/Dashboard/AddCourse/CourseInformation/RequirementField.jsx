@@ -1,36 +1,34 @@
-import { useEffect, useState } from "react";
-import { RiDeleteBin6Line } from "react-icons/ri";
+import { useEffect, useState } from "react"
+import { RiDeleteBin6Line } from 'react-icons/ri'
 
-export default function RequirementsField({
-  name,
-  label,
-  register,
-  setValue,
-  errors,
-}) {
-  const [requirement, setRequirement] = useState("");
-  const [requirementsList, setRequirementsList] = useState([]);
+export default function RequirementsField({ name, label, register, setValue, errors }) {
+  const [requirement, setRequirement] = useState("")
+  const [requirementsList, setRequirementsList] = useState([])
 
   useEffect(() => {
-    register(name, { required: true, validate: (value) => value.length > 0 });
-  }, [register, name]);
+    // Đăng ký trường với React Hook Form
+    register(name, { required: true, validate: (value) => value.length > 0 }, requirementsList)
+  }, [register, name, requirementsList])
 
   useEffect(() => {
-    setValue(name, requirementsList);
-  }, [requirementsList, setValue, name]);
+    // Cập nhật giá trị mỗi khi danh sách yêu cầu thay đổi
+    setValue(name, requirementsList)
+  }, [requirementsList, setValue, name])
 
+  // Thêm yêu cầu
   const handleAddRequirement = () => {
-    const trimmedRequirement = requirement.trim();
-    if (trimmedRequirement && !requirementsList.includes(trimmedRequirement)) {
-      setRequirementsList([...requirementsList, trimmedRequirement]);
-      setRequirement("");
+    if (requirement && !requirementsList.includes(requirement)) {
+      setRequirementsList([...requirementsList, requirement])
+      setRequirement("")
     }
-  };
+  }
 
+  // Xóa yêu cầu
   const handleRemoveRequirement = (index) => {
-    const updatedRequirements = requirementsList.filter((_, i) => i !== index);
-    setRequirementsList(updatedRequirements);
-  };
+    const updatedRequirements = [...requirementsList]
+    updatedRequirements.splice(index, 1)
+    setRequirementsList(updatedRequirements)
+  }
 
   return (
     <div className="flex flex-col space-y-2">
@@ -44,14 +42,8 @@ export default function RequirementsField({
           id={name}
           value={requirement}
           onChange={(e) => setRequirement(e.target.value)}
-          placeholder="Nhập yêu cầu..."
+          placeholder="Nhập yêu cầu và nhấn Thêm"
           className="form-style w-full"
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              handleAddRequirement();
-            }
-          }}
         />
         <button
           type="button"
@@ -85,5 +77,5 @@ export default function RequirementsField({
         </span>
       )}
     </div>
-  );
+  )
 }

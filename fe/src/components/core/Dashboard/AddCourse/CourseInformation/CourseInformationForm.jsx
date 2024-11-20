@@ -1,86 +1,75 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { HiOutlineCurrencyRupee } from "react-icons/hi";
 import { MdNavigateNext } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 
+import { setCourse, setStep } from "../../../../../slices/courseSlice";
 import IconBtn from "../../../../common/IconBtn";
 import Upload from "../Upload";
-import ChipInput from "./ChipInput.jsx";
-import RequirementsField from "./RequirementField.jsx";
+import ChipInput from "./ChipInput";
+import RequirementsField from "./RequirementField";
 
 export default function CourseInformationForm() {
-  const dispatch = useDispatch();
-  const { course = {}, editCourse = false } = useSelector(
-    (state) => state.course || {}
-  );
-
   const {
     register,
     handleSubmit,
     setValue,
     getValues,
     formState: { errors },
-  } = useForm({
-    defaultValues: editCourse
-      ? {
-          courseTitle: course.courseName || "",
-          courseShortDesc: course.courseDescription || "",
-          coursePrice: course.price || "",
-          courseTags: course.tag || [],
-          courseBenefits: course.whatYouWillLearn || "",
-          courseCategory: course.category?._id || "",
-          courseRequirements: course.instructions || [],
-          courseImage: course.thumbnail || "",
-        }
-      : {},
-  });
+  } = useForm();
 
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const { course, editCourse } = useSelector((state) => state.course);
+  const [loading] = useState(false);
   const [courseCategories] = useState([
-    { _id: "1", name: "Danh mục 1" },
-    { _id: "2", name: "Danh mục 2" },
-  ]);
+    { _id: "1", name: "Lập trình" },
+    { _id: "2", name: "Thiết kế đồ họa" },
+    { _id: "3", name: "Kinh doanh" },
+  ]); // Dữ liệu giả lập cho danh mục khóa học
 
   useEffect(() => {
     if (editCourse) {
-      setValue("courseTitle", course.courseName || "");
-      setValue("courseShortDesc", course.courseDescription || "");
-      setValue("coursePrice", course.price || "");
-      setValue("courseTags", course.tag || []);
-      setValue("courseBenefits", course.whatYouWillLearn || "");
-      setValue("courseCategory", course.category?._id || "");
-      setValue("courseRequirements", course.instructions || []);
-      setValue("courseImage", course.thumbnail || "");
+      setValue("courseTitle", course.courseName);
+      setValue("courseShortDesc", course.courseDescription);
+      setValue("coursePrice", course.price);
+      setValue("courseTags", course.tag);
+      setValue("courseBenefits", course.whatYouWillLearn);
+      setValue("courseCategory", course.category);
+      setValue("courseRequirements", course.instructions);
+      setValue("courseImage", course.thumbnail);
     }
   }, [editCourse, course, setValue]);
 
   const isFormUpdated = () => {
     const currentValues = getValues();
-    return (
-      currentValues.courseTitle !== (course.courseName || "") ||
-      currentValues.courseShortDesc !== (course.courseDescription || "") ||
-      currentValues.coursePrice !== (course.price || "") ||
-      currentValues.courseTags.toString() !== (course.tag || []).toString() ||
-      currentValues.courseBenefits !== (course.whatYouWillLearn || "") ||
-      currentValues.courseCategory !== (course.category?._id || "") ||
-      currentValues.courseRequirements?.toString() !==
-        (course.instructions || []).toString() ||
-      currentValues.courseImage !== (course.thumbnail || "")
-    );
+    if (
+      currentValues.courseTitle !== course.courseName ||
+      currentValues.courseShortDesc !== course.courseDescription ||
+      currentValues.coursePrice !== course.price ||
+      currentValues.courseTags.toString() !== course.tag.toString() ||
+      currentValues.courseBenefits !== course.whatYouWillLearn ||
+      currentValues.courseCategory !== course.category ||
+      currentValues.courseRequirements.toString() !==
+        course.instructions.toString() ||
+      currentValues.courseImage !== course.thumbnail
+    ) {
+      return true;
+    }
+    return false;
   };
 
-  const onSubmit = (data) => {
-    if (editCourse) {
-      if (isFormUpdated()) {
-        console.log("Dữ liệu sau khi chỉnh sửa:", data);
-      } else {
-        console.error("Không có thay đổi nào trên form");
-        return;
-      }
+  const onSubmit = () => {
+    if (editCourse && isFormUpdated()) {
+      alert("Khóa học đã được cập nhật!");
+      dispatch(setStep(2));
+      dispatch(setCourse({ ...course }));
+    } else if (editCourse) {
+      alert("Không có thay đổi nào để lưu.");
     } else {
-      console.log("Dữ liệu mới của khóa học:", data);
+      alert("Khóa học đã được thêm!");
+      dispatch(setStep(2));
     }
-    dispatch(setStep(2));
   };
 
   return (
@@ -88,30 +77,32 @@ export default function CourseInformationForm() {
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-8 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6"
     >
+      {/* Tên khóa học */}
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="courseTitle">
-          Tiêu đề khóa học <sup className="text-pink-200">*</sup>
+          Tên khóa học <sup className="text-pink-200">*</sup>
         </label>
         <input
           id="courseTitle"
-          placeholder="Nhập tiêu đề khóa học"
+          placeholder="Nhập tên khóa học"
           {...register("courseTitle", { required: true })}
           className="form-style w-full"
         />
         {errors.courseTitle && (
           <span className="ml-2 text-xs tracking-wide text-pink-200">
-            Tiêu đề khóa học là bắt buộc
+            Tên khóa học là bắt buộc
           </span>
         )}
       </div>
 
+      {/* Mô tả ngắn gọn */}
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="courseShortDesc">
           Mô tả ngắn gọn <sup className="text-pink-200">*</sup>
         </label>
         <textarea
           id="courseShortDesc"
-          placeholder="Nhập mô tả ngắn"
+          placeholder="Nhập mô tả ngắn gọn"
           {...register("courseShortDesc", { required: true })}
           className="form-style resize-x-none min-h-[130px] w-full"
         />
@@ -122,6 +113,7 @@ export default function CourseInformationForm() {
         )}
       </div>
 
+      {/* Giá khóa học */}
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="coursePrice">
           Giá khóa học <sup className="text-pink-200">*</sup>
@@ -137,8 +129,11 @@ export default function CourseInformationForm() {
                 value: /^(0|[1-9]\d*)(\.\d+)?$/,
               },
             })}
-            className="form-style w-full"
+            className="form-style w-full !pl-12"
           />
+          <span className="absolute left-3 top-1/2 inline-block -translate-y-1/2 text-2xl text-richblack-400">
+            ₫
+          </span>
         </div>
         {errors.coursePrice && (
           <span className="ml-2 text-xs tracking-wide text-pink-200">
@@ -147,6 +142,7 @@ export default function CourseInformationForm() {
         )}
       </div>
 
+      {/* Danh mục khóa học */}
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="courseCategory">
           Danh mục khóa học <sup className="text-pink-200">*</sup>
@@ -160,11 +156,12 @@ export default function CourseInformationForm() {
           <option value="" disabled>
             Chọn danh mục
           </option>
-          {courseCategories.map((category) => (
-            <option key={category._id} value={category._id}>
-              {category.name}
-            </option>
-          ))}
+          {!loading &&
+            courseCategories?.map((category, indx) => (
+              <option key={indx} value={category?._id}>
+                {category?.name}
+              </option>
+            ))}
         </select>
         {errors.courseCategory && (
           <span className="ml-2 text-xs tracking-wide text-pink-200">
@@ -173,6 +170,7 @@ export default function CourseInformationForm() {
         )}
       </div>
 
+      {/* Thẻ khóa học */}
       <ChipInput
         label="Thẻ"
         name="courseTags"
@@ -182,15 +180,17 @@ export default function CourseInformationForm() {
         setValue={setValue}
       />
 
+      {/* Ảnh đại diện khóa học */}
       <Upload
         name="courseImage"
-        label="Ảnh thu nhỏ khóa học"
+        label="Ảnh đại diện khóa học"
         register={register}
         setValue={setValue}
         errors={errors}
         editData={editCourse ? course?.thumbnail : null}
       />
 
+      {/* Lợi ích của khóa học */}
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="courseBenefits">
           Lợi ích của khóa học <sup className="text-pink-200">*</sup>
@@ -203,27 +203,30 @@ export default function CourseInformationForm() {
         />
         {errors.courseBenefits && (
           <span className="ml-2 text-xs tracking-wide text-pink-200">
-            Lợi ích khóa học là bắt buộc
+            Lợi ích của khóa học là bắt buộc
           </span>
         )}
       </div>
 
+      {/* Yêu cầu/Chỉ dẫn */}
       <RequirementsField
         name="courseRequirements"
-        label="Yêu cầu/Hướng dẫn"
+        label="Yêu cầu/Chỉ dẫn"
         register={register}
         setValue={setValue}
         errors={errors}
       />
 
+      {/* Nút tiếp theo */}
       <div className="flex justify-end gap-x-2">
         {editCourse && (
           <button
             onClick={() => dispatch(setStep(2))}
             disabled={loading}
-            className="flex cursor-pointer items-center gap-x-2 rounded-md py-[8px] px-[20px] font-semibold text-richblack-900 bg-richblack-300 hover:bg-richblack-900 hover:text-richblack-300 duration-300"
+            className={`flex cursor-pointer items-center gap-x-2 rounded-md py-[8px] px-[20px] font-semibold
+              text-richblack-900 bg-richblack-300 hover:bg-richblack-900 hover:text-richblack-300 duration-300`}
           >
-            Tiếp tục mà không lưu
+            Tiếp tục không lưu
           </button>
         )}
         <IconBtn

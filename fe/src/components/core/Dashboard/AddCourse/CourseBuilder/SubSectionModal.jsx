@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import IconBtn from "../../../../common/IconBtn";
-import Upload from "../Upload.jsx";
+import Upload from "../Upload";
 
 export default function SubSectionModal({
   modalData,
@@ -28,59 +27,64 @@ export default function SubSectionModal({
       setValue("lectureDesc", modalData.description);
       setValue("lectureVideo", modalData.videoUrl);
     }
-  }, [modalData, setValue, view, edit]);
+  }, [view, edit, modalData, setValue]);
 
   const isFormUpdated = () => {
-    if (view) return false;
     const currentValues = getValues();
-    return (
+    if (
       currentValues.lectureTitle !== modalData.title ||
       currentValues.lectureDesc !== modalData.description ||
       currentValues.lectureVideo !== modalData.videoUrl
-    );
+    ) {
+      return true;
+    }
+    return false;
   };
 
   const handleEditSubsection = () => {
     if (isFormUpdated()) {
-      toast.success("Thông tin bài giảng đã được cập nhật!");
+      alert("Cập nhật thành công bài giảng!");
     } else {
-      toast.error("Không có thay đổi nào để lưu");
+      alert("Không có thay đổi nào được thực hiện.");
     }
     setModalData(null);
+    setLoading(false);
   };
 
   const onSubmit = (data) => {
     if (view) return;
 
-    setLoading(true);
     if (edit) {
       handleEditSubsection();
-    } else if (add) {
-      toast.success("Bài giảng mới đã được thêm vào khóa học!");
-      // Thêm logic xử lý bài giảng mới vào danh sách khóa học
+      return;
     }
-    setLoading(false);
+
+    alert("Đã thêm bài giảng mới thành công!");
     setModalData(null);
+    setLoading(false);
   };
 
   return (
     <div className="fixed inset-0 z-[1000] !mt-0 grid h-screen w-screen place-items-center overflow-auto bg-white bg-opacity-10 backdrop-blur-sm">
       <div className="my-10 w-11/12 max-w-[700px] rounded-lg border border-richblack-400 bg-richblack-800">
-       
+        {/* Tiêu đề Modal */}
         <div className="flex items-center justify-between rounded-t-lg bg-richblack-700 p-5">
           <p className="text-xl font-semibold text-richblack-5">
-            {view && "Xem"} {add && "Thêm"} {edit && "Chỉnh sửa"} Bài giảng
+            {view && "Xem"} {add && "Thêm"} {edit && "Chỉnh sửa"} bài giảng
           </p>
-          <button onClick={() => setModalData(null)}>
+          <button onClick={() => (!loading ? setModalData(null) : {})}>
             <RxCross2 className="text-2xl text-richblack-5" />
           </button>
         </div>
-        
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 px-8 py-10">
-        
+        {/* Nội dung Form */}
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-8 px-8 py-10"
+        >
+          {/* Upload Video Bài Giảng */}
           <Upload
             name="lectureVideo"
-            label="Video Bài giảng"
+            label="Video bài giảng"
             register={register}
             setValue={setValue}
             errors={errors}
@@ -88,10 +92,11 @@ export default function SubSectionModal({
             viewData={view ? modalData.videoUrl : null}
             editData={edit ? modalData.videoUrl : null}
           />
-          
+          {/* Tiêu đề Bài Giảng */}
           <div className="flex flex-col space-y-2">
             <label className="text-sm text-richblack-5" htmlFor="lectureTitle">
-              Tiêu đề bài giảng {!view && <sup className="text-pink-200">*</sup>}
+              Tiêu đề bài giảng{" "}
+              {!view && <sup className="text-pink-200">*</sup>}
             </label>
             <input
               disabled={view || loading}
@@ -106,8 +111,7 @@ export default function SubSectionModal({
               </span>
             )}
           </div>
-          
-         
+          {/* Mô tả Bài Giảng */}
           <div className="flex flex-col space-y-2">
             <label className="text-sm text-richblack-5" htmlFor="lectureDesc">
               Mô tả bài giảng {!view && <sup className="text-pink-200">*</sup>}
@@ -117,7 +121,7 @@ export default function SubSectionModal({
               id="lectureDesc"
               placeholder="Nhập mô tả bài giảng"
               {...register("lectureDesc", { required: true })}
-              className="form-style resize-none min-h-[130px] w-full"
+              className="form-style resize-x-none min-h-[130px] w-full"
             />
             {errors.lectureDesc && (
               <span className="ml-2 text-xs tracking-wide text-pink-200">
