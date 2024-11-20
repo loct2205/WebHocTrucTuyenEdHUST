@@ -1,43 +1,41 @@
-import { useEffect, useState } from "react";
-import { MdClose } from "react-icons/md";
+import { useEffect, useState } from "react"
+import { MdClose } from "react-icons/md"
 
-export default function ChipInput({
-  label,
-  name,
-  placeholder,
-  register,
-  errors,
-  setValue,
-}) {
-  const [chips, setChips] = useState([]);
+// Component chức năng ChipInput
+export default function ChipInput({ label, name, placeholder, register, errors, setValue }) {
+  // Trạng thái cho các thẻ (chips)
+  const [chips, setChips] = useState([])
 
   useEffect(() => {
-    if (register) {
-      register(name, { required: true, validate: (value) => value.length > 0 });
-    }
-  }, [register, name]);
+    // Đăng ký trường với React Hook Form
+    register(name, {
+      required: true,
+      validate: (value) => value.length > 0,
+    }, chips)
+  }, [register, name, chips])
 
-  // Lưu thay đổi vào form
+  // Cập nhật giá trị mỗi khi trạng thái chips thay đổi
   useEffect(() => {
-    setValue(name, chips);
-  }, [chips, setValue, name]);
+    setValue(name, chips)
+  }, [chips, setValue, name])
 
-  // Thêm thẻ mới
+  // Xử lý khi người dùng nhập thẻ mới
   const handleKeyDown = (event) => {
     if (event.key === "Enter" || event.key === ",") {
-      event.preventDefault();
-      const chipValue = event.target.value.trim();
+      event.preventDefault()
+      const chipValue = event.target.value.trim()
       if (chipValue && !chips.includes(chipValue)) {
-        setChips([...chips, chipValue]);
-        event.target.value = "";
+        setChips([...chips, chipValue])
+        event.target.value = ""
       }
     }
-  };
+  }
 
-  // Xóa thẻ
+  // Xóa một thẻ
   const handleDeleteChip = (chipIndex) => {
-    setChips((prevChips) => prevChips.filter((_, index) => index !== chipIndex));
-  };
+    const newChips = chips.filter((_, index) => index !== chipIndex)
+    setChips(newChips)
+  }
 
   return (
     <div className="flex flex-col space-y-2">
@@ -72,11 +70,11 @@ export default function ChipInput({
         />
       </div>
 
-      {errors?.[name] && (
+      {errors[name] && (
         <span className="ml-2 text-xs tracking-wide text-pink-200">
           {label} là bắt buộc
         </span>
       )}
     </div>
-  );
+  )
 }

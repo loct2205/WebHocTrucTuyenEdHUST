@@ -1,42 +1,37 @@
-import { useEffect, useState } from "react";
-import RenderSteps from "../AddCourse/RenderSteps";
-import Loading from "./../../../common/Loading";
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useParams } from "react-router-dom"
+
+import RenderSteps from "../AddCourse/RenderSteps"
+import Loading from './../../../common/Loading';
 
 export default function EditCourse() {
-  const [loading, setLoading] = useState(false);
-  const [course, setCourse] = useState(null);
+  const dispatch = useDispatch()
+  const { courseId } = useParams()
+  const { course } = useSelector((state) => state.course)
 
-  // Dữ liệu mẫu
-  const mockCourseDetails = {
-    id: 1,
-    title: "React Basics",
-    description: "Learn the basics of React.js",
-    price: 1000,
-    studentsEnrolled: 50,
-    lessons: [
-      { id: 1, title: "Introduction to React", duration: "15 min" },
-      { id: 2, title: "JSX and Components", duration: "20 min" },
-      { id: 3, title: "State and Props", duration: "25 min" },
-    ],
-  };
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    setLoading(true);
+    // Giả lập thời gian tải dữ liệu
+    setLoading(true)
     setTimeout(() => {
-      setCourse(mockCourseDetails);
-      setLoading(false);
-    }, 500); // 0.5 s
-  }, []);
+      dispatch({ type: "setEditCourse", payload: true }) // Giả lập chỉnh sửa
+      dispatch({ type: "setCourse", payload: { name: "Khóa học mẫu" } }) // Giả lập dữ liệu khóa học
+      setLoading(false)
+    }, 1000)
+  }, [])
 
+  // Hiển thị màn hình chờ khi đang tải
   if (loading) {
-    return <Loading />;
+    return <Loading />
   }
 
   return (
     <div className="flex w-full items-start gap-x-6">
       <div className="flex flex-1 flex-col">
         <h1 className="mb-14 text-3xl font-medium text-richblack-5 text-center sm:text-left">
-          Chỉnh sửa Khóa học
+          Chỉnh sửa khóa học
         </h1>
 
         {loading ? (
@@ -54,5 +49,5 @@ export default function EditCourse() {
         )}
       </div>
     </div>
-  );
+  )
 }

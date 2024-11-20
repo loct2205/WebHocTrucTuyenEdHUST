@@ -2,25 +2,10 @@ import { useSelector } from "react-redux";
 import IconBtn from "../../../common/IconBtn";
 
 export default function RenderTotalAmount() {
-  const { total = 0, cart = [] } = useSelector((state) => state.cart || {});
-  const { token = "", user = {} } = useSelector((state) => state.auth || {});
+  const { total } = useSelector((state) => state.cart || { total: 0 }); // Fallback cho `state.cart`
 
-  const buyCourse = async (token, courses, user) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        console.log("Giả lập mua khóa học với thông tin:");
-        console.log("Token:", token);
-        console.log("Courses:", courses);
-        console.log("User:", user);
-        alert("Mua khóa học thành công (giả lập)");
-        resolve();
-      }, 1000);
-    });
-  };
-
-  const handleBuyCourse = async () => {
-    const courses = cart.map((course) => course._id);
-    await buyCourse(token, courses, user);
+  const handleBuyCourse = () => {
+    alert("Chức năng mua khóa học đang được phát triển!"); // Giả lập hành động mua khóa học
   };
 
   return (
