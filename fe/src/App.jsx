@@ -11,6 +11,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import VerifyEmail from './pages/VerifyEmail';
 import UpdatePassword from './pages/UpdatePassword';
 import Catalog from './pages/Catalog';
+import CourseDetails from './pages/CourseDetails';
 
 import Dashboard from './pages/Dashboard';
 import Settings from './components/core/Dashboard/Settings/Settings';
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/update-password" element={<UpdatePassword />} />
           <Route path="catalog/:catalogName" element={<Catalog />} />
+          <Route path="courses/:courseId" element={<CourseDetails />} />
           <Route path="/dashboard" element={<Dashboard />}>
             <Route path="my-profile" element={<MyProfile />} />
             <Route path="enrolled-courses" element={<EnrolledCourses />} />
