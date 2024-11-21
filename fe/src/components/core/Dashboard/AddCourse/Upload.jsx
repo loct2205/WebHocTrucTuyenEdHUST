@@ -10,7 +10,7 @@ export default function Upload({
   register,
   setValue,
   errors,
-  video = false,
+  video,
   viewData = null,
   editData = null,
 }) {
@@ -99,7 +99,9 @@ export default function Upload({
             </div>
             <p className="mt-2 max-w-[200px] text-center text-sm text-richblack-200">
               Kéo thả {!video ? "hình ảnh" : "video"}, hoặc bấm để{" "}
-              <span className="font-semibold text-yellow-50">Duyệt</span> tệp
+              <span className="font-semibold text-yellow-50"
+                    onClick={() => inputRef.current.click()}
+              >Duyệt</span> tệp
             </p>
             <ul className="mt-10 flex list-disc justify-between space-x-12 text-center  text-xs text-richblack-200">
               <li>Tỷ lệ khung hình 16:9</li>
