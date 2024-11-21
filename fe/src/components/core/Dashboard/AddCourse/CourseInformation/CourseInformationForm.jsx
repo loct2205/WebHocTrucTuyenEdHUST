@@ -60,15 +60,18 @@ export default function CourseInformationForm() {
   };
 
   const onSubmit = () => {
+    console.log("Submitting form...");
     if (editCourse && isFormUpdated()) {
-      alert("Khóa học đã được cập nhật!");
+      console.log("Updating course...");
       dispatch(setStep(2));
       dispatch(setCourse({ ...course }));
     } else if (editCourse) {
+      console.log("No changes detected.");
       alert("Không có thay đổi nào để lưu.");
     } else {
+      console.log("Adding new course...");
+      dispatch(setStep(2)); // Chuyển step
       alert("Khóa học đã được thêm!");
-      dispatch(setStep(2));
     }
   };
 
@@ -232,6 +235,7 @@ export default function CourseInformationForm() {
         <IconBtn
           disabled={loading}
           text={!editCourse ? "Tiếp theo" : "Lưu thay đổi"}
+          onClick={handleSubmit(onSubmit)}
         >
           <MdNavigateNext />
         </IconBtn>

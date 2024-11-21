@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { resetCourseState, setStep } from "../../../../../slices/courseSlice";
+import { COURSE_STATUS } from "../../../../../utils/constants";
 import IconBtn from "../../../../common/IconBtn";
 
 export default function PublishCourse() {
@@ -15,7 +16,7 @@ export default function PublishCourse() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (course?.status === "ĐÃ XUẤT BẢN") {
+    if (course?.status === COURSE_STATUS.PUBLISHED) {
       setValue("public", true);
     }
   }, [course, setValue]);
@@ -30,10 +31,9 @@ export default function PublishCourse() {
   };
 
   const handleCoursePublish = () => {
-    // Giả lập xử lý xuất bản khóa học
     if (
-      (course?.status === "ĐÃ XUẤT BẢN" && getValues("public") === true) ||
-      (course?.status === "NHÁP" && getValues("public") === false)
+      (course?.status === COURSE_STATUS.PUBLISHED && getValues("public") === true) ||
+      (course?.status === COURSE_STATUS.DRAFT && getValues("public") === false)
     ) {
       goToCourses();
       return;
@@ -48,9 +48,7 @@ export default function PublishCourse() {
 
   return (
     <div className="rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6">
-      <p className="text-2xl font-semibold text-richblack-5">
-        Cài đặt xuất bản
-      </p>
+      <p className="text-2xl font-semibold text-richblack-5">Cài đặt xuất bản</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Checkbox */}
         <div className="my-6 mb-8">
