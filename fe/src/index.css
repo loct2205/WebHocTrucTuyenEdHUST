@@ -4,8 +4,11 @@
 
 html,
 body {
-  overflow-x: hidden;
+  overflow-x: hidden; /* Ẩn thanh cuộn ngang */
+  overflow-y: auto; /* Chỉ cho phép cuộn dọc */
   scroll-behavior: smooth;
+  width: 100%; /* Đảm bảo 100% chiều rộng */
+  height: 100%; /* Đảm bảo 100% chiều cao */
 }
 
 * {
@@ -17,6 +20,9 @@ body {
 /* use in homePage */
 .homepage_bg {
   background: url("./assets/Images/bghome.svg");
+  background-size: cover; /* Đảm bảo ảnh nền không vượt ra ngoài */
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .gradient_color {
@@ -100,7 +106,6 @@ body {
   position: relative;
   overflow: hidden;
   background-color: #0a2955;
-  background-color: rgb(44 51 63 / 1);
 }
 
 .skeleton::after {
@@ -129,7 +134,6 @@ body {
 
 /* used in Navbar */
 .top {
-  /* background: rgba(0, 0, 0, 0.25); */
   background: #222831a1;
   backdrop-filter: blur(3.5px);
   -webkit-backdrop-filter: blur(3.5px);
@@ -149,73 +153,24 @@ body {
   background-color: rgba(17, 25, 40, 0.84);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.125);
-
-  background-color: #111927;
 }
 
-/* used in code block component for background  */
-.code-block1-grad {
-  position: absolute;
-  width: 372.95px;
-  height: 257.05px;
-  left: calc(50% - 372.95px / 2 - 16.53px);
-  top: calc(50% - 257.05px / 2 - 17.47px);
-
-  background: linear-gradient(
-    123.77deg,
-    #8a2be2 -6.46%,
-    #ffa500 59.04%,
-    #f8f8ff 124.53%
-  );
-  opacity: 0.2;
-  filter: blur(34px);
-  transform: matrix(1, 0, -0.03, 1, 0, 0);
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
-}
-
-/* code block 2 bg gradient */
+/* Adjust width of gradients for better responsiveness */
+.code-block1-grad,
 .code-block2-grad {
   position: absolute;
-  width: 372.95px;
-  height: 257.05px;
-  left: calc(50% - 372.95px / 2 - 26.53px);
-  top: calc(50% - 257.05px / 2 - 17.47px);
-
-  background: linear-gradient(
-    118.19deg,
-    #1fa2ff -3.62%,
-    #12d8fa 50.44%,
-    #a6ffcb 104.51%
-  );
-  opacity: 0.2;
+  width: 100%; /* Đảm bảo không vượt quá chiều rộng container */
+  height: auto;
   filter: blur(34px);
-  transform: matrix(1, 0, -0.03, 1, 0, 0);
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
 }
 
-/* code block card glass background */
+/* Glass effects */
 .glass {
   background: rgba(255, 255, 255, 0);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.14);
-}
-
-.code-border {
-  background: linear-gradient(
-    111.93deg,
-    rgba(14, 26, 45, 0.24) -1.4%,
-    rgba(17, 30, 50, 0.38) 104.96%
-  );
 }
 
 /* used in home.jsx - random background  */
