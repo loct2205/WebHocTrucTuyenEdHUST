@@ -123,7 +123,7 @@ function Catalog() {
                 </div>
                 <div>
                     <Course_Slider
-                        Courses={catalogPageData?.selectedCategory[selectedCategoryIndex]?.courses}
+                        Courses={catalogPageData?.selectedCategory?.courses}
                     />
                 </div>
             </div>
@@ -131,11 +131,11 @@ function Catalog() {
             {/* Section 2 */}
             <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
                 <div className="section_heading">
-                    Khóa học hot về {catalogPageData?.differentCategory[selectedCategoryIndex]?.name}
+                    Khóa học hot về {catalogPageData?.differentCategory?.name}
                 </div>
                 <div>
                     <Course_Slider
-                        Courses={catalogPageData?.differentCategory[selectedCategoryIndex]?.courses}
+                        Courses={catalogPageData?.differentCategory?.courses}
                     />
                 </div>
             </div>
