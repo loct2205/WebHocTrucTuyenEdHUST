@@ -33,6 +33,7 @@ export default function Upload({
       ? { "image/*": [".jpeg", ".jpg", ".png"] }
       : { "video/*": [".mp4"] },
     onDrop,
+    noClick: true, // Không cho phép click vào toàn bộ vùng dropzone
   });
 
   const previewFile = (file) => {
@@ -51,6 +52,10 @@ export default function Upload({
     setValue(name, selectedFile);
   }, [selectedFile, setValue]);
 
+  const handleFileSelect = () => {
+    inputRef.current?.click(); // Kích hoạt sự kiện click trên input
+  };
+
   return (
     <div className="flex flex-col space-y-2">
       <label className="text-sm text-richblack-5" htmlFor={name}>
@@ -61,7 +66,9 @@ export default function Upload({
         className={`${
           isDragActive ? "bg-richblack-600" : "bg-richblack-700"
         } flex min-h-[250px] cursor-pointer items-center justify-center rounded-md border-2 border-dotted border-richblack-500`}
+        {...getRootProps()}
       >
+        <input {...getInputProps()} ref={inputRef} />
         {previewSource ? (
           <div className="flex w-full flex-col p-6">
             {!video ? (
@@ -91,9 +98,8 @@ export default function Upload({
         ) : (
           <div
             className="flex w-full flex-col items-center p-6"
-            {...getRootProps()}
+            onClick={handleFileSelect} // Bắt sự kiện click vào input
           >
-            <input {...getInputProps()} ref={inputRef} />
             <div className="grid aspect-square w-14 place-items-center rounded-full bg-pure-greys-800">
               <FiUploadCloud className="text-2xl text-yellow-50" />
             </div>
@@ -103,7 +109,7 @@ export default function Upload({
                     onClick={() => inputRef.current.click()}
               >Duyệt</span> tệp
             </p>
-            <ul className="mt-10 flex list-disc justify-between space-x-12 text-center  text-xs text-richblack-200">
+            <ul className="mt-10 flex list-disc justify-between space-x-12 text-center text-xs text-richblack-200">
               <li>Tỷ lệ khung hình 16:9</li>
               <li>Kích thước khuyến nghị 1024x576</li>
             </ul>
