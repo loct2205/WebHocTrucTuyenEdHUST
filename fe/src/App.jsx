@@ -83,6 +83,8 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/update-password/:id" element={<UpdatePassword />} />
+        <Route path="catalog/:catalogName" element={<Catalog />} />
+        <Route path="courses/:courseId" element={<CourseDetails />} />
 
         {/* Các route trong Dashboard */}
         <Route
@@ -100,8 +102,6 @@ function App() {
           <Route path="add-course" element={<AddCourse />} />
           <Route path="my-courses" element={<MyCourses />} />
           <Route path="edit-course/:courseId" element={<EditCourse />} />
-          <Route path="catalog/:catalogName" element={<Catalog />} />
-          <Route path="courses/:courseId" element={<CourseDetails />} />
           <Route
             path="view-course/:courseId/section/:sectionId/sub-section/:subSectionId"
             element={<VideoDetails />}
