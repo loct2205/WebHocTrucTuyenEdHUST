@@ -23,6 +23,7 @@ function Catalog() {
     const [categoryId, setCategoryId] = useState("")
     const [loading, setLoading] = useState(false);
 
+    const [index, setIndex] = useState(0);
     // Fetch All Categories
     // useEffect(() => {
     //     ; (async () => {
@@ -90,10 +91,10 @@ function Catalog() {
                         </span> */}
                     {/* </p> */}
                     <p className="text-3xl text-richblack-5">
-                        {catalogPageData?.selectedCategory?.name}
+                        {catalogPageData?.selectedCategory[index]?.name}
                     </p>
                     <p className="max-w-[870px] text-richblack-200">
-                        {catalogPageData?.selectedCategory?.description}
+                        {catalogPageData?.selectedCategory[index]?.description}
                     </p>
                 </div>
             </div>
@@ -123,7 +124,7 @@ function Catalog() {
                 </div>
                 <div>
                     <Course_Slider
-                        Courses={catalogPageData?.selectedCategory?.courses}
+                        Courses={catalogPageData?.selectedCategory[index]?.courses}
                     />
                 </div>
             </div>
