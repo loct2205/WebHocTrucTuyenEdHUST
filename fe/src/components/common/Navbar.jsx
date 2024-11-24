@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, matchPath, useLocation } from 'react-router-dom';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { NavbarLinks } from '../../../data/navbar-links';
@@ -10,6 +10,13 @@ const matchRoute = (route) => {
 }
 
 const Navbar = () => {
+    const [selectedIndex, setSelectedIndex] = useState(0);
+
+  // Function to handle menu click
+  const handleMenuClick = (index) => {
+    setSelectedIndex(index);
+    console.log("Selected Index:", index); // Log chỉ số được chọn
+  };
     return (
         <nav className="z-[10] flex items-center justify-between p-4 bg-blue-500 border-b-richblack-700 text-white">
             {/* Logo */}
@@ -42,6 +49,7 @@ const Navbar = () => {
                                                 to={subLink.path}
                                                 className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
                                                 key={i}
+                                                onClick={() => handleMenuClick(i)} // Handle click
                                             >
                                                 <p>{subLink.name}</p>
                                             </Link>
@@ -79,6 +87,7 @@ const Navbar = () => {
 
             </div>
         </nav>
+        
     );
 };
 
