@@ -13,8 +13,8 @@ import Img from './../../common/Img';
 
 
 function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
-  const { user } = useSelector((state) => state.profile)
-  const { token } = useSelector((state) => state.auth)
+  const { user } = useSelector((state) => state.profile) || {}; 
+  const { token } = useSelector((state) => state.auth) || {}; 
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -64,7 +64,7 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
 
         <div className="px-4">
           <div className="space-x-3 pb-4 text-3xl font-semibold">
-            Rs. {CurrentPrice}
+            {CurrentPrice}đ
           </div>
           <div className="flex flex-col gap-4">
             <button
