@@ -1,8 +1,8 @@
+import React, { useEffect, useState } from "react";
+import { SampleData } from "../../data/sampleCourseData";
 
-import React, { useEffect, useState } from "react"
 import { BiInfoCircle } from "react-icons/bi"
 import { HiOutlineGlobeAlt } from "react-icons/hi"
-// import { ReactMarkdown } from "react-markdown/lib/react-markdown"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
 
@@ -13,7 +13,7 @@ import CourseAccordionBar from "../components/core/Course/CourseAccordionBar"
 import CourseDetailsCard from "../components/core/Course/CourseDetailsCard"
 import { formatDate } from "../services/formatDate"
 import { fetchCourseDetails } from "../services/operations/courseDetailsAPI"
-import { buyCourse } from "../services/operations/studentFeaturesAPI"
+// import { buyCourse } from "../services/operations/studentFeaturesAPI"
 
 import GetAvgRating from "../utils/avgRating"
 import { ACCOUNT_TYPE } from './../utils/constants';
@@ -23,50 +23,60 @@ import { GiReturnArrow } from 'react-icons/gi'
 import { MdOutlineVerified } from 'react-icons/md'
 import Img from './../components/common/Img';
 import toast from "react-hot-toast"
+const fakeUser = {
+  _id: "12345",
+  firstName: "Nguyễn",
+  lastName: "Hải",
+  email: "nguyen.hai@example.com",
+  accountType: "STUDENT",
+  profilePicture: "/images/profile-picture.jpg",
+  additionalDetails: {
+    about: "Học viên đầy nhiệt huyết với đam mê lập trình."
+  },
+};
 
-
+const guestUser = {
+  _id: null,
+  firstName: "Khách",
+  lastName: "Vãng Lai",
+  email: "",
+  accountType: "GUEST",
+  isAuthenticated: false,
+  profilePicture: "/images/default-profile.jpg",
+  additionalDetails: {
+    about: "Người dùng chưa đăng nhập."
+  },
+};
 
 
 function CourseDetails() {
-  const { user } = useSelector((state) => state.profile)
-  const { token } = useSelector((state) => state.auth)
-  const { loading } = useSelector((state) => state.profile)
-  const { paymentLoading } = useSelector((state) => state.course)
+  const { user } = useSelector((state) => state.profile) || { user: guestUser }
+  const { token } = useSelector((state) => state.auth || {})
+  const { loading } = useSelector((state) => state.profile || {})
+  const { paymentLoading } = useSelector((state) => state.course || {})
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-
   // Getting courseId from url parameter
   const { courseId } = useParams()
-  // console.log(`course id: ${courseId}`)
 
-  // Declear a state to save the course details
+  // Declare a state to save the course details
   const [response, setResponse] = useState(null)
   const [confirmationModal, setConfirmationModal] = useState(null)
-
   useEffect(() => {
-    // Calling fetchCourseDetails fucntion to fetch the details
-    const fectchCourseDetailsData = async () => {
-      try {
-        const res = await fetchCourseDetails(courseId)
-        // console.log("course details res: ", res)
-        setResponse(res)
-      } catch (error) {
-        console.log("Could not fetch Course Details")
-      }
-    }
-    fectchCourseDetailsData();
+    // Thay thế việc gọi API bằng việc lấy dữ liệu từ SampleData
+    const courseDetails = SampleData.selectedCategory.courses.find(
+      (course) => course._id === courseId
+    );
+    setResponse({ data: { courseDetails } });
   }, [courseId])
 
-  // console.log("response: ", response)
-
-  // Calculating Avg Review count
+  // Calculate avg rating and review count
   const [avgReviewCount, setAvgReviewCount] = useState(0)
   useEffect(() => {
     const count = GetAvgRating(response?.data?.courseDetails.ratingAndReviews)
     setAvgReviewCount(count)
   }, [response])
-  // console.log("avgReviewCount: ", avgReviewCount)
 
   // Collapse all
   // const [collapse, setCollapse] = useState("")
@@ -80,7 +90,7 @@ function CourseDetails() {
     )
   }
 
-  // Total number of lectures
+  // Calculate total number of lectures
   const [totalNoOfLectures, setTotalNoOfLectures] = useState(0)
   useEffect(() => {
     let lectures = 0
@@ -90,37 +100,14 @@ function CourseDetails() {
     setTotalNoOfLectures(lectures)
   }, [response])
 
-  // Scroll to the top of the page when the component mounts
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [])
-
-
-  // Loading skeleton
   if (paymentLoading || loading || !response) {
     return (
       <div className={`mt-24 p-5 flex flex-col justify-center gap-4  `}>
-        <div className="flex flex-col sm:flex-col-reverse  gap-4 ">
-          <p className="h-44 sm:h-24 sm:w-[60%] rounded-xl skeleton"></p>
-          <p className="h-9 sm:w-[39%] rounded-xl skeleton"></p>
-        </div>
-
-        <p className="h-4 w-[55%] lg:w-[25%] rounded-xl skeleton"></p>
-        <p className="h-4 w-[75%] lg:w-[30%] rounded-xl skeleton"></p>
-        <p className="h-4 w-[35%] lg:w-[10%] rounded-xl skeleton"></p>
-
-        {/* Floating Courses Card */}
-        <div className="right-[1.5rem] top-[20%] hidden lg:block lg:absolute min-h-[450px] w-1/3 max-w-[410px] 
-            translate-y-24 md:translate-y-0 rounded-xl skeleton">
-        </div>
-
-        <p className="mt-24 h-60 lg:w-[60%] rounded-xl skeleton"></p>
+        {/* Loading Skeleton */}
       </div>
     )
   }
 
-
-  // extract course data
   const {
     _id: course_id,
     courseName,
@@ -136,27 +123,17 @@ function CourseDetails() {
     tag
   } = response?.data?.courseDetails
 
-  // Buy Course handler
   const handleBuyCourse = () => {
     if (token) {
-      const coursesId = [courseId]
-      buyCourse(token, coursesId, user, navigate, dispatch)
-      return
+      // Handle buy course logic
+    } else {
+      // Handle not logged in scenario
     }
-    setConfirmationModal({
-      text1: "You are not logged in!",
-      text2: "Please login to Purchase Course.",
-      btn1Text: "Login",
-      btn2Text: "Cancel",
-      btn1Handler: () => navigate("/login"),
-      btn2Handler: () => setConfirmationModal(null),
-    })
   }
 
-  // Add to cart Course handler
   const handleAddToCart = () => {
     if (user && user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) {
-      toast.error("You are an Instructor. You can't buy a course.")
+      toast.error("Bạn là một giảng viên. Bạn không thể mua khóa học.")
       return
     }
     if (token) {
@@ -164,16 +141,14 @@ function CourseDetails() {
       return
     }
     setConfirmationModal({
-      text1: "You are not logged in!",
-      text2: "Please login to add To Cart",
-      btn1Text: "Login",
-      btn2Text: "Cancel",
+      text1: "Bạn chưa đăng nhập!",
+      text2: "Vui lòng đăng nhập để thêm vào giỏ hàng.",
+      btn1Text: "Đăng nhập",
+      btn2Text: "Hủy bỏ",
       btn1Handler: () => navigate("/login"),
       btn2Handler: () => setConfirmationModal(null),
     })
   }
-
-
 
   return (
     <>
@@ -204,24 +179,24 @@ function CourseDetails() {
               <div className="text-md flex flex-wrap items-center gap-2">
                 <span className="text-yellow-25">{avgReviewCount}</span>
                 <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
-                <span>{`(${ratingAndReviews.length} reviews)`}</span>
-                <span>{`${studentsEnrolled.length} students enrolled`}</span>
+                <span>{`(${ratingAndReviews.length} đánh giá)`}</span>
+                <span>{`${studentsEnrolled} học viên đăng ký`}</span>
               </div>
-              <p className="capitalize "> Created By <span className="font-semibold underline">{instructor.firstName} {instructor.lastName}</span></p>
+              <p className="capitalize "> Được tạo bởi <span className="font-semibold underline">{instructor.firstName} {instructor.lastName}</span></p>
               <div className="flex flex-wrap gap-5 text-lg">
                 <p className="flex items-center gap-2">
                   {" "}
-                  <BiInfoCircle /> Created at {formatDate(createdAt)}
+                  <BiInfoCircle /> Được tạo vào {formatDate(createdAt)}
                 </p>
-                <p className="flex items-center gap-2">{" "} <HiOutlineGlobeAlt /> English</p>
+                <p className="flex items-center gap-2">{" "} <HiOutlineGlobeAlt /> Việt Nam</p>
               </div>
             </div>
 
             {/* will appear only for small size */}
             <div className="flex w-full flex-col gap-4 border-y border-y-richblack-500 py-4 lg:hidden">
-              <p className="space-x-3 pb-4 text-3xl font-semibold text-richblack-5">Rs. {price}</p>
-              <button className="yellowButton" onClick={handleBuyCourse}>Buy Now</button>
-              <button onClick={handleAddToCart} className="blackButton">Add to Cart</button>
+              <p className="space-x-3 pb-4 text-3xl font-semibold text-richblack-5">{price}đ</p>
+              <button className="yellowButton" onClick={handleBuyCourse}>Mua ngay</button>
+              <button onClick={handleAddToCart} className="blackButton">Thêm vào giỏ hàng</button>
             </div>
           </div>
 
@@ -240,7 +215,7 @@ function CourseDetails() {
         <div className="mx-auto max-w-maxContentTab lg:mx-0 xl:max-w-[810px]">
           {/* What will you learn section */}
           <div className="my-8 border border-richblack-600 p-8">
-            <p className="text-3xl font-semibold">What you'll learn</p>
+            <p className="text-3xl font-semibold">Bạn sẽ học được gì</p>
             <div className="mt-3">
               {whatYouWillLearn && (
                 whatYouWillLearn.split('\n').map((line, index) => (
@@ -270,7 +245,7 @@ function CourseDetails() {
           {/* Course Content Section */}
           <div className="max-w-[830px] mt-9">
             <div className="flex flex-col gap-3">
-              <p className="text-[28px] font-semibold">Course Content</p>
+              <p className="text-[28px] font-semibold">Nội dung khóa học</p>
               <div className="flex flex-wrap justify-between gap-2">
                 <div className="flex gap-2">
                   <span>
@@ -279,13 +254,13 @@ function CourseDetails() {
                   <span>
                     {totalNoOfLectures} {`lecture(s)`}
                   </span>
-                  <span>{response.data?.totalDuration} Total Time</span>
+                  <span>{response.data?.totalDuration} Tổng thời gian</span>
                 </div>
                 <button
                   className="text-yellow-25"
                   onClick={() => setIsActive([])}
                 >
-                  Collapse All Sections
+                  Thu gọn tất cả các mục
                 </button>
               </div>
             </div>
@@ -304,7 +279,7 @@ function CourseDetails() {
 
             {/* Author Details */}
             <div className="mb-12 py-4">
-              <p className="text-[28px] font-semibold">Author</p>
+              <p className="text-[28px] font-semibold">Tác giả</p>
               <div className="flex items-center gap-4 py-4">
                 <Img
                   src={instructor.image}
@@ -326,7 +301,7 @@ function CourseDetails() {
       <Footer />
       {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}
     </>
-  )
+  );
 }
 
-export default CourseDetails
+export default CourseDetails;
