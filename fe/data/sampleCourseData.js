@@ -1,47 +1,41 @@
-// fakeCourseData.js
-export const fakeCourseData = {
-    data: {
-      courseDetails: {
-        _id: "123456",
-        courseName: "JavaScript Basics",
-        courseDescription: "A comprehensive introduction to JavaScript for beginners.",
-        thumbnail: "https://example.com/course-thumbnail.jpg",
-        price: 49.99,
-        whatYouWillLearn: [
-          "Understanding variables and data types",
-          "Learning basic operators and expressions",
-          "Control structures like loops and conditionals",
-          "Functions and scope in JavaScript",
-        ],
+// data/SampleData
+export const SampleData = {
+  selectedCategory: {
+    courses: [
+      {
+        _id: "1",
+        courseName: "React cho Người Mới Bắt Đầu",
+        courseDescription: "Học những kiến thức cơ bản về React, một thư viện front-end mạnh mẽ.",
+        thumbnail: "../../../src/assets/Images/course img/Programming/NenTang.png",
+        price: 200,
+        whatYouWillLearn: "Hiểu về các thành phần (Components) của React\nQuản lý State\nXây dựng giao diện người dùng động",
         courseContent: [
           {
-            title: "Introduction to JavaScript",
+            sectionName: "Giới Thiệu",
             subSection: [
-              { title: "What is JavaScript?", duration: "10 min" },
-              { title: "Installing JavaScript", duration: "8 min" },
+              { title: "React là gì?", duration: "5 phút" },
+              { title: "Bắt đầu với React", duration: "10 phút" },
             ],
           },
           {
-            title: "JavaScript Basics",
+            sectionName: "Các Chủ Đề Nâng Cao",
             subSection: [
-              { title: "Variables and Data Types", duration: "15 min" },
-              { title: "Operators and Expressions", duration: "12 min" },
+              { title: "Quản lý State", duration: "15 phút" },
+              { title: "Routing", duration: "12 phút" },
             ],
           },
         ],
-        ratingAndReviews: [
-          { rating: 5, review: "Excellent course!" },
-          { rating: 4, review: "Very informative and clear." },
-          { rating: 5, review: "Loved the examples!" },
-        ],
+        ratingAndReviews: [{ rating: 4.5 }, { rating: 5 }, { rating: 4 }],
         instructor: {
-          name: "John Doe",
-          bio: "Experienced web developer with over 10 years of teaching experience.",
+          firstName: "Ngô",
+          lastName: "Thanh F",
+          image: "../../../src/assets/avatar/avatar1.jpg",
+          additionalDetails: { about: "Kỹ sư phần mềm với 10 năm kinh nghiệm." },
         },
-        studentsEnrolled: 200,
-        createdAt: "2023-01-01T00:00:00.000Z",
-        tag: ["JavaScript", "Programming", "Web Development"],
+        studentsEnrolled: 120,
+        createdAt: "2023-01-01",
+        tag: ["React", "Frontend", "JavaScript"],
       },
-    },
-  };
-  
+    ],
+  },
+};

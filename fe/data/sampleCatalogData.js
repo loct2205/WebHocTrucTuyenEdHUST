@@ -1,6 +1,6 @@
 // sampleData.js
 export const sampleCatalogData = {
-    selectedCategory: [
+    selectedCategory:[
         {
             name: "Lập trình",
             description: "Tìm hiểu về các ngôn ngữ lập trình và kỹ thuật khác nhau là bước đầu quan \
@@ -118,7 +118,7 @@ export const sampleCatalogData = {
             ]
         },
         {
-            name: "Phát triển bản thân",
+            name: "Lập trình",
             description: "Tìm hiểu về các ngôn ngữ lập trình và kỹ thuật khác nhau là bước đầu quan \
       trọng để trở thành một nhà phát triển phần mềm chuyên nghiệp. Khám phá cách sử dụng các \
       ngôn ngữ như Python, JavaScript, Java và C++ để giải quyết các vấn đề thực tế. Ngoài ra, bạn sẽ học được các \
@@ -127,23 +127,22 @@ export const sampleCatalogData = {
       nghề nghiệp của bạn ngay hôm nay!",
             courses: [
                 {
-                    _id: 10,
-                    courseName: "Node & ExpressJS",
-                    description: "Học Back-end với Node & ExpressJS framework, hiểu các khái niệm khi làm Back-end...",
-                    price: 299000,
-                    thumbnail: "../../../src/assets/Images/course img/Programming/NodeExpressJS.png",
-                    instructor: { firstName: "Vũ", lastName: "Quốc H" },
-                    avgReviewCount: 4.7,
+                    _id: 1,
+                    courseName: "Kiến Thức Nhập Môn IT",
+                    description: "Cung cấp cái nhìn tổng quan về ngành IT - Lập trình web",
+                    price: 499000,
+                    thumbnail: "../../../src/assets/Images/course img/Programming/NenTang.png",
+                    instructor: { firstName: "Nguyễn", lastName: "Văn A" },
+                    avgReviewCount: 4.8,
                     ratingAndReviews: [
-                        { review: "Backend đầy đủ kiến thức cơ bản.", rating: 5 },
-                        { review: "RESTful API rất dễ hiểu.", rating: 4 }
+                        { review: "Rất hữu ích!", rating: 5 },
+                        { review: "Nội dung cơ bản nhưng đủ chi tiết.", rating: 4 }
                     ]
-                }
-                // thêm các course khác nếu có
+                },
             ]
-        },
+        },    
     ],
-    differentCategory: [
+    differentCategory:
         {
             name: "Lập trình",
             courses: [
@@ -202,32 +201,6 @@ export const sampleCatalogData = {
                 // thêm các course khác nếu có
             ]
         },
-        {
-            name: "Phát triển bản thân",
-            description: "Tìm hiểu về các ngôn ngữ lập trình và kỹ thuật khác nhau là bước đầu quan \
-      trọng để trở thành một nhà phát triển phần mềm chuyên nghiệp. Khám phá cách sử dụng các \
-      ngôn ngữ như Python, JavaScript, Java và C++ để giải quyết các vấn đề thực tế. Ngoài ra, bạn sẽ học được các \
-      kỹ thuật như lập trình hướng đối tượng, xử lý dữ liệu, và phát triển web. Chương trình học linh hoạt, dễ tiếp cận, \
-      giúp bạn tiến bộ dù bạn là người mới bắt đầu hay đã có kinh nghiệm. Hãy sẵn sàng nâng cao kỹ năng và mở rộng cơ hội \
-      nghề nghiệp của bạn ngay hôm nay!",
-            courses: [
-                {
-                    _id: 123,
-                    courseName: "Node & ExpressJS",
-                    description: "Học Back-end với Node & ExpressJS framework, hiểu các khái niệm khi làm Back-end...",
-                    price: 299000,
-                    thumbnail: "../../../src/assets/Images/course img/Programming/NodeExpressJS.png",
-                    instructor: { firstName: "Vũ", lastName: "Quốc H" },
-                    avgReviewCount: 4.7,
-                    ratingAndReviews: [
-                        { review: "Backend đầy đủ kiến thức cơ bản.", rating: 5 },
-                        { review: "RESTful API rất dễ hiểu.", rating: 4 }
-                    ]
-                }
-                // thêm các course khác nếu có
-            ]
-        },
-    ],
     mostSellingCourses: [
         {
             _id: 1,
