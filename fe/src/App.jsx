@@ -9,6 +9,8 @@ import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import UpdatePassword from "./pages/UpdatePassword";
 import VerifyEmail from "./pages/VerifyEmail";
+import Catalog from './pages/Catalog';
+import CourseDetails from './pages/CourseDetails';
 import About from "./pages/About";
 import PageNotFound from "./pages/PageNotFound";
 
@@ -98,6 +100,8 @@ function App() {
           <Route path="add-course" element={<AddCourse />} />
           <Route path="my-courses" element={<MyCourses />} />
           <Route path="edit-course/:courseId" element={<EditCourse />} />
+          <Route path="catalog/:catalogName" element={<Catalog />} />
+          <Route path="courses/:courseId" element={<CourseDetails />} />
           <Route
             path="view-course/:courseId/section/:sectionId/sub-section/:subSectionId"
             element={<VideoDetails />}
