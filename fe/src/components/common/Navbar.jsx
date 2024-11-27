@@ -73,6 +73,20 @@ const Navbar = () => {
             </div> */}
             {/* Login/SignUp/Dashboard */}
             <div className='flex gap-x-4 items-center'>
+            {
+    true && "Student" === "Student" && (
+        <Link to="/dashboard/cart" className="relative">
+            <AiOutlineShoppingCart className="text-[2.35rem] text-richblack-5 hover:bg-richblack-700 rounded-full p-2 duration-200" />
+            {/* Sử dụng giá trị tĩnh thay cho totalItems */}
+            {5 > 0 && (
+                <span className="absolute -bottom-2 -right-2 grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-100">
+                    5
+                </span>
+            )}
+        </Link>
+    )
+}
+
                 <Link to="/login">
                     <button className="px-[12px] py-[8px] text-richblack-100 rounded-md border-[2.5px] border-yellow-50" >
                         Đăng nhập

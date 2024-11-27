@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { FiTrash2 } from "react-icons/fi";
+import { useNavigate } from "react-router-dom"
+
 import ConfirmationModal from "./../../../common/ConfirmationModal";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteProfile } from "../../../../services/operations/SettingsAPI";

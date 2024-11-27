@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import IconBtn from "./../../common/IconBtn";
+import { setCourseViewSidebar } from "../../../slices/sidebarSlice"
+
 import { BsChevronDown } from "react-icons/bs";
 import { IoIosArrowBack } from "react-icons/io";
+
 import { IoMdClose } from 'react-icons/io';
 import { HiMenuAlt1 } from 'react-icons/hi';
 
