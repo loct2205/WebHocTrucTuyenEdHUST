@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { FiTrash2 } from "react-icons/fi";
+import { useNavigate } from "react-router-dom"
+
 import ConfirmationModal from "./../../../common/ConfirmationModal";
 
 export default function DeleteAccount() {
