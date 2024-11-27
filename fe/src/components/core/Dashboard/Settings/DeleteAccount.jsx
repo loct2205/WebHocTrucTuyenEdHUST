@@ -3,10 +3,17 @@ import { FiTrash2 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom"
 
 import ConfirmationModal from "./../../../common/ConfirmationModal";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteProfile } from "../../../../services/operations/SettingsAPI";
+import { useNavigate } from "react-router-dom";
 
 export default function DeleteAccount() {
   const [confirmationModal, setConfirmationModal] = useState(null);
   const [check, setCheck] = useState(false);
+
+  const { token } = useSelector((state) => state.auth)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   return (
     <>
@@ -47,15 +54,8 @@ export default function DeleteAccount() {
                   text2: "Xóa tài khoản của tôi...!",
                   btn1Text: "Xóa",
                   btn2Text: "Hủy",
-                  btn1Handler: () => {
-                    console.log("Tài khoản đã bị xóa.");
-                    setConfirmationModal(null);
-                    setCheck(false);
-                  },
-                  btn2Handler: () => {
-                    setConfirmationModal(null);
-                    setCheck(false);
-                  },
+                  btn1Handler: () => dispatch(deleteProfile(token, navigate)),
+                  btn2Handler: () => { setConfirmationModal(null); setCheck(false) },
                 })
               }
             >
