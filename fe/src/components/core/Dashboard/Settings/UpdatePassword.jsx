@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { changePassword } from "../../../../services/operations/SettingsAPI";
 
 import IconBtn from "../../../common/IconBtn";
 
 export default function UpdatePassword() {
+  const { token } = useSelector((state) => state.auth)
   const navigate = useNavigate();
 
   const [showOldPassword, setShowOldPassword] = useState(false);
@@ -19,8 +22,12 @@ export default function UpdatePassword() {
   } = useForm();
 
   const submitPasswordForm = async (data) => {
-    console.log("Dữ liệu mật khẩu", data);
-    alert("Mật khẩu đã được cập nhật thành công!");
+    console.log("Nội dung mật khẩu", data);
+    try {
+      await changePassword(token, data)
+    } catch (error) {
+      console.log("ERROR MESSAGE - ", error.message)
+    }
   };
 
   return (
@@ -94,17 +101,17 @@ export default function UpdatePassword() {
             </div>
 
             <div className="relative flex flex-col gap-2 lg:w-[48%]">
-              <label htmlFor="confirmNewPassword" className="lable-style">
+              <label htmlFor="confirmPassword" className="lable-style">
                 Xác nhận mật khẩu mới
               </label>
 
               <input
                 type={showConfirmNewPassword ? "text" : "password"}
-                name="confirmNewPassword"
-                id="confirmNewPassword"
+                name="confirmPassword"
+                id="confirmPassword"
                 placeholder="Xác nhận mật khẩu mới"
                 className="form-style"
-                {...register("confirmNewPassword", { required: true })}
+                {...register("confirmPassword", { required: true })}
               />
 
               <span
@@ -117,7 +124,7 @@ export default function UpdatePassword() {
                   <AiOutlineEye fontSize={24} fill="#AFB2BF" />
                 )}
               </span>
-              {errors.confirmNewPassword && (
+              {errors.confirmPassword && (
                 <span className="-mt-1 text-[12px] text-yellow-100">
                   Vui lòng nhập lại mật khẩu mới của bạn.
                 </span>

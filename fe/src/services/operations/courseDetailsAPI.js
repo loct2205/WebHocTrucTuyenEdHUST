@@ -117,22 +117,19 @@ export const fetchCourseDetails = async (courseId) => {
 }
 
 // ================ fetch Course Categories ================
-export const fetchCourseCategories = async () => {
-  let result = []
-
+export const fetchCourseCategories = async (token) => {
   try {
-    const response = await apiConnector("GET", COURSE_CATEGORIES_API)
-    console.log("COURSE_CATEGORIES_API RESPONSE............", response)
-    if (!response?.data?.success) {
-      throw new Error("Could Not Fetch Course Categories")
-    }
-    result = response?.data?.data
+    const response = await apiConnector("GET", COURSE_CATEGORIES_API, null, {
+      Authorization: `Bearer ${token}`,
+    });
+    // Extract names from the response data
+    return response.data; 
   } catch (error) {
-    console.log("COURSE_CATEGORY_API API ERROR............", error)
-    toast.error(error.message)
+    console.log("COURSE_CATEGORY_API API ERROR............", error);
+    toast.error(error.message);
+    throw error;
   }
-  return result
-}
+};
 
 
 // ================ add Course Details ================
@@ -146,19 +143,17 @@ export const addCourseDetails = async (data, token) => {
       Authorization: `Bearer ${token}`,
     })
     console.log("CREATE COURSE API RESPONSE............", response)
-
-    if (!response?.data?.success) {
-      throw new Error("Could Not Add Course Details")
+    if (!response?.data?.id) {
+      throw new Error("Course creation failed!"); 
     }
-
-    result = response?.data?.data
+    result = response?.data
     toast.success("Course Details Added Successfully")
+    toast.dismiss(toastId)
+    return result; 
   } catch (error) {
     console.log("CREATE COURSE API ERROR............", error)
     toast.error(error.message)
   }
-  toast.dismiss(toastId)
-  return result
 }
 
 

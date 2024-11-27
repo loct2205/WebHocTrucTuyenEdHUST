@@ -9,7 +9,7 @@ import IconBtn from "../../../../common/IconBtn";
 import Upload from "../Upload";
 import ChipInput from "./ChipInput";
 import RequirementsField from "./RequirementField";
-
+import { addCourseDetails, editCourseDetails, fetchCourseCategories } from "../../../../../services/operations/courseDetailsAPI"
 export default function CourseInformationForm() {
   const {
     register,
@@ -21,13 +21,32 @@ export default function CourseInformationForm() {
 
   const dispatch = useDispatch();
   const { course, editCourse } = useSelector((state) => state.course);
-  const [loading] = useState(false);
-  const [courseCategories] = useState([
-    { _id: "1", name: "Lập trình" },
-    { _id: "2", name: "Thiết kế đồ họa" },
-    { _id: "3", name: "Kinh doanh" },
-  ]); // Dữ liệu giả lập cho danh mục khóa học
+  const token = JSON.parse(localStorage.getItem("token"));
+  // const [loading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+  // Fetch data for categories
+  const [courseCategories, setCourseCategories] = useState([]);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchCourseCategories(token);
+        const categories = data.map((category) => ({
+          _id: category.id.toString(),
+          name: category.name,
+        }));
+        console.log(categories);
+        setCourseCategories(categories);
+      } catch (error) {
+        console.error("Failed to fetch course categories:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, [token]);
   useEffect(() => {
     if (editCourse) {
       setValue("courseTitle", course.courseName);
@@ -59,21 +78,55 @@ export default function CourseInformationForm() {
     return false;
   };
 
-  const onSubmit = () => {
-    console.log("Submitting form...");
-    if (editCourse && isFormUpdated()) {
-      console.log("Updating course...");
-      dispatch(setStep(2));
-      dispatch(setCourse({ ...course }));
-    } else if (editCourse) {
-      console.log("No changes detected.");
-      alert("Không có thay đổi nào để lưu.");
-    } else {
-      console.log("Adding new course...");
-      dispatch(setStep(2)); // Chuyển step
-      alert("Khóa học đã được thêm!");
+  const onSubmit = async (data) => {
+    setLoading(true);
+    try {
+      // Create a new FormData instance
+      const formData = new FormData();
+  
+      // Append the course data as a stringified JSON
+      const courseDto = {
+        courseName: data.courseTitle,
+        courseDescription: data.courseShortDesc,
+        whatYouWillLearn: data.courseBenefits,
+        categoryName: data.courseCategory,
+        instructions: data.courseRequirements,
+        price: data.coursePrice,
+        tag: data.courseTags,
+      };
+      formData.append("courseDto", new Blob([JSON.stringify(courseDto)], { type: "application/json" }));
+  
+      // Append the course image file
+      if (data.courseImage && data.courseImage) {
+        formData.append("file", data.courseImage);
+      } else {
+        throw new Error("Course image is required.");
+      }
+  
+      // Check for edit mode and updated form
+      if (editCourse && isFormUpdated()) {
+        alert("Khóa học đã được cập nhật!");
+        dispatch(setStep(2));
+        dispatch(setCourse({ ...course }));
+      } else if (editCourse) {
+        alert("Không có thay đổi nào để lưu.");
+      } else {
+        console.log("Data to be added:", courseDto);
+        console.log("Submitting FormData:", formData);
+  
+        const response = await addCourseDetails(formData, token);
+        console.log("Course added successfully:", response);
+        dispatch(setStep(2));
+        dispatch(setCourse(response)); 
+      }
+    } catch (error) {
+      console.error("Failed to add course:", error);
+      alert("Failed to add course.");
+    } finally {
+      setLoading(false);
     }
   };
+  
 
   return (
     <form
@@ -161,7 +214,7 @@ export default function CourseInformationForm() {
           </option>
           {!loading &&
             courseCategories?.map((category, indx) => (
-              <option key={indx} value={category?._id}>
+              <option key={indx} value={category?.name}>
                 {category?.name}
               </option>
             ))}
