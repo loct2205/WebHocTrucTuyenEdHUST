@@ -4,7 +4,8 @@ export const NavbarLinks = [
       path: "/",
     },
     {
-      title: "Khóa học",   
+      title: "Khóa học", 
+      path: "/catalog"  
     },
     {
       title: "Về chúng tôi",
