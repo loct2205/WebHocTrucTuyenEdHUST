@@ -8,14 +8,29 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.UUID;
-
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 @Component
 public class Uploader {
     public String uploadFile(MultipartFile file) {
         try {
+            // Generate a unique file name
             String fileName = UUID.randomUUID().toString() + "-" + file.getOriginalFilename();
-            StorageClient.getInstance().bucket().create(fileName, file.getBytes(), file.getContentType());
-            return String.format("https://storage.googleapis.com/%s/%s", StorageClient.getInstance().bucket().getName(), fileName);
+    
+            // Upload file to Firebase Storage
+            StorageClient.getInstance()
+                    .bucket()
+                    .create(fileName, file.getBytes(), file.getContentType());
+    
+            // Construct the public URL for the uploaded file
+            String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8.toString());
+            String bucketName = StorageClient.getInstance().bucket().getName();
+    
+            return String.format(
+                    "https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media",
+                    bucketName,
+                    encodedFileName
+            );
         } catch (IOException e) {
             e.printStackTrace();
             return null;
