@@ -59,12 +59,12 @@ public class CourseController {
     }
 
     // ================ update course ================
-    @PatchMapping("edit/{id}")
+    @PostMapping("edit/{id}")
     @PreAuthorize("hasAnyRole('INSTRUCTOR', 'ADMIN')")
-    public ResponseEntity<CourseDto> updateCourse(@PathVariable Long courseId, @RequestPart CourseDto courseDto, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<CourseDto> updateCourse(@PathVariable Long id, @RequestPart CourseDto courseDto, @RequestParam("file") MultipartFile file) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
-        CourseDto updatedCourse = courseService.updateCourse(courseId, courseDto, file, currentUser.getId());
+        CourseDto updatedCourse = courseService.updateCourse(id, courseDto, file, currentUser.getId());
         return ResponseEntity.ok(updatedCourse);
     }
 
