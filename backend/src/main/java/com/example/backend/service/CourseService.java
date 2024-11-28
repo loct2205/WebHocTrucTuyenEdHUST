@@ -95,13 +95,16 @@ public class CourseService {
         Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
         boolean enrolled = false;
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        RoleEnum role = user.getRole().getName();
         for (User student : course.getStudentsEnrolled()) {
             if (student.getId().equals(userId)) {
                 enrolled = true;
                 break;
             }
         }
-        if (!enrolled) {
+        if (!enrolled && role == RoleEnum.STUDENT) {
             return CourseDto.builder()
                     .id(course.getId())
                     .courseName(course.getCourseName())
