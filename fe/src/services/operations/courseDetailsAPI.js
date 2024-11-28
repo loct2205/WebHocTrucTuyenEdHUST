@@ -93,13 +93,15 @@ export const getAllCourses = async () => {
 
 
 // ================ fetch Course Details ================
-export const fetchCourseDetails = async (courseId) => {
+export const fetchCourseDetails = async (courseId, token) => {
   // const toastId = toast.loading('Loading')
   //   dispatch(setLoading(true));
   let result = null;
 
   try {
-    const response = await apiConnector("POST", COURSE_DETAILS_API, { courseId, })
+    const response = await apiConnector("GET", COURSE_DETAILS_API + `${courseId}`, null, {
+      Authorization: `Bearer ${token}`,
+    })
     console.log("COURSE_DETAILS_API API RESPONSE............", response)
 
     if (!response.data.success) {
@@ -143,16 +145,17 @@ export const addCourseDetails = async (data, token) => {
       Authorization: `Bearer ${token}`,
     })
     console.log("CREATE COURSE API RESPONSE............", response)
-    if (!response?.data?.id) {
+    if (response?.status != 200) {
       throw new Error("Course creation failed!"); 
     }
     result = response?.data
     toast.success("Course Details Added Successfully")
-    toast.dismiss(toastId)
     return result; 
   } catch (error) {
     console.log("CREATE COURSE API ERROR............", error)
     toast.error(error.message)
+  } finally {
+    toast.dismiss(toastId)
   }
 }
 
@@ -185,21 +188,23 @@ export const editCourseDetails = async (data, token) => {
 
 
 // ================ create Section ================
-export const createSection = async (data, token) => {
+export const createSection = async (data, token, courseId) => {
   let result = null
   const toastId = toast.loading("Loading...")
 
   try {
     const response = await apiConnector("POST", CREATE_SECTION_API, data, {
       Authorization: `Bearer ${token}`,
-    })
+      }, 
+    {courseId : courseId}
+    )
     console.log("CREATE SECTION API RESPONSE............", response)
 
-    if (!response?.data?.success) {
+    if (response?.status != 200) {
       throw new Error("Could Not Create Section")
     }
-
-    result = response?.data?.updatedCourseDetails
+    
+    result = response?.data
     toast.success("Course Section Created")
   } catch (error) {
     console.log("CREATE SECTION API ERROR............", error)

@@ -35,17 +35,17 @@ export const studentEndpoints = {
 export const courseEndpoints = {
   // course
   GET_ALL_COURSE_API: BASE_URL + "/courses",
-  COURSE_DETAILS_API: BASE_URL + "/courses/", // + id
-  EDIT_COURSE_API: BASE_URL + "/courses/edit/", // + id
-  GET_ALL_INSTRUCTOR_COURSES_API: BASE_URL + "/courses/instructor/", // + id
-  DELETE_COURSE_API: BASE_URL + "/courses/delete/", // + id
+  COURSE_DETAILS_API: BASE_URL + "/courses/", // + /id
+  EDIT_COURSE_API: BASE_URL + "/courses/edit/", // + /id
+  GET_ALL_INSTRUCTOR_COURSES_API: BASE_URL + "/courses/instructor/", // + /id
+  DELETE_COURSE_API: BASE_URL + "/courses/delete/", // + /id
   CREATE_COURSE_API: BASE_URL + "/courses/create",
   GET_FULL_COURSE_DETAILS_AUTHENTICATED: BASE_URL + "/course/getFullCourseDetails",
 
   // section 
-  CREATE_SECTION_API: BASE_URL + "/course/addSection",
-  UPDATE_SECTION_API: BASE_URL + "/course/updateSection",
-  DELETE_SECTION_API: BASE_URL + "/course/deleteSection",
+  CREATE_SECTION_API: BASE_URL + "/sections/create", // ?courseId=123
+  UPDATE_SECTION_API: BASE_URL + "/sections/update-name", // + /id?newName=sectionName
+  DELETE_SECTION_API: BASE_URL + "/sections/delete", // +/id
   
   // subsection
   CREATE_SUBSECTION_API: BASE_URL + "/course/addSubSection",

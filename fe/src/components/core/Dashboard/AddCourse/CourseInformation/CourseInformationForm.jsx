@@ -96,7 +96,7 @@ export default function CourseInformationForm() {
       formData.append("courseDto", new Blob([JSON.stringify(courseDto)], { type: "application/json" }));
   
       // Append the course image file
-      if (data.courseImage && data.courseImage) {
+      if (data.courseImage) {
         formData.append("file", data.courseImage);
       } else {
         throw new Error("Course image is required.");
@@ -113,14 +113,17 @@ export default function CourseInformationForm() {
         console.log("Data to be added:", courseDto);
         console.log("Submitting FormData:", formData);
   
-        const response = await addCourseDetails(formData, token);
-        console.log("Course added successfully:", response);
-        dispatch(setStep(2));
-        dispatch(setCourse(response)); 
+        const data = await addCourseDetails(formData, token);
+        if (typeof data !== "undefined") {
+          console.log("Course added successfully:", data);
+          dispatch(setStep(2));
+          dispatch(setCourse(data)); 
+        } else {
+          throw new Error("Failed to add course.");
+        }
       }
     } catch (error) {
       console.error("Failed to add course:", error);
-      alert("Failed to add course.");
     } finally {
       setLoading(false);
     }
