@@ -104,7 +104,7 @@ export const fetchCourseDetails = async (courseId, token) => {
     })
     console.log("COURSE_DETAILS_API API RESPONSE............", response)
 
-    if (!response.data.success) {
+    if (response.status != 200) {
       throw new Error(response.data.message)
     }
     result = response.data
@@ -161,22 +161,22 @@ export const addCourseDetails = async (data, token) => {
 
 
 // ================ edit Course Details ================
-export const editCourseDetails = async (data, token) => {
+export const editCourseDetails = async (id, data, token) => {
   let result = null
   const toastId = toast.loading("Loading...")
 
   try {
-    const response = await apiConnector("POST", EDIT_COURSE_API, data, {
+    const response = await apiConnector("POST", EDIT_COURSE_API + `${id}`, data, {
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${token}`,
     })
     console.log("EDIT COURSE API RESPONSE............", response)
 
-    if (!response?.data?.success) {
+    if (response.status != 200) {
       throw new Error("Could Not Update Course Details")
     }
 
-    result = response?.data?.data
+    result = response?.data
     toast.success("Course Details Updated Successfully")
   } catch (error) {
     console.log("EDIT COURSE API ERROR............", error)
@@ -242,21 +242,24 @@ export const createSubSection = async (data, token) => {
 
 
 // ================ Update Section ================
-export const updateSection = async (data, token) => {
+export const updateSection = async (sectionId, sectionName, token) => {
   let result = null
   const toastId = toast.loading("Loading...")
 
   try {
-    const response = await apiConnector("POST", UPDATE_SECTION_API, data, {
+    const response = await apiConnector("PATCH", UPDATE_SECTION_API + `${sectionId}`, null, {
       Authorization: `Bearer ${token}`,
+    }, 
+    {
+      newName: sectionName
     })
     console.log("UPDATE SECTION API RESPONSE............", response)
 
-    if (!response?.data?.success) {
+    if (response.status != 200) {
       throw new Error("Could Not Update Section")
     }
 
-    result = response?.data?.data
+    result = response.status
     toast.success("Course Section Updated")
   } catch (error) {
     console.log("UPDATE SECTION API ERROR............", error)
@@ -294,21 +297,21 @@ export const updateSubSection = async (data, token) => {
 
 
 // ================ delete Section ================
-export const deleteSection = async (data, token) => {
+export const deleteSection = async (sectionId, token) => {
   let result = null
   const toastId = toast.loading("Loading...")
 
   try {
-    const response = await apiConnector("POST", DELETE_SECTION_API, data, {
+    const response = await apiConnector("DELETE", DELETE_SECTION_API + `${sectionId}`, null, {
       Authorization: `Bearer ${token}`,
     })
     console.log("DELETE SECTION API RESPONSE............", response)
 
-    if (!response?.data?.success) {
+    if (response.status != 200) {
       throw new Error("Could Not Delete Section")
     }
 
-    result = response?.data?.data
+    result = response?.status
     toast.success("Course Section Deleted")
   } catch (error) {
     console.log("DELETE SECTION API ERROR............", error)

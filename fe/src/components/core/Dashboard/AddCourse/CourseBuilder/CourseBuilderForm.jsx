@@ -26,13 +26,17 @@ export default function CourseBuilderForm() {
     try {
       if (editSectionName) {
         // Update section name
-        const updatedSections = course?.courseContent.map((section) =>
-          section.id === editSectionName
-            ? { ...section, name: data.sectionName }
-            : section
-        );
-  
-        dispatch(setCourse({ ...course, courseContent: updatedSections }));
+        const updatedStatus = await updateSection(editSectionName, data.sectionName, token);
+        if (updatedStatus === 200) {
+          const courseDetails = await fetchCourseDetails(course.id, token);
+          if (courseDetails) {
+            dispatch(setCourse(courseDetails));
+          } else {
+            throw new Error("Failed to fetch updated course details");
+          } 
+        } else {
+          throw new Error("Failed to update section name");
+        }
         setEditSectionName(null); // Reset edit mode
       } else {
         // Add new section
@@ -54,10 +58,11 @@ export default function CourseBuilderForm() {
         if (responseSection) {
           // Fetch updated course details
           const courseDetail = await fetchCourseDetails(courseId, token);
-          dispatch(setCourse(courseDetail));
-  
-          // Clear the input field
-          setValue("sectionName", "");
+          if (courseDetail) {
+            dispatch(setCourse(courseDetail));
+            // Clear the input field
+            setValue("sectionName", "");
+          }
         } else {
           throw new Error("Failed to create new section.");
         }
@@ -151,7 +156,7 @@ export default function CourseBuilderForm() {
       </form>
 
       {/* Hiển thị danh sách các phần và bài giảng */}
-      {course?.courseContent?.length > 0 && (
+      {course?.sections?.length > 0 && (
         <NestedView handleChangeEditSectionName={handleChangeEditSectionName} />
       )}
 

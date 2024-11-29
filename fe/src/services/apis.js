@@ -44,8 +44,8 @@ export const courseEndpoints = {
 
   // section 
   CREATE_SECTION_API: BASE_URL + "/sections/create", // ?courseId=123
-  UPDATE_SECTION_API: BASE_URL + "/sections/update-name", // + /id?newName=sectionName
-  DELETE_SECTION_API: BASE_URL + "/sections/delete", // +/id
+  UPDATE_SECTION_API: BASE_URL + "/sections/update-name/", // + /id?newName=sectionName
+  DELETE_SECTION_API: BASE_URL + "/sections/delete/", // +/id
   
   // subsection
   CREATE_SUBSECTION_API: BASE_URL + "/course/addSubSection",
