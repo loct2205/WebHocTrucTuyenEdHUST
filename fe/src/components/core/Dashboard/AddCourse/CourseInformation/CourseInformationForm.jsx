@@ -142,7 +142,7 @@ export default function CourseInformationForm() {
         console.log("Submitting FormData:", formData);
   
         const responseData = await addCourseDetails(formData, token);
-        if (typeof data !== "undefined") {
+        if (responseData.id) {
           console.log("Course added successfully:", responseData);
           dispatch(setStep(2));
           dispatch(setCourse(responseData)); 

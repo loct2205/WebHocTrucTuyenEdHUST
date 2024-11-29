@@ -5,7 +5,7 @@ import { MdEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { RxDropdownMenu } from "react-icons/rx";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteSection, fetchCourseDetails} from "../../../../../services/operations/courseDetailsAPI"
+import { deleteSection, fetchCourseDetails, deleteSubSection} from "../../../../../services/operations/courseDetailsAPI"
 
 import { setCourse } from "../../../../../slices/courseSlice";
 import ConfirmationModal from "../../../../common/ConfirmationModal";
@@ -44,17 +44,15 @@ export default function NestedView({ handleChangeEditSectionName }) {
   };
 
   // Handle subsection deletion
-  const handleDeleteSubSection = (subSectionId, sectionId) => {
-    const updatedSections = course.sections.map((section) =>
-      section.id === sectionId
-        ? {
-            ...section,
-            subSections: section.subSections.filter((sub) => sub.id !== subSectionId),
-          }
-        : section
-    );
-    const updatedCourse = { ...course, sections: updatedSections };
-    dispatch(setCourse(updatedCourse));
+  const handleDeleteSubSection = async (subSectionId, sectionId) => {
+    const responseStatus = await deleteSubSection(subSectionId, token);
+    if (responseStatus !== 200) {
+      throw new Error("Failed to delete subsection");
+    }
+    const updatedCourse = await fetchCourseDetails(course.id, token);
+    if (updatedCourse) {
+      dispatch(setCourse(updatedCourse));
+    }
     console.log("Deleted subsection:", subSectionId);
     setConfirmationModal(null);
   };
@@ -124,7 +122,7 @@ export default function NestedView({ handleChangeEditSectionName }) {
                 </div>
               ))}
               <button
-                onClick={() => setAddSubsection(section.id)}
+                onClick={() => setAddSubsection({sectionId: section.id})}
                 className="mt-3 flex items-center gap-x-1 text-yellow-50"
               >
                 <FaPlus className="text-lg" />

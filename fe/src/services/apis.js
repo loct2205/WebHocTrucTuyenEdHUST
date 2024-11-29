@@ -48,10 +48,10 @@ export const courseEndpoints = {
   DELETE_SECTION_API: BASE_URL + "/sections/delete/", // +/id
   
   // subsection
-  CREATE_SUBSECTION_API: BASE_URL + "/course/addSubSection",
-  DELETE_SUBSECTION_API: BASE_URL + "/course/deleteSubSection",
-  UPDATE_SUBSECTION_API: BASE_URL + "/course/updateSubSection",
-
+  CREATE_SUBSECTION_API: BASE_URL + "/subsections/create",
+  DELETE_SUBSECTION_API: BASE_URL + "/subsections/delete/",
+  UPDATE_SUBSECTION_INFO_API: BASE_URL + "/subsections/update/",
+  UPDATE_SUBSECTION_VIDEO_API: BASE_URL + "/subsections/update-video/",
   // category
   COURSE_CATEGORIES_API: BASE_URL + "/category",
   CREATE_NEW_CATEGORY: BASE_URL + "/course/createCategory",

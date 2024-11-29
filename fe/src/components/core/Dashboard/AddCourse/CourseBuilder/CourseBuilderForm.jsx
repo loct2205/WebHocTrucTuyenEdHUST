@@ -14,7 +14,7 @@ export default function CourseBuilderForm() {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
 
   // Đảm bảo `course` luôn có giá trị mặc định
-  const { course } = useSelector((state) => state.course || { course: { courseContent: [] } });
+  const { course } = useSelector((state) => state.course);
   const token = JSON.parse(localStorage.getItem("token"));
   const dispatch = useDispatch();
 
@@ -91,12 +91,12 @@ export default function CourseBuilderForm() {
 
   // Chuyển đến bước tiếp theo
   const goToNext = () => {
-    console.log("courseContent: ", course?.courseContent);
-    if (!course?.courseContent || course.courseContent.length === 0) {
+    
+    if (course.sections.length === 0) {
       alert("Vui lòng thêm ít nhất một phần");
       return;
     }
-    if (course.courseContent.some((section) => section.subSection.length === 0)) {
+    if (course.sections.some((section) => section.subSections.length === 0)) {
       alert("Vui lòng thêm ít nhất một bài giảng trong mỗi phần");
       return;
     }
