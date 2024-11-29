@@ -143,10 +143,12 @@ public class CourseService {
         if (instructor.getRole().getName() != RoleEnum.INSTRUCTOR && instructor.getRole().getName() != RoleEnum.ADMIN) {
             throw new RuntimeException("Only instructors or admins can update courses");
         }
-        String fileUrl = uploader.uploadFile(file);
+        if (file != null && !file.isEmpty()) {
+            String fileUrl = uploader.uploadFile(file);
+            course.setThumbnail(fileUrl);
+        }
         course.setCourseName(courseDto.getCourseName());
         course.setCourseDescription(courseDto.getCourseDescription());
-        course.setThumbnail(fileUrl);
         course.setPrice(courseDto.getPrice());
         course.setTag(courseDto.getTag());
         course.setWhatYouWillLearn(courseDto.getWhatYouWillLearn());
