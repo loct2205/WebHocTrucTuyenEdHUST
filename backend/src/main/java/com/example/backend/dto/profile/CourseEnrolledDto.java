@@ -1,5 +1,6 @@
 package com.example.backend.dto.profile;
 
+import com.example.backend.dto.SectionDto;
 import com.example.backend.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,5 +27,5 @@ public class CourseEnrolledDto {
     private List<String> tag;
     private String totalDuration;
     private double progressPercentage;
-
+    private List<SectionDto> courseContent;
 }
