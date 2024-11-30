@@ -58,7 +58,7 @@ const ContactUsForm = () => {
             type="text"
             name="firstname"
             id="firstname"
-            placeholder="Enter first name"
+            placeholder="Nhập tên của bạn"
             className="form-style"
             {...register("firstname", { required: true })}
           />
@@ -77,7 +77,7 @@ const ContactUsForm = () => {
             type="text"
             name="lastname"
             id="lastname"
-            placeholder="Enter last name"
+            placeholder="Nhập họ của bạn"
             className="form-style"
             {...register("lastname")}
           />
@@ -92,7 +92,7 @@ const ContactUsForm = () => {
           type="email"
           name="email"
           id="email"
-          placeholder="Enter email address"
+          placeholder="Nhập email của bạn"
           className="form-style"
           {...register("email", { required: true })}
         />
@@ -114,7 +114,7 @@ const ContactUsForm = () => {
               type="text"
               name="firstname"
               id="firstname"
-              placeholder="Enter first name"
+              placeholder="Nhập tên của bạn"
               className="form-style"
               {...register("countrycode", { required: true })}
             >
@@ -138,7 +138,7 @@ const ContactUsForm = () => {
               {...register("phoneNo", {
                 required: {
                   value: true,
-                  message: "Please enter your Phone Number.",
+                  message: "Nhập số điện thoại của bạn",
                 },
                 maxLength: { value: 12, message: "Invalid Phone Number" },
                 minLength: { value: 10, message: "Invalid Phone Number" },
@@ -162,7 +162,7 @@ const ContactUsForm = () => {
           id="message"
           cols="30"
           rows="7"
-          placeholder="Enter your message here"
+          placeholder="Nhập tin nhắn ở đây"
           className="form-style"
           {...register("message", { required: true })}
         />
