@@ -70,6 +70,20 @@ public class Duration {
         return sdf.format(new Date(durationMs));
     }
 
+    public static int convertTimeToSeconds(String timeString) {
+        if (timeString == null || !timeString.matches("\\d{2}:\\d{2}:\\d{2}")) {
+            throw new IllegalArgumentException("Invalid time format, expected HH:mm:ss");
+        }
+
+        String[] parts = timeString.split(":");
+        int hours = Integer.parseInt(parts[0]);
+        int minutes = Integer.parseInt(parts[1]);
+        int seconds = Integer.parseInt(parts[2]);
+
+        // Convert to total seconds
+        return hours * 3600 + minutes * 60 + seconds;
+    }
+
     public static void main(String[] args) {
         int totalSeconds = 3665; // Example input
         System.out.println(convertSecondsToDuration(totalSeconds));

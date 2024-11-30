@@ -1,11 +1,13 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.SectionDto;
 import com.example.backend.dto.UserDto;
 import com.example.backend.dto.profile.CourseEnrolledDto;
 import com.example.backend.dto.profile.UpdateProfileDto;
 import com.example.backend.dto.profile.UserDetailDto;
 import com.example.backend.entity.*;
 import com.example.backend.mapper.CourseMapper;
+import com.example.backend.mapper.SectionMapper;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.repository.CourseProgressRepository;
 import com.example.backend.repository.CourseRepository;
@@ -37,11 +39,13 @@ public class ProfileService {
     private final StorageService _storageService;
     private final CourseProgressRepository _courseProgressRepository;
     private final CourseMapper _courseMapper;
+    private final SectionMapper _sectionMapper;
 
     public ProfileService(UserRepository userRepository, ProfileRepository profileRepository, UserMapper userMapper, CourseRepository courseRepository,
                           StorageService storageService,
                           CourseProgressRepository courseProgressRepository,
-                            CourseMapper courseMapper
+                            CourseMapper courseMapper,
+                            SectionMapper sectionMapper
     ) {
         this._userRepository = userRepository;
         this._profileRepository = profileRepository;
@@ -50,6 +54,7 @@ public class ProfileService {
         this._storageService = storageService;
         this._courseProgressRepository = courseProgressRepository;
         this._courseMapper = courseMapper;
+        this._sectionMapper = sectionMapper;
     }
 
     public UpdateProfileDto updateProfile(User currentUser, UpdateProfileDto dto) {
@@ -142,16 +147,18 @@ public class ProfileService {
         for (Course course : courseEnrolled) {
             int totalDurationInSeconds = 0;
             int subSectionLength = 0;
-
+            List<SectionDto> sections = new ArrayList<>();
             for (Section section : course.getSections()) {
                 totalDurationInSeconds += section.getSubSections().stream()
-                        .mapToInt(subSection -> Integer.parseInt(subSection.getTimeDuration()))
+                        .mapToInt(subSection -> Duration.convertTimeToSeconds(subSection.getTimeDuration()))
                         .sum();
                 subSectionLength += section.getSubSections().size();
+                sections.add(_sectionMapper.convertToDto(section));
             }
 
             CourseEnrolledDto courseEnrolledDto = _courseMapper.convertToCourseEnrolledDtoList(course);
             courseEnrolledDto.setTotalDuration(Duration.convertSecondsToDuration(totalDurationInSeconds));
+            courseEnrolledDto.setCourseContent(sections);
 
             Optional<CourseProgress> courseProgresses = _courseProgressRepository.getCourseProgressesByCourseIdAndUserId(course.getId(), currentUser.getId());
             int courseProgressCount = courseProgresses.map(courseProgress -> courseProgress.getCompletedVideos().size()).orElse(0);
