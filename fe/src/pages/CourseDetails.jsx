@@ -23,6 +23,7 @@ import { GiReturnArrow } from 'react-icons/gi'
 import { MdOutlineVerified } from 'react-icons/md'
 import Img from './../components/common/Img';
 import toast from "react-hot-toast"
+import { buyCourse } from "../services/operations/studentFeaturesAPI";
 const fakeUser = {
   _id: "12345",
   firstName: "Nguyễn",
@@ -125,10 +126,18 @@ function CourseDetails() {
 
   const handleBuyCourse = () => {
     if (token) {
-      // Handle buy course logic
-    } else {
-      // Handle not logged in scenario
+      const coursesId = [courseId]
+      buyCourse(token, coursesId, user, navigate, dispatch)
+      return;
     }
+    setConfirmationModal({
+      text1: "You are not logged in!",
+      text2: "Please login to Purchase Course.",
+      btn1Text: "Login",
+      btn2Text: "Cancel",
+      btn1Handler: () => navigate("/login"),
+      btn2Handler: () => setConfirmationModal(null),
+    })
   }
 
   const handleAddToCart = () => {

@@ -19,7 +19,7 @@ const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action) => {
       const course = action.payload
-      const index = state.cart.findIndex((item) => item._id === course._id)
+      const index = state.cart.findIndex((item) => item.id === course.id)
 
       if (index >= 0) {
         toast.error("Khóa học đã có trong giỏ hàng")
@@ -38,7 +38,7 @@ const cartSlice = createSlice({
 
     removeFromCart: (state, action) => {
       const courseId = action.payload;
-      const index = state.cart.findIndex((item) => item._id === courseId);
+      const index = state.cart.findIndex((item) => item.id === courseId);
 
       if (index >= 0) {
 
