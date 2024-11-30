@@ -4,42 +4,32 @@ import { Link } from "react-router-dom"
 
 import InstructorChart from "./InstructorDashboard/InstructorChart"
 import Img from './../../common/Img';
+import { getInstructorData } from "../../../services/operations/profileAPI";
+import { fetchInstructorCourses } from "../../../services/operations/courseDetailsAPI";
 
 export default function Instructor() {
+  const { token } = useSelector((state) => state.auth)
   const { user } = useSelector((state) => state.profile)
+  
 
   const [loading, setLoading] = useState(false)
+  const [instructorData, setInstructorData] = useState(null)
+  const [courses, setCourses] = useState([])
 
-  // Dữ liệu mẫu thay thế API
-  const instructorData = [
-    {
-      totalAmountGenerated: 50000,
-      totalStudentsEnrolled: 200,
-    },
-  ]
-  const courses = [
-    {
-      _id: "1",
-      thumbnail: "https://via.placeholder.com/300x200",
-      courseName: "Khóa học Lập trình Cơ bản",
-      studentsEnrolled: [1, 2, 3, 4, 5],
-      price: 1000,
-    },
-    {
-      _id: "2",
-      thumbnail: "https://via.placeholder.com/300x200",
-      courseName: "Khóa học Thiết kế Web",
-      studentsEnrolled: [1, 2, 3],
-      price: 2000,
-    },
-    {
-      _id: "3",
-      thumbnail: "https://via.placeholder.com/300x200",
-      courseName: "Khóa học Machine Learning",
-      studentsEnrolled: [1],
-      price: 3000,
-    },
-  ]
+  // get Instructor Data
+  useEffect(() => {
+    ; (async () => {
+      setLoading(true)
+      const instructorApiData = await getInstructorData(token)
+      const result = await fetchInstructorCourses(token, user?.id)
+      // console.log('INSTRUCTOR_API_RESPONSE.....', instructorApiData)
+      if (instructorApiData.length) setInstructorData(instructorApiData)
+      if (result) {
+        setCourses(result)
+      }
+      setLoading(false)
+    })()
+  }, [])
 
   const totalAmount = instructorData?.reduce((acc, curr) => acc + curr.totalAmountGenerated, 0)
 
