@@ -4,7 +4,7 @@ import { Link, matchPath, useLocation } from 'react-router-dom';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { NavbarLinks } from '../../../data/navbar-links';
 import subLinksData from '../../../data/subLinksData';
-import { MdKeyboardArrowDown } from "react-icons/md"
+import { MdKeyboardArrowDown } from "react-icons/md";
 
 const Navbar = () => {
     const { token } = useSelector((state) => state.auth);
@@ -106,7 +106,7 @@ const Navbar = () => {
              
                 {/* Login/SignUp/Dashboard */}
                 <div className='flex gap-x-4 items-center'>
-                    {/* {
+                    {
                         user && user?.accountType === "Student" && (
                             <Link to="/dashboard/cart" className="relative">
                                 <AiOutlineShoppingCart className="text-[2.35rem] text-richblack-5 hover:bg-richblack-700 rounded-full p-2 duration-200" />
@@ -117,7 +117,7 @@ const Navbar = () => {
                                 )}
                             </Link>
                         )
-                    } */}
+                    }
                     {
                         token === null && (
                             <Link to="/login">

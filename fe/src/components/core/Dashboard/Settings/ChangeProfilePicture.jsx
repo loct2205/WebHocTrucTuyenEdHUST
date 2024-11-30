@@ -1,9 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { FiUpload } from "react-icons/fi";
+import { useSelector, useDispatch } from "react-redux";
+import { updateUserProfileImage } from "../../../../services/operations/SettingsAPI";
+
 import IconBtn from "../../../common/IconBtn";
 import Img from "../../../common/Img";
 
 export default function ChangeProfilePicture() {
+  const { token } = useSelector((state) => state.auth)
+  const { user } = useSelector((state) => state.profile)
+  const dispatch = useDispatch()
+
   const [loading, setLoading] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [previewSource, setPreviewSource] = useState(null);
@@ -33,12 +40,14 @@ export default function ChangeProfilePicture() {
   const handleFileUpload = () => {
     try {
       setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-        console.log("Tải lên thành công:", profileImage);
-      }, 1000);
+      const formData = new FormData()
+      formData.append("file", profileImage)
+
+      dispatch(updateUserProfileImage(token, formData)).then(() => {
+        setLoading(false)
+      })
     } catch (error) {
-      console.log("Lỗi khi tải lên:", error.message);
+      console.log("ERROR MESSAGE - ", error.message);
     }
   };
 
@@ -52,8 +61,8 @@ export default function ChangeProfilePicture() {
     <div className="flex items-center justify-between rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-3 sm:px-12 text-richblack-5">
       <div className="flex items-center gap-x-4">
         <Img
-          src={previewSource || "/default-profile.png"}
-          alt="profile-preview"
+          src={previewSource || user?.imageUrl}
+          alt={`profile-${user?.firstName}`}
           className="aspect-square w-[78px] rounded-full object-cover"
         />
 
