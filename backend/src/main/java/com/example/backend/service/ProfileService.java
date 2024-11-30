@@ -15,10 +15,7 @@ import com.example.backend.repository.ProfileRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.utils.constants.ImageDefault;
 import com.example.backend.utils.helpers.Duration;
-import com.example.backend.utils.types.CloudFileInfoType;
-import com.example.backend.utils.types.CourseDataWithStats;
-import com.example.backend.utils.types.GetAllInstructorsResponse;
-import com.example.backend.utils.types.GetAllStudentResponse;
+import com.example.backend.utils.types.*;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -121,7 +118,7 @@ public class ProfileService {
     public GetAllStudentResponse getAllStudents() {
         List<User> users = _userRepository.findByRoleName(RoleEnum.STUDENT);
         Integer count = users.size();
-        List<UserDto> userDtos = _userMapper.convertToUserDtoList(users);
+        List<UserSpecific> userDtos = _userMapper.convertToUserDtoList(users);
         GetAllStudentResponse response = new GetAllStudentResponse();
         response.setStudents(userDtos);
         response.setTotal(count);
@@ -131,7 +128,7 @@ public class ProfileService {
     public GetAllInstructorsResponse getAllInstructors() {
         List<User> users = _userRepository.findByRoleName(RoleEnum.INSTRUCTOR);
         Integer count = users.size();
-        List<UserDto> userDtos = _userMapper.convertToUserDtoList(users);
+        List<UserSpecific> userDtos = _userMapper.convertToUserDtoList(users);
         GetAllInstructorsResponse response = new GetAllInstructorsResponse();
         response.setInstructors(userDtos);
         response.setTotal(count);

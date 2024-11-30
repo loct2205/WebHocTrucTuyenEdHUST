@@ -1,5 +1,6 @@
-package com.example.backend.dto;
+package com.example.backend.utils.types;
 
+import com.example.backend.dto.CourseDto;
 import com.example.backend.entity.Profile;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class UserSpecific {
     private Integer id;
     private String fullName;
     private String lastName;
@@ -24,10 +25,9 @@ public class UserDto {
     private Boolean approve;
     private Date createdAt;
     private Date updatedAt;
-    private List<Long> courseEnrolled; // id
-    private List<Long> managedCourses; // id
+    private List<CourseDto> courses;
+    private List<CourseDto> managedCourses;
     private Profile profile;
     private String imageKey;
     private String imageUrl;
-
 }
