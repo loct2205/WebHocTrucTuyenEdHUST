@@ -5,6 +5,8 @@ import IconBtn from '../../common/IconBtn';
 
 import { VscAdd } from 'react-icons/vsc';
 import user_logo from "../../../assets/Images/user.png";
+import { useSelector } from 'react-redux';
+import { getAllStudentsData } from '../../../services/operations/adminAPI';
 
 // loading skeleton
 const LoadingSkeleton = () => {
@@ -28,57 +30,24 @@ const LoadingSkeleton = () => {
 };
 
 const AllStudents = () => {
+    const { token } = useSelector(state => state.auth)
     const [allStudents, setAllStudents] = useState([]);
     const [studentsCount, setStudentsCount] = useState();
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    // Sử dụng dữ liệu mẫu
+    // fetch all Students Details
     useEffect(() => {
         const fetchAllStudents = async () => {
-            setLoading(true);
-            const fakeData = [
-                {
-                    _id: "1",
-                    firstName: "Nguyễn",
-                    lastName: "Văn A",
-                    email: "vana@example.com",
-                    image: user_logo,
-                    additionalDetails: {
-                        gender: "Nam",
-                        contactNumber: "0123456789",
-                        dateOfBirth: "01/01/1990",
-                    },
-                    active: true,
-                    approved: true,
-                    courses: [
-                        { _id: "101", courseName: "Lập trình Web", price: 500000 },
-                        { _id: "102", courseName: "Cơ sở dữ liệu", price: 700000 },
-                    ],
-                },
-                {
-                    _id: "2",
-                    firstName: "Trần",
-                    lastName: "Thị B",
-                    email: "thib@example.com",
-                    image: user_logo,
-                    additionalDetails: {
-                        gender: "Nữ",
-                        contactNumber: "",
-                        dateOfBirth: "",
-                    },
-                    active: false,
-                    approved: false,
-                    courses: [],
-                },
-            ];
-            setAllStudents(fakeData);
-            setStudentsCount(fakeData.length);
-            setLoading(false);
-        };
+            setLoading(true)
+            const { students, total } = await getAllStudentsData(token)
+            setAllStudents(students)
+            setStudentsCount(total);
+            setLoading(false)
+        }
 
-        fetchAllStudents();
-    }, []);
+        fetchAllStudents()
+    }, [token])
 
     return (
         <div className=''>
@@ -122,13 +91,13 @@ const AllStudents = () => {
                     ) : (
                         allStudents.map((student) => (
                             <div
-                                key={student._id}
+                                key={student.id}
                                 className='border-x border-2 border-richblack-500 '
                             >
                                 <Tr className="flex gap-x-10 px-6 py-8">
                                     <Td className="flex flex-1 gap-x-2">
                                         <img
-                                            src={student.image}
+                                            src={student.imageUrl}
                                             alt="student"
                                             className="h-[150px] w-[150px] rounded-full "
                                         />
@@ -142,20 +111,20 @@ const AllStudents = () => {
 
                                                     <p>
                                                         Giới tính:{" "}
-                                                        {student.additionalDetails.gender
-                                                            ? student.additionalDetails.gender
+                                                        {student.profile?.gender
+                                                            ? student.profile?.gender
                                                             : "Không xác định"}
                                                     </p>
                                                     <p>
                                                         Số điện thoại:{" "}
-                                                        {student.additionalDetails.contactNumber
-                                                            ? student.additionalDetails.contactNumber
+                                                        {student.profile?.contactNumber
+                                                            ? student.profile?.contactNumber
                                                             : "Không có dữ liệu"}
                                                     </p>
                                                     <p>
                                                         Ngày sinh:{" "}
-                                                        {student.additionalDetails.dateOfBirth
-                                                            ? student.additionalDetails.dateOfBirth
+                                                        {student.profile?.dob
+                                                            ? student.Profile?.dob
                                                             : "Không có dữ liệu"}
                                                     </p>
                                                 </div>
@@ -177,7 +146,7 @@ const AllStudents = () => {
                                             {student.courses.map((course) => (
                                                 <div
                                                     className="text-white text-sm"
-                                                    key={course._id}
+                                                    key={course.id}
                                                 >
                                                     <p>{course.courseName}</p>
                                                     <p className="text-sm font-normal">

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { VscAdd } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
+import { getAllInstructorDetails } from "../../../services/operations/adminAPI";
+import { useSelector } from "react-redux";
 
 import IconBtn from "../../common/IconBtn";
 
@@ -27,55 +29,25 @@ const LoadingSkeleton = () => {
 };
 
 function AllInstructors() {
+  const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const [allInstructorDetails, setAllInstructorDetails] = useState([]);
   const [instructorsCount, setInstructorsCount] = useState();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Sử dụng dữ liệu giả thay vì gọi API
     const fetchInstructorsData = async () => {
-      setLoading(true);
-      const fakeData = [
-        {
-          _id: "1",
-          firstName: "Nguyễn",
-          lastName: "Văn A",
-          email: "vana@example.com",
-          image: "https://via.placeholder.com/150",
-          additionalDetails: {
-            gender: "Nam",
-            contactNumber: "0123456789",
-            dateOfBirth: "1990-01-01",
-          },
-          active: true,
-          approved: true,
-          courses: [
-            { _id: "101", courseName: "Khóa học Lập trình", price: 500000 },
-          ],
-        },
-        {
-          _id: "2",
-          firstName: "Trần",
-          lastName: "Thị B",
-          email: "thib@example.com",
-          image: "https://via.placeholder.com/150",
-          additionalDetails: {
-            gender: "Nữ",
-            contactNumber: "",
-            dateOfBirth: "",
-          },
-          active: false,
-          approved: false,
-          courses: [],
-        },
-      ];
-      setAllInstructorDetails(fakeData);
-      setInstructorsCount(fakeData.length);
-      setLoading(false);
+      setLoading(true)
+      const { instructors, count } = await getAllInstructorDetails(token);
+      if (instructors) {
+        setAllInstructorDetails(instructors);
+        setInstructorsCount(count)
+      }
+      setLoading(false)
     };
 
     fetchInstructorsData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -116,13 +88,13 @@ function AllInstructors() {
           ) : (
             allInstructorDetails.map((instructor) => (
               <div
-                key={instructor._id}
+                key={instructor.id}
                 className="border-x border-2 border-richblack-500 "
               >
                 <Tr className="flex gap-x-10 px-6 py-8">
                   <Td className="flex flex-1 gap-x-2">
                     <img
-                      src={instructor.image}
+                      src={instructor.imageUrl}
                       alt="giảng viên"
                       className="h-[150px] w-[150px] rounded-full "
                     />
@@ -136,20 +108,20 @@ function AllInstructors() {
 
                           <p>
                             Giới tính:{" "}
-                            {instructor.additionalDetails.gender
-                              ? instructor.additionalDetails.gender
+                            {instructor.profile?.gender
+                              ? instructor.profile?.gender
                               : "Không xác định"}
                           </p>
                           <p>
                             Số điện thoại:{" "}
-                            {instructor.additionalDetails.contactNumber
-                              ? instructor.additionalDetails.contactNumber
+                            {instructor.profile?.contactNumber
+                              ? instructor.profile?.contactNumber
                               : "Không có dữ liệu"}
                           </p>
                           <p>
                             Ngày sinh:{" "}
-                            {instructor.additionalDetails.dateOfBirth
-                              ? instructor.additionalDetails.dateOfBirth
+                            {instructor.profile?.dob
+                              ? instructor.profile?.dob
                               : "Không có dữ liệu"}
                           </p>
                         </div>
@@ -164,14 +136,14 @@ function AllInstructors() {
                   </Td>
                 </Tr>
 
-                {instructor.courses.length ? (
+                {instructor.managedCourses.length ? (
                   <Tr className="flex gap-x-10 px-6 pb-5">
                     <p className="text-yellow-50 ">Khóa học đã tạo</p>
                     <div className="grid grid-cols-5 gap-y-5">
-                      {instructor.courses.map((course) => (
+                      {instructor.managedCourses.map((course) => (
                         <div
                           className="text-white text-sm"
-                          key={course._id}
+                          key={course.id}
                         >
                           <p>{course.courseName}</p>
                           <p className="text-sm font-normal">
