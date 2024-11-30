@@ -1,20 +1,20 @@
 const BASE_URL = 'http://localhost:8080'; 
 // AUTH ENDPOINTS
 export const endpoints = {
-    SENDOTP_API: BASE_URL + "/auth/send-otp",
-    SIGNUP_API: BASE_URL + "/auth/signup",
-    LOGIN_API: BASE_URL + "/auth/login",
-    RESETPASSTOKEN_API: BASE_URL + "/auth/reset-password-token",
-    RESETPASSWORD_API: BASE_URL + "/auth/reset-password",
-    CHANGE_PASSWORD: BASE_URL + "/auth/change-password",
+    SENDOTP_API: BASE_URL + "/auth/send-otp", //DONE
+    SIGNUP_API: BASE_URL + "/auth/signup", //DONE
+    LOGIN_API: BASE_URL + "/auth/login", //DONE
+    RESETPASSTOKEN_API: BASE_URL + "/auth/reset-password-token", //DONE
+    RESETPASSWORD_API: BASE_URL + "/auth/reset-password", //DONE
+    CHANGE_PASSWORD: BASE_URL + "/auth/change-password", //DONE
 }
 
 
 // PROFILE ENDPOINTS
 export const profileEndpoints = {
-  GET_USER_DETAILS_API: BASE_URL + "/profiles",
-  GET_USER_ENROLLED_COURSES_API: BASE_URL + "/profiles/course-enrolled",
-  GET_INSTRUCTOR_DATA_API: BASE_URL + "/profiles/instructor-dashboard",
+  GET_USER_DETAILS_API: BASE_URL + "/profiles", //DONE
+  GET_USER_ENROLLED_COURSES_API: BASE_URL + "/profiles/course-enrolled", //DONE
+  GET_INSTRUCTOR_DATA_API: BASE_URL + "/profiles/instructor-dashboard", //DONE
 }
 
 // ADMIN ENDPOINTS
@@ -42,7 +42,7 @@ export const courseEndpoints = {
   CREATE_SUBSECTION_API: BASE_URL + "/course/addSubSection",
   UPDATE_SECTION_API: BASE_URL + "/course/updateSection",
   UPDATE_SUBSECTION_API: BASE_URL + "/course/updateSubSection",
-    GET_ALL_INSTRUCTOR_COURSES_API: BASE_URL + "/courses/instructor",
+  GET_ALL_INSTRUCTOR_COURSES_API: BASE_URL + "/courses/instructor", //DONE
   DELETE_SECTION_API: BASE_URL + "/course/deleteSection",
   DELETE_SUBSECTION_API: BASE_URL + "/course/deleteSubSection",
   DELETE_COURSE_API: BASE_URL + "/course/deleteCourse",
@@ -74,8 +74,8 @@ export const contactusEndpoint = {
 
 // SETTINGS PAGE API
 export const settingsEndpoints = {
-  UPDATE_DISPLAY_PICTURE_API: BASE_URL + "/profiles/avatar",
-  UPDATE_PROFILE_API: BASE_URL + "/profiles",
-  CHANGE_PASSWORD_API: BASE_URL + "/auth/change-password",
-  DELETE_PROFILE_API: BASE_URL + "/profiles",
+  UPDATE_DISPLAY_PICTURE_API: BASE_URL + "/profiles/avatar", //DONE
+  UPDATE_PROFILE_API: BASE_URL + "/profiles", //DONE
+  CHANGE_PASSWORD_API: BASE_URL + "/auth/change-password", //DONE
+  DELETE_PROFILE_API: BASE_URL + "/profiles", //DONE
 }
