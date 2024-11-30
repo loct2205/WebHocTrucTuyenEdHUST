@@ -47,15 +47,15 @@ export const courseEndpoints = {
   DELETE_SUBSECTION_API: BASE_URL + "/course/deleteSubSection",
   DELETE_COURSE_API: BASE_URL + "/course/deleteCourse",
   GET_FULL_COURSE_DETAILS_AUTHENTICATED: BASE_URL + "/course/getFullCourseDetails",
-  LECTURE_COMPLETION_API: BASE_URL + "/course/updateCourseProgress",
-  CREATE_RATING_API: BASE_URL + "/course/createRating",
+  LECTURE_COMPLETION_API: BASE_URL + "/course-progress", //DONE
+  CREATE_RATING_API: BASE_URL + "/ratings", // DONE
   CREATE_NEW_CATEGORY: BASE_URL + "/course/createCategory",
   DELETE_CATEGORY: BASE_URL + "/course/deleteCategory",
 }
 
 // RATINGS AND REVIEWS
 export const ratingsEndpoints = {
-  REVIEWS_DETAILS_API: BASE_URL + "/ratings",
+  REVIEWS_DETAILS_API: BASE_URL + "/ratings", // DONE
 }
 
 // CATAGORIES API

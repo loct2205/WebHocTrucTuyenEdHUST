@@ -4,6 +4,8 @@ import "video-react/dist/video-react.css";
 import { BigPlayButton, Player } from "video-react";
 import IconBtn from "../../common/IconBtn";
 import { HiMenuAlt1 } from "react-icons/hi";
+import { markLectureAsComplete } from "../../../services/operations/courseDetailsAPI";
+import { updateCompletedLectures } from "../../../slices/viewCourseSlice";
 
 const VideoDetails = () => {
   const { courseId, sectionId, subSectionId } = useParams();
@@ -94,11 +96,18 @@ const VideoDetails = () => {
     }
   };
 
-  const handleLectureCompletion = () => {
-    setLoading(true);
-    console.log("Đã đánh dấu hoàn thành:", subSectionId);
-    setLoading(false);
-  };
+  // handle Lecture Completion
+  const handleLectureCompletion = async () => {
+    setLoading(true)
+    const res = await markLectureAsComplete(
+      { courseId: courseId, subSectionId: subSectionId },
+      token
+    )
+    if (res) {
+      dispatch(updateCompletedLectures(subSectionId))
+    }
+    setLoading(false)
+  }
 
   if (courseViewSidebar && window.innerWidth <= 640) return null;
 

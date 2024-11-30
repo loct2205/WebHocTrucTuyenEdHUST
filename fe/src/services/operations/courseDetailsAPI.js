@@ -426,13 +426,13 @@ export const markLectureAsComplete = async (data, token) => {
   // console.log("mark complete data", data)
   const toastId = toast.loading("Loading...")
   try {
-    const response = await apiConnector("POST", LECTURE_COMPLETION_API, data, {
+    const response = await apiConnector("PUT", LECTURE_COMPLETION_API, data, {
       Authorization: `Bearer ${token}`,
     })
     console.log("MARK_LECTURE_AS_COMPLETE_API API RESPONSE............", response)
 
-    if (!response.data.message) {
-      throw new Error(response.data.error)
+    if (!response.data) {
+      throw new Error('Update course progress failed!')
     }
     toast.success("Lecture Completed")
     result = true
@@ -455,7 +455,7 @@ export const createRating = async (data, token) => {
       Authorization: `Bearer ${token}`,
     })
     console.log("CREATE RATING API RESPONSE............", response)
-    if (!response?.data?.success) {
+    if (!response?.data || !response?.data?.id) {
       throw new Error("Could Not Create Rating")
     }
     toast.success("Rating Created")
