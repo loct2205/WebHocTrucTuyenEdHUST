@@ -7,6 +7,6 @@ import java.util.List;
 
 @Data
 public class GetAllInstructorsResponse {
-    List<UserDto> instructors;
+    List<UserSpecific> instructors;
     Integer total;
 }

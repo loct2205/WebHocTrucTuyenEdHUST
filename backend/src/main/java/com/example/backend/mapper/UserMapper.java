@@ -1,10 +1,12 @@
 package com.example.backend.mapper;
 
+import com.example.backend.dto.CourseDto;
 import com.example.backend.dto.UserDto;
 import com.example.backend.entity.Course;
 import com.example.backend.dto.profile.UserDetailDto;
 import com.example.backend.entity.User;
 import com.example.backend.repository.CourseRepository;
+import com.example.backend.utils.types.UserSpecific;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -87,7 +90,23 @@ public class UserMapper {
     }
 
 
-    public List<UserDto> convertToUserDtoList(List<User> users) {
-        return users.stream().map(user -> modelMapper.map(user, UserDto.class)).toList();
+    public List<UserSpecific> convertToUserDtoList(List<User> users) {
+        return users.stream().map(user -> {
+            UserSpecific userSpecific = modelMapper.map(user, UserSpecific.class);
+            if (user.getCourses() != null) {
+                List<CourseDto> courseDtos = user.getCourses().stream()
+                        .map(course -> modelMapper.map(course, CourseDto.class))
+                        .collect(Collectors.toList());
+                userSpecific.setCourses(courseDtos);
+            }
+            if (user.getManagedCourses() != null) {
+                List<CourseDto> managedCourseDtos = user.getManagedCourses().stream()
+                        .map(course -> modelMapper.map(course, CourseDto.class))
+                        .collect(Collectors.toList());
+                userSpecific.setManagedCourses(managedCourseDtos);
+            }
+            return userSpecific;
+        }).collect(Collectors.toList());
     }
+
 }

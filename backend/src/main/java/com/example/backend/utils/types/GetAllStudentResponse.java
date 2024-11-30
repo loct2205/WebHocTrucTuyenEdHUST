@@ -8,6 +8,6 @@ import java.util.List;
 
 @Data
 public class GetAllStudentResponse {
-    List<UserDto> students;
+    List<UserSpecific> students;
     Integer total;
 }
