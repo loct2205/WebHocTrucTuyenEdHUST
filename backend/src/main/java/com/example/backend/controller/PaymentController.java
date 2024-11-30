@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RequestMapping("/payments")
 @RestController
@@ -42,19 +43,25 @@ public class PaymentController {
             User currentUser = (User) authentication.getPrincipal();
             String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
             String vnpayUrl = _paymentService.createOrder(request, enrollStudentDto, currentUser.getId(), baseUrl);
-            return ResponseEntity.ok("redirect:" + vnpayUrl);
+            return ResponseEntity.ok(vnpayUrl);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @GetMapping("/vnpay-payment-return")
-    public ResponseEntity<String> paymentCompleted(HttpServletRequest request){
+    public RedirectView paymentCompleted(HttpServletRequest request){
+        RedirectView redirectView = new RedirectView();
         try {
             int paymentStatus = _paymentService.orderReturn(request);
-            return paymentStatus == 1 ? ResponseEntity.ok("Payment successful") : ResponseEntity.ok("Payment failed");
+            if(paymentStatus == 1) {
+                redirectView.setUrl("http://localhost:5173/dashboard/enrolled-courses?status=success");
+            }else {
+                redirectView.setUrl("http://localhost:5173/dashboard/enrolled-courses?status=failed");
+            }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            redirectView.setUrl("http://localhost:5173/dashboard/enrolled-courses?status=failed");
         }
+        return redirectView;
     }
 }
