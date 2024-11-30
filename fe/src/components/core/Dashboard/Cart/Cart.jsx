@@ -1,10 +1,10 @@
+import { useSelector } from "react-redux";
+
 import RenderCartCourses from "./RenderCartCourses";
 import RenderTotalAmount from "./RenderTotalAmount";
 
 export default function Cart() {
-  // Dữ liệu mẫu 
-  const totalItems = 2; 
-  const total = 1200000; 
+  const { total, totalItems } = useSelector((state) => state.cart || { total: 0, totalItems: 0 })
 
   return (
     <>
@@ -19,7 +19,7 @@ export default function Cart() {
         </div>
       ) : (
         <p className="mt-14 text-center text-3xl text-richblack-100">
-          Giỏ hàng trống
+          Giỏ hàng của bạn trống
         </p>
       )}
     </>

@@ -1,13 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { VscSignOut, VscSettingsGear } from "react-icons/vsc";
+import ConfirmationModal from "../../common/ConfirmationModal";
+import SidebarLink from "./SidebarLink";
+
+import { HiMenuAlt1 } from "react-icons/hi";
+import { IoMdClose } from "react-icons/io";
+
+import { sidebarLinks } from "./../../../../data/dashboard-links";
+import { useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
-  const [user, setUser] = useState({ firstName: "User", accountType: "basic" });
-  const [openSideMenu, setOpenSideMenu] = useState(true);
+  const [confirmationModal, setConfirmationModal] = useState(null);
+  const [openSideMenu, setOpenSideMenu] = useState(false);
   const [screenSize, setScreenSize] = useState(window.innerWidth);
+  const [profileLoading, setProfileLoading] = useState(false);
   const navigate = useNavigate();
 
-  //   Điều chỉnh sidebar
+  const user = {
+    accountType: "STUDENT",
+  };
+
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
 
@@ -16,14 +28,17 @@ export default function Sidebar() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  //   Ẩn sidebar
   useEffect(() => {
-    if (screenSize <= 640) {
-      setOpenSideMenu(false);
-    } else {
-      setOpenSideMenu(true);
-    }
+    setOpenSideMenu(screenSize > 640);
   }, [screenSize]);
+
+  if (profileLoading) {
+    return (
+      <div className="grid h-[calc(100vh-3.5rem)] min-w-[220px] items-center border-r-[1px] border-r-richblack-700 bg-richblack-800">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -31,71 +46,51 @@ export default function Sidebar() {
         className="sm:hidden text-white absolute left-7 top-3 cursor-pointer"
         onClick={() => setOpenSideMenu(!openSideMenu)}
       >
-        {openSideMenu ? "Đóng Danh sách" : "Mở Danh sách"}
+        {openSideMenu ? <IoMdClose size={33} /> : <HiMenuAlt1 size={33} />}
       </div>
 
       {openSideMenu && (
         <div className="flex h-[calc(100vh-3.5rem)] min-w-[220px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800 py-10">
           <div className="flex flex-col mt-6">
-            <Link
-              to="/dashboard/my-profile"
-              className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700"
-            >
-              Hồ sơ
-            </Link>
-            <Link
-              to="/dashboard/cart"
-              className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700"
-            >
-              Giỏ hàng
-            </Link>
-            <Link
-              to="/dashboard/enrolled-courses"
-              className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700"
-            >
-              Khóa học Đã tham gia
-            </Link>
-            <Link
-              to="/dashboard/instructor"
-              className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700"
-            >
-              Bảng điều khiển
-            </Link>
-            <Link
-              to="/dashboard/add-course"
-              className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700"
-            >
-              Thêm khóa học
-            </Link>
-            <Link
-              to="/dashboard/my-courses"
-              className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700"
-            >
-              Khóa học của tôi
-            </Link>
+            {sidebarLinks.map((link) => (
+              <SidebarLink key={link.id} link={link} iconName={link.icon} />
+            ))}
           </div>
 
           <div className="mx-auto mt-6 mb-6 h-[1px] w-10/12 bg-richblack-700" />
 
           <div className="flex flex-col">
-            <Link
-              to="/dashboard/settings"
-              className="block py-2 px-4 text-richblack-100 hover:bg-richblack-700"
-            >
-              Cài đặt
-            </Link>
+            <SidebarLink
+              link={{ name: "Cài đặt", path: "/dashboard/settings" }}
+              iconName={"VscSettingsGear"}
+            />
+
             <button
-              onClick={() => {
-                setUser(null);
-                navigate("/login");
-              }}
-              className="w-full text-left py-2 px-4 text-richblack-100 hover:bg-richblack-700"
+              onClick={() =>
+                setConfirmationModal({
+                  text1: "Bạn có chắc chắn không?",
+                  text2: "Bạn sẽ bị đăng xuất khỏi tài khoản.",
+                  btn1Text: "Đăng xuất",
+                  btn2Text: "Hủy",
+                  btn1Handler: () => {
+                    console.log("Đã đăng xuất");
+                    navigate("/login");
+                  },
+                  btn2Handler: () => setConfirmationModal(null),
+                })
+              }
+              className=" "
             >
-              Đăng xuất
+              <div className="flex items-center gap-x-2 px-8 py-2 text-sm font-medium text-richblack-300 hover:bg-richblack-700 relative">
+                <VscSignOut className="text-lg" />
+                <span>Đăng xuất</span>
+              </div>
             </button>
           </div>
         </div>
       )}
+
+      {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}
     </>
   );
 }

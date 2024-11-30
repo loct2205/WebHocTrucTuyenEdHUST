@@ -34,7 +34,7 @@ export default function UpdatePassword() {
     <>
       <form onSubmit={handleSubmit(submitPasswordForm)}>
         <div className="my-10 flex flex-col gap-y-6 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-6 sm:px-12">
-          <h2 className="text-lg font-semibold text-richblack-5">Thay đổi mật khẩu</h2>
+          <h2 className="text-lg font-semibold text-richblack-5">Mật khẩu</h2>
 
           <div className="flex flex-col gap-5 lg:flex-row">
             <div className="relative flex flex-col gap-2 lg:w-[48%]">
@@ -64,7 +64,7 @@ export default function UpdatePassword() {
 
               {errors.oldPassword && (
                 <span className="-mt-1 text-[12px] text-yellow-100">
-                  Vui lòng nhập mật khẩu hiện tại.
+                  Vui lòng nhập mật khẩu hiện tại của bạn.
                 </span>
               )}
             </div>
@@ -95,7 +95,7 @@ export default function UpdatePassword() {
               </span>
               {errors.newPassword && (
                 <span className="-mt-1 text-[12px] text-yellow-100">
-                  Vui lòng nhập mật khẩu mới.
+                  Vui lòng nhập mật khẩu mới của bạn.
                 </span>
               )}
             </div>
@@ -126,7 +126,7 @@ export default function UpdatePassword() {
               </span>
               {errors.confirmPassword && (
                 <span className="-mt-1 text-[12px] text-yellow-100">
-                  Vui nhập xác thực mật khẩu mới.
+                  Vui lòng nhập lại mật khẩu mới của bạn.
                 </span>
               )}
             </div>
@@ -142,7 +142,7 @@ export default function UpdatePassword() {
           >
             Hủy
           </button>
-          <IconBtn type="submit" text="Lưu" />
+          <IconBtn type="submit" text="Cập nhật" />
         </div>
       </form>
     </>

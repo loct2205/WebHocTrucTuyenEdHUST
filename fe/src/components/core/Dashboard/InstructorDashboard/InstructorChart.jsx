@@ -4,28 +4,11 @@ import { Pie } from "react-chartjs-2";
 
 Chart.register(...registerables);
 
-export default function InstructorChart() {
-  // Dữ liệu mẫu 
-  const mockCourses = [
-    {
-      courseName: "React Basics",
-      totalStudentsEnrolled: 50,
-      totalAmountGenerated: 1000,
-    },
-    {
-      courseName: "Advanced JavaScript",
-      totalStudentsEnrolled: 100,
-      totalAmountGenerated: 1500,
-    },
-    {
-      courseName: "Web Development",
-      totalStudentsEnrolled: 75,
-      totalAmountGenerated: 1200,
-    },
-  ];
-
+export default function InstructorChart({ courses }) {
+  // State để theo dõi biểu đồ hiện tại
   const [currChart, setCurrChart] = useState("students");
 
+  // Hàm tạo màu ngẫu nhiên cho biểu đồ
   const generateRandomColors = (numColors) => {
     const colors = [];
     for (let i = 0; i < numColors; i++) {
@@ -37,39 +20,39 @@ export default function InstructorChart() {
     return colors;
   };
 
-  // Biểu đồ học viên
+  // Dữ liệu cho biểu đồ hiển thị thông tin sinh viên
   const chartDataStudents = {
-    labels: mockCourses.map((course) => course.courseName),
+    labels: courses.map((course) => course.courseName),
     datasets: [
       {
-        data: mockCourses.map((course) => course.totalStudentsEnrolled),
-        backgroundColor: generateRandomColors(mockCourses.length),
+        data: courses.map((course) => course.totalStudentsEnrolled),
+        backgroundColor: generateRandomColors(courses.length),
       },
     ],
   };
 
-  // Biểu đồ học phí
+  // Dữ liệu cho biểu đồ hiển thị thông tin doanh thu
   const chartIncomeData = {
-    labels: mockCourses.map((course) => course.courseName),
+    labels: courses.map((course) => course.courseName),
     datasets: [
       {
-        data: mockCourses.map((course) => course.totalAmountGenerated),
-        backgroundColor: generateRandomColors(mockCourses.length),
+        data: courses.map((course) => course.totalAmountGenerated),
+        backgroundColor: generateRandomColors(courses.length),
       },
     ],
   };
 
-  // Chọn biểu đồ
+  // Tùy chọn cho biểu đồ
   const options = {
     maintainAspectRatio: false,
   };
 
   return (
     <div className="flex flex-1 flex-col gap-y-4 rounded-md bg-richblack-800 p-6">
-      <p className="text-lg font-bold text-richblack-5">Biểu đồ</p>
+      <p className="text-lg font-bold text-richblack-5">Hình ảnh hóa</p>
 
       <div className="space-x-4 font-semibold">
-   
+        {/* Nút để chuyển sang biểu đồ "Sinh viên" */}
         <button
           onClick={() => setCurrChart("students")}
           className={`rounded-sm p-1 px-3 transition-all duration-200 ${
@@ -78,9 +61,10 @@ export default function InstructorChart() {
               : "text-yellow-400"
           }`}
         >
-          Học viên
+          Sinh viên
         </button>
 
+        {/* Nút để chuyển sang biểu đồ "Doanh thu" */}
         <button
           onClick={() => setCurrChart("income")}
           className={`rounded-sm p-1 px-3 transition-all duration-200 ${
@@ -89,11 +73,12 @@ export default function InstructorChart() {
               : "text-yellow-400"
           }`}
         >
-          Học phí
+          Doanh thu
         </button>
       </div>
 
-      <div className="relative mx-auto aspect-square h-full w-full">
+      <div className="relative mx-auto h-[300px] w-[300px]">
+        {/* Hiển thị biểu đồ Pie dựa trên biểu đồ được chọn */}
         <Pie
           data={currChart === "students" ? chartDataStudents : chartIncomeData}
           options={options}

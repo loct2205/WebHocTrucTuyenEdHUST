@@ -1,38 +1,48 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
+import { resetCourseState, setStep } from "../../../../../slices/courseSlice";
+import { COURSE_STATUS } from "../../../../../utils/constants";
 import IconBtn from "../../../../common/IconBtn";
 
 export default function PublishCourse() {
   const { register, handleSubmit, setValue, getValues } = useForm();
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { course } = useSelector((state) => state.course);
   const [loading, setLoading] = useState(false);
-  const [courseStatus, setCourseStatus] = useState("DRAFT");
 
   useEffect(() => {
-    if (courseStatus === "PUBLISHED") {
+    if (course?.status === COURSE_STATUS.PUBLISHED) {
       setValue("public", true);
     }
-  }, [courseStatus, setValue]);
+  }, [course, setValue]);
 
   const goBack = () => {
-    console.log("Quay lại bước trước");
+    dispatch(setStep(2));
   };
 
   const goToCourses = () => {
-    // navigate("/dashboard/my-courses");
-    navigate("/dashboard");
+    dispatch(resetCourseState());
+    navigate("/dashboard/my-courses");
   };
 
   const handleCoursePublish = () => {
-    setLoading(true);
-    const newStatus = getValues("public") ? "PUBLISHED" : "DRAFT";
-    setCourseStatus(newStatus);
-    setLoading(false);
+    if (
+      (course?.status === COURSE_STATUS.PUBLISHED && getValues("public") === true) ||
+      (course?.status === COURSE_STATUS.DRAFT && getValues("public") === false)
+    ) {
+      goToCourses();
+      return;
+    }
+    alert("Khóa học đã được cập nhật trạng thái!");
     goToCourses();
   };
 
-  const onSubmit = () => {
+  const onSubmit = (data) => {
     handleCoursePublish();
   };
 
@@ -40,6 +50,7 @@ export default function PublishCourse() {
     <div className="rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6">
       <p className="text-2xl font-semibold text-richblack-5">Cài đặt xuất bản</p>
       <form onSubmit={handleSubmit(onSubmit)}>
+        {/* Checkbox */}
         <div className="my-6 mb-8">
           <label htmlFor="public" className="inline-flex items-center text-lg">
             <input
@@ -48,10 +59,13 @@ export default function PublishCourse() {
               {...register("public")}
               className="border-gray-300 h-4 w-4 rounded bg-richblack-500 text-richblack-400 focus:ring-2 focus:ring-richblack-5"
             />
-            <span className="ml-2 text-richblack-400">Công khai khóa học này</span>
+            <span className="ml-2 text-richblack-400">
+              Đặt khóa học này ở chế độ công khai
+            </span>
           </label>
         </div>
 
+        {/* Next Prev Button */}
         <div className="ml-auto flex max-w-max items-center gap-x-4">
           <button
             disabled={loading}

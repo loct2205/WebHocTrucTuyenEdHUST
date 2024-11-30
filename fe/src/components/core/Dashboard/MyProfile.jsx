@@ -8,6 +8,7 @@ import { profileEndpoints } from "../../../services/apis"
 import { ACCOUNT_TYPE } from "../../../utils/constants";
 import { useDispatch } from "react-redux";
 import { setUser as setUserSlice } from "../../../slices/profileSlice";
+import Img from "../../common/Img";
 
 export default function MyProfile() {
   const navigate = useNavigate();
@@ -48,12 +49,12 @@ export default function MyProfile() {
   return (
     <>
       <h1 className="mb-14 text-4xl font-medium text-richblack-5 font-boogaloo text-center sm:text-left">
-        Hồ sơ Cá nhân
+        Hồ sơ của tôi
       </h1>
 
       <div className="flex items-center justify-between rounded-2xl border-[1px] border-richblack-700 bg-richblack-800 p-8 px-3 sm:px-12">
         <div className="flex items-center gap-x-4">
-          <img
+          <Img
             src={user.imageUrl}
             alt={`profile-${user.firstName}`}
             className="aspect-square w-[78px] rounded-full object-cover"
@@ -74,7 +75,6 @@ export default function MyProfile() {
         </IconBtn>
       </div>
 
-      {/* Section: Giới thiệu */}
       <div className="my-10 flex flex-col gap-y-10 rounded-2xl border-[1px] border-richblack-700 bg-richblack-800 p-8 px-7 sm:px-12">
         <div className="flex w-full items-center justify-between">
           <p className="text-lg font-semibold text-richblack-5">Giới thiệu</p>
@@ -87,7 +87,6 @@ export default function MyProfile() {
         </p>
       </div>
 
-      {/* Section: Thông tin Cá nhân */}
       <div className="my-10 flex flex-col gap-y-10 rounded-2xl border-[1px] border-richblack-700 bg-richblack-800 p-8 px-7 sm:px-12">
         <div className="flex w-full items-center justify-between">
           <p className="text-lg font-semibold text-richblack-5">Thông tin Cá nhân</p>
@@ -98,8 +97,9 @@ export default function MyProfile() {
 
         <div className="flex max-w-[500px] justify-between ">
           <div className="flex flex-col gap-y-5">
+
             <div>
-              <p className="mb-2 text-sm text-richblack-600">Tên</p>
+              <p className="mb-2 text-sm text-richblack-600">Họ</p>
               <p className="text-sm font-semibold text-richblack-5 capitalize">
                 {user.firstName}
               </p>
@@ -126,7 +126,7 @@ export default function MyProfile() {
 
           <div className="flex flex-col gap-y-5">
             <div>
-              <p className="mb-2 text-sm text-richblack-600">Họ</p>
+              <p className="mb-2 text-sm text-richblack-600">Tên</p>
               <p className="text-sm font-semibold text-richblack-5 capitalize">
                 {user.lastName}
               </p>
@@ -147,5 +147,5 @@ export default function MyProfile() {
         </div>
       </div>
     </>
-  );
+  )
 }

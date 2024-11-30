@@ -26,10 +26,11 @@ export default function DeleteAccount() {
           </h2>
 
           <div className="sm:w-3/5 text-pink-25 flex flex-col gap-3 mt-1">
-            <p>Bạn có muốn xóa tài khoản không?</p>
+            <p>Bạn có chắc chắn muốn xóa tài khoản?</p>
             <p>
-              Tài khoản này có chứa tài khoản có trả phí. Việc xóa tài khoản là
-              vĩnh viễn và mọi thứ liên quan cũng sẽ được loại bỏ
+              Tài khoản này có thể chứa các khóa học trả phí. Việc xóa tài khoản
+              là vĩnh viễn và sẽ xóa toàn bộ dữ liệu liên quan đến tài khoản
+              này.
             </p>
           </div>
 
@@ -47,8 +48,8 @@ export default function DeleteAccount() {
               onClick={() =>
                 check &&
                 setConfirmationModal({
-                  text1: "Bạn chắc chắn chưa?",
-                  text2: "Xóa tài khoản...!",
+                  text1: "Bạn có chắc chắn không?",
+                  text2: "Xóa tài khoản của tôi...!",
                   btn1Text: "Xóa",
                   btn2Text: "Hủy",
                   btn1Handler: () => dispatch(deleteProfile(token, navigate)),
@@ -56,7 +57,7 @@ export default function DeleteAccount() {
                 })
               }
             >
-              Tôi muốn xóa tài khoản.
+              Tôi muốn xóa tài khoản của mình.
             </button>
           </div>
         </div>

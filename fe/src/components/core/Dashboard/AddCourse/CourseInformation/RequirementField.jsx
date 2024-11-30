@@ -1,34 +1,38 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
-export default function RequirementsField({
-  name,
-  label,
-  register,
-  setValue,
-  errors,
-}) {
+export default function RequirementsField({ name, label, register, setValue, errors }) {
+  // Lấy dữ liệu từ Redux store
+  const { editCourse, course } = useSelector((state) => state.course);
   const [requirement, setRequirement] = useState("");
   const [requirementsList, setRequirementsList] = useState([]);
 
+  // Khởi tạo danh sách yêu cầu khi chỉnh sửa
   useEffect(() => {
-    register(name, { required: true, validate: (value) => value.length > 0 });
-  }, [register, name]);
+    if (editCourse) {
+      setRequirementsList(course?.instructions || []);
+    }
+    register(name, { required: true, validate: (value) => value.length > 0 }, requirementsList);
+  }, [editCourse, course, name, register, requirementsList]);
 
+  // Cập nhật giá trị mỗi khi danh sách thay đổi
   useEffect(() => {
     setValue(name, requirementsList);
   }, [requirementsList, setValue, name]);
 
+  // Thêm yêu cầu
   const handleAddRequirement = () => {
-    const trimmedRequirement = requirement.trim();
-    if (trimmedRequirement && !requirementsList.includes(trimmedRequirement)) {
-      setRequirementsList([...requirementsList, trimmedRequirement]);
+    if (requirement && !requirementsList.includes(requirement)) {
+      setRequirementsList([...requirementsList, requirement]);
       setRequirement("");
     }
   };
 
+  // Xóa yêu cầu
   const handleRemoveRequirement = (index) => {
-    const updatedRequirements = requirementsList.filter((_, i) => i !== index);
+    const updatedRequirements = [...requirementsList];
+    updatedRequirements.splice(index, 1);
     setRequirementsList(updatedRequirements);
   };
 
@@ -44,14 +48,8 @@ export default function RequirementsField({
           id={name}
           value={requirement}
           onChange={(e) => setRequirement(e.target.value)}
-          placeholder="Nhập yêu cầu..."
+          placeholder="Nhập yêu cầu và nhấn Thêm"
           className="form-style w-full"
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              handleAddRequirement();
-            }
-          }}
         />
         <button
           type="button"

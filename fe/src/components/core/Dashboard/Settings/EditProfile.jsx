@@ -52,7 +52,7 @@ export default function EditProfile() {
               />
               {errors.firstName && (
                 <span className="-mt-1 text-[12px] text-yellow-100">
-                  Vui lòng nhập tên.
+                  Vui lòng nhập tên của bạn.
                 </span>
               )}
             </div>
@@ -72,7 +72,7 @@ export default function EditProfile() {
               />
               {errors.lastName && (
                 <span className="-mt-1 text-[12px] text-yellow-100">
-                  Vui lòng nhập họ.
+                  Vui lòng nhập họ của bạn.
                 </span>
               )}
             </div>
@@ -91,11 +91,11 @@ export default function EditProfile() {
                 {...register("dob", {
                   required: {
                     value: true,
-                    message: "Vui lòng nhập ngày sinh.",
+                    message: "Vui lòng nhập ngày sinh của bạn.",
                   },
                   max: {
                     value: new Date().toISOString().split("T")[0],
-                    message: "Ngày sinh không hợp lệ.",
+                    message: "Ngày sinh không được ở trong tương lai.",
                   },
                 })}
                 defaultValue={user?.profile?.dob}
@@ -136,21 +136,21 @@ export default function EditProfile() {
           <div className="flex flex-col gap-5 lg:flex-row">
             <div className="flex flex-col gap-2 lg:w-[48%]">
               <label htmlFor="contactNumber" className="lable-style">
-                Số liên hệ
+                Số điện thoại
               </label>
               <input
                 type="tel"
                 name="contactNumber"
                 id="contactNumber"
-                placeholder="Nhập số liên hệ"
+                placeholder="Nhập số điện thoại"
                 className="form-style"
                 {...register("contactNumber", {
                   required: {
                     value: true,
-                    message: "Vui lòng nhập số liên hệ.",
+                    message: "Vui lòng nhập số điện thoại của bạn.",
                   },
-                  maxLength: { value: 12, message: "Không hợp lệ" },
-                  minLength: { value: 10, message: "Không hợp lệ" },
+                  maxLength: { value: 12, message: "Số điện thoại không hợp lệ" },
+                  minLength: { value: 10, message: "Số điện thoại không hợp lệ" },
                 })}
                 defaultValue={user?.profile?.contactNumber}
               />
@@ -169,14 +169,14 @@ export default function EditProfile() {
                 type="text"
                 name="about"
                 id="about"
-                placeholder="Nhập nội dung"
+                placeholder="Nhập thông tin giới thiệu"
                 className="form-style"
                 {...register("about", { required: true })}
                 defaultValue={user?.profile?.about}
               />
               {errors.about && (
                 <span className="-mt-1 text-[12px] text-yellow-100">
-                  Vui lòng nhập nội dung.
+                  Vui lòng nhập thông tin giới thiệu.
                 </span>
               )}
             </div>
