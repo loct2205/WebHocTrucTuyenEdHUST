@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { getUserEnrolledCourses } from "../../../services/operations/profileAPI";
 
 import Img from "./../../common/Img";
 
@@ -11,32 +12,20 @@ export default function EnrolledCourses() {
 
   const [enrolledCourses, setEnrolledCourses] = useState(null);
 
+  // fetch all users enrolled courses
+  const getEnrolledCourses = async () => {
+    try {
+      const res = await getUserEnrolledCourses(token);
+      setEnrolledCourses(res);
+    } catch (error) {
+      console.log("Could not fetch enrolled courses.")
+    }
+  };
+
   // Giả lập danh sách khóa học đã ghi danh
   useEffect(() => {
-    setTimeout(() => {
-      const fakeEnrolledCourses = [
-        {
-          _id: "1",
-          thumbnail: "https://via.placeholder.com/150",
-          courseName: "Khóa học 1",
-          courseDescription: "Mô tả khóa học 1",
-          totalDuration: "10 giờ",
-          progressPercentage: 50,
-          courseContent: [{ _id: "section1", subSection: [{ _id: "sub1" }] }],
-        },
-        {
-          _id: "2",
-          thumbnail: "https://via.placeholder.com/150",
-          courseName: "Khóa học 2",
-          courseDescription: "Mô tả khóa học 2",
-          totalDuration: "15 giờ",
-          progressPercentage: 70,
-          courseContent: [{ _id: "section2", subSection: [{ _id: "sub2" }] }],
-        },
-      ];
-      setEnrolledCourses(fakeEnrolledCourses);
-    }, 1000);
-  }, []);
+    getEnrolledCourses();
+  }, [])
 
   // Hiển thị khi đang tải
   const sklItem = () => {
@@ -105,7 +94,7 @@ export default function EnrolledCourses() {
                 className="flex sm:w-[45%] cursor-pointer items-center gap-4 px-5 py-3"
                 onClick={() => {
                   navigate(
-                    `/view-course/${course?._id}/section/${course.courseContent?.[0]?._id}/sub-section/${course.courseContent?.[0]?.subSection?.[0]?._id}`
+                    `/view-course/${course?.id}/section/${course.courseContent?.[0]?.id}/sub-section/${course.courseContent?.[0]?.subSections?.[0]?.id}`
                   );
                 }}
               >
