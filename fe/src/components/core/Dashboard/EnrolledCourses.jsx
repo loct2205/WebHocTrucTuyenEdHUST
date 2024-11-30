@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { getUserEnrolledCourses } from "../../../services/operations/profileAPI";
+import { toast, Toaster } from 'react-hot-toast'
+import { resetCart } from "../../../slices/cartSlice";
+import { useDispatch } from "react-redux";
 
 import Img from "./../../common/Img";
 
 export default function EnrolledCourses() {
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation(); 
+  const queryParams = new URLSearchParams(location.search); 
+  const status = queryParams.get('status');
 
   const [enrolledCourses, setEnrolledCourses] = useState(null);
 
@@ -26,6 +33,21 @@ export default function EnrolledCourses() {
   useEffect(() => {
     getEnrolledCourses();
   }, [])
+
+  useEffect(() => {
+    const notify = async () => {
+      console.log(status);
+      if (status === 'success') {
+        console.log(status);
+        toast.success('Thanh toán thành công!');
+        dispatch(resetCart());
+      } else if (status === 'failed') {
+        console.log(status);
+        toast.error('Thanh toán thất bại. Vui lòng thử lại.');
+      }
+    }
+    notify();
+  }, [status]);
 
   // Hiển thị khi đang tải
   const sklItem = () => {
@@ -59,6 +81,7 @@ export default function EnrolledCourses() {
 
   return (
     <>
+      <Toaster />
       <div className="text-4xl text-richblack-5 font-boogaloo text-center sm:text-left">
         Khóa học đã đăng ký
       </div>
@@ -94,7 +117,7 @@ export default function EnrolledCourses() {
                 className="flex sm:w-[45%] cursor-pointer items-center gap-4 px-5 py-3"
                 onClick={() => {
                   navigate(
-                    `/view-course/${course?.id}/section/${course.courseContent?.[0]?.id}/sub-section/${course.courseContent?.[0]?.subSections?.[0]?.id}`
+                  `/view-course/${course?.id}/section/${course.courseContent?.[0]?.id}/sub-section/${course.courseContent?.[0]?.subSections?.[0]?.id}`
                   );
                 }}
               >

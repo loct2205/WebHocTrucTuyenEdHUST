@@ -5,6 +5,7 @@ import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { NavbarLinks } from '../../../data/navbar-links';
 import subLinksData from '../../../data/subLinksData';
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { ACCOUNT_TYPE } from '../../utils/constants';
 
 const Navbar = () => {
     const { token } = useSelector((state) => state.auth);
@@ -107,7 +108,7 @@ const Navbar = () => {
                 {/* Login/SignUp/Dashboard */}
                 <div className='flex gap-x-4 items-center'>
                     {
-                        user && user?.accountType === "Student" && (
+                        user && user?.accountType === ACCOUNT_TYPE.STUDENT && (
                             <Link to="/dashboard/cart" className="relative">
                                 <AiOutlineShoppingCart className="text-[2.35rem] text-richblack-5 hover:bg-richblack-700 rounded-full p-2 duration-200" />
                                 {totalItems > 0 && (

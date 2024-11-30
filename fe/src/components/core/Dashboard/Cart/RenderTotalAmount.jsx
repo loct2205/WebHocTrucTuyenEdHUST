@@ -1,11 +1,18 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import IconBtn from "../../../common/IconBtn";
+import { useNavigate } from "react-router-dom";
+import { buyCourse } from "../../../../services/operations/studentFeaturesAPI";
 
 export default function RenderTotalAmount() {
-  const { total } = useSelector((state) => state.cart || { total: 0 }); // Fallback cho `state.cart`
+  const { total, cart } = useSelector((state) => state.cart)
+  const { token } = useSelector((state) => state.auth)
+  const { user } = useSelector((state) => state.profile)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  const handleBuyCourse = () => {
-    alert("Chức năng mua khóa học đang được phát triển!"); // Giả lập hành động mua khóa học
+  const handleBuyCourse = async () => {
+    const courses = cart.map((course) => course.id)
+    await buyCourse(token, courses, user, navigate, dispatch)
   };
 
   return (

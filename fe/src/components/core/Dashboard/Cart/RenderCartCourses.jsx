@@ -2,6 +2,7 @@ import { FaStar } from "react-icons/fa"
 import { RiDeleteBin6Line } from "react-icons/ri"
 import ReactStars from "react-rating-stars-component"
 import { useDispatch, useSelector } from "react-redux"
+import { removeFromCart } from "../../../../slices/cartSlice"
 
 import Img from './../../../common/Img';
 
@@ -13,7 +14,7 @@ export default function RenderCartCourses() {
     <div className="flex flex-1 flex-col">
       {cart.map((course, indx) => (
         <div
-          key={course._id}
+          key={course.id}
           className={`flex w-full flex-wrap items-start justify-between gap-6 ${
             indx !== cart.length - 1 && "border-b border-b-richblack-400 pb-6"
           } ${indx !== 0 && "mt-6"} `}
@@ -53,7 +54,7 @@ export default function RenderCartCourses() {
 
           <div className="flex flex-col items-end space-y-2">
             <button
-              onClick={() => dispatch({ type: "REMOVE_FROM_CART", payload: course._id })} // Bỏ API
+              onClick={() => dispatch(removeFromCart(course.id))}
               className="flex items-center gap-x-1 rounded-md border border-richblack-600 bg-richblack-700 py-3 px-[12px] text-pink-200"
             >
               <RiDeleteBin6Line />
