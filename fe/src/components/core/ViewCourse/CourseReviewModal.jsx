@@ -6,12 +6,9 @@ import IconBtn from "../../common/IconBtn";
 import Img from "../../common/Img";
 
 export default function CourseReviewModal({ setReviewModal }) {
-  // Thông tin người dùng mẫu
-  const user = {
-    firstName: "Nguyễn",
-    lastName: "Văn A",
-    image: "https://example.com/avatar.jpg", // URL hình ảnh mẫu
-  };
+  const { user } = useSelector((state) => state.profile)
+  const { token } = useSelector((state) => state.auth)
+  const { courseEntireData } = useSelector((state) => state.viewCourse)
 
   const {
     register,
@@ -29,13 +26,17 @@ export default function CourseReviewModal({ setReviewModal }) {
     setValue("courseRating", newRating);
   };
 
-  const onSubmit = (data) => {
-    console.log("Dữ liệu đánh giá:", {
-      rating: data.courseRating,
-      review: data.courseExperience,
-    });
-    setReviewModal(false);
-  };
+  const onSubmit = async (data) => {
+    await createRating(
+      {
+        courseId: courseEntireData.id,
+        rating: data.courseRating,
+        review: data.courseExperience,
+      },
+      token
+    )
+    setReviewModal(false)
+  }
 
   return (
     <div className="fixed inset-0 z-[1000] !mt-0 grid h-screen w-screen place-items-center overflow-auto bg-white bg-opacity-10 backdrop-blur-sm">
@@ -52,13 +53,13 @@ export default function CourseReviewModal({ setReviewModal }) {
         <div className="p-6">
           <div className="flex items-center justify-center gap-x-4">
             <Img
-              src={user.image}
-              alt={`${user.firstName} profile`}
+              src={user?.imageUrl}
+              alt={`${user?.firstName} profile`}
               className="aspect-square w-[50px] rounded-full object-cover"
             />
             <div>
               <p className="font-semibold text-richblack-5 capitalize">
-                {user.firstName} {user.lastName}
+                {user?.firstName} {user?.lastName}
               </p>
               <p className="text-sm text-richblack-5">Đăng công khai</p>
             </div>
