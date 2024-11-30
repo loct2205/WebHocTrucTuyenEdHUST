@@ -12,6 +12,7 @@ import VerifyEmail from "./pages/VerifyEmail";
 import Catalog from './pages/Catalog';
 import CourseDetails from './pages/CourseDetails';
 import About from "./pages/About";
+import Contact from "./pages/Contact";
 import PageNotFound from "./pages/PageNotFound";
 
 // Import các thành phần chung
@@ -78,6 +79,7 @@ function App() {
         {/* Các route công khai */}
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
