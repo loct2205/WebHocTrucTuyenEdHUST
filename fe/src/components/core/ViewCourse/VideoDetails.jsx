@@ -10,7 +10,6 @@ import { setCourseViewSidebar } from "../../../slices/sidebarSlice"
 import IconBtn from "../../common/IconBtn";
 import { HiMenuAlt1 } from "react-icons/hi";
 import { markLectureAsComplete } from "../../../services/operations/courseDetailsAPI";
-import { updateCompletedLectures } from "../../../slices/viewCourseSlice";
 
 
 const VideoDetails = () => {

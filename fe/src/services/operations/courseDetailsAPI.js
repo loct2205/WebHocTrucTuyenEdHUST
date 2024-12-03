@@ -37,7 +37,7 @@ export const createNewCategory = async (name, description, token) => {
       Authorization: `Bearer ${token}`,
     })
     console.log("CREATE_NEW_CATEGORY RESPONSE............", response)
-    if (!response?.data?.success) {
+    if (response.status != 200) {
       console.log("Could Not create new category")
     }
 
@@ -55,11 +55,11 @@ export const deleteCategory = async (categoryId, token) => {
   const toastId = toast.loading("Loading...")
 
   try {
-    const response = await apiConnector("DELETE", DELETE_CATEGORY, { categoryId }, {
+    const response = await apiConnector("DELETE", DELETE_CATEGORY + `${categoryId}`, null, {
       Authorization: `Bearer ${token}`,
     })
     console.log("DELETE_CATEGORY RESPONSE............", response)
-    if (!response?.data?.success) {
+    if (response.status != 200) {
       console.log("Could Not delete category")
     }
 

@@ -35,7 +35,7 @@ export const courseEndpoints = {
   GET_ALL_COURSE_API: BASE_URL + "/courses",
   COURSE_DETAILS_API: BASE_URL + "/courses/", // + /id
   EDIT_COURSE_API: BASE_URL + "/courses/edit/", // + /id
-  GET_ALL_INSTRUCTOR_COURSES_API: BASE_URL + "/courses/instructor/", // + /id
+  GET_ALL_INSTRUCTOR_COURSES_API: BASE_URL + "/courses/instructor", // + /id
   DELETE_COURSE_API: BASE_URL + "/courses/delete/", // + /id
   CREATE_COURSE_API: BASE_URL + "/courses/create",
   GET_FULL_COURSE_DETAILS_AUTHENTICATED: BASE_URL + "/course/getFullCourseDetails",
@@ -52,8 +52,8 @@ export const courseEndpoints = {
   UPDATE_SUBSECTION_VIDEO_API: BASE_URL + "/subsections/update-video/",
   // category
   COURSE_CATEGORIES_API: BASE_URL + "/category",
-  CREATE_NEW_CATEGORY: BASE_URL + "/course/createCategory",
-  DELETE_CATEGORY: BASE_URL + "/course/deleteCategory",
+  CREATE_NEW_CATEGORY: BASE_URL + "/category/create",
+  DELETE_CATEGORY: BASE_URL + "/category/delete/",
   
   // course progress
   LECTURE_COMPLETION_API: BASE_URL + "/course/updateCourseProgress",

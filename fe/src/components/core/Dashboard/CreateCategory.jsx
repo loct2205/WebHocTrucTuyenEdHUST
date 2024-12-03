@@ -3,7 +3,7 @@ import IconBtn from '../../common/IconBtn';
 
 import { IoIosAdd } from "react-icons/io";
 import { RiDeleteBin6Line } from "react-icons/ri";
-
+import { createNewCategory, deleteCategory, fetchCourseCategories } from "../../../services/operations/courseDetailsAPI";
 // loading skeleton
 const LoadingSkeleton = () => {
   return (
@@ -20,44 +20,36 @@ const CreateCategory = () => {
   const [subLinks, setSubLinks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newCategory, setNewCategory] = useState('');
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState(''); 
+  const token = JSON.parse(localStorage.getItem("token"));
+  const fetchSublinks = async () => {
+    try {
+      setLoading(true)
+      const res = await fetchCourseCategories(token);
+      setSubLinks(res);
+    }
+    catch (error) {
+      console.log("Could not fetch the category list = ", error);
+    }
+    setLoading(false)
+  }
 
-  // Dữ liệu mẫu ban đầu
-  const initialCategories = [
-    { _id: "1", name: "Lập trình", description: "Khóa học lập trình cơ bản" },
-    { _id: "2", name: "Thiết kế", description: "Khóa học về thiết kế đồ họa" },
-    { _id: "3", name: "Phân tích dữ liệu", description: "Khóa học phân tích dữ liệu nâng cao" },
-  ];
-
-  // Giả lập fetch dữ liệu
   useEffect(() => {
-    const fetchSublinks = async () => {
-      setLoading(true);
-      // Giả lập thời gian tải dữ liệu
-      setTimeout(() => {
-        setSubLinks(initialCategories);
-        setLoading(false);
-      }, 1000);
-    };
-
     fetchSublinks();
-  }, []);
+  }, [])
 
   // Thêm danh mục mới
-  const handleCreateCategory = () => {
-    const newCategoryData = {
-      _id: `${Date.now()}`, // Tạo ID giả
-      name: newCategory,
-      description,
-    };
-    setSubLinks((prev) => [...prev, newCategoryData]);
+  const handleCreateCategory = async () => {
+    const newCategoryData = await createNewCategory(newCategory, description,  token);
     setNewCategory('');
     setDescription('');
+    fetchSublinks();
   };
 
   // Xóa danh mục
-  const handleDeleteCategory = (categoryId) => {
-    setSubLinks((prev) => prev.filter((category) => category._id !== categoryId));
+  const handleDeleteCategory = async (categoryId) => {
+    await deleteCategory(categoryId, token)
+    fetchSublinks();
   };
 
   return (
@@ -100,7 +92,7 @@ const CreateCategory = () => {
           subLinks?.map((subLink, i) => (
             <div key={i} className="flex justify-between gap-10">
               <p>{subLink.name}</p>
-              <button onClick={() => handleDeleteCategory(subLink._id)}>
+              <button onClick={() => handleDeleteCategory(subLink.id)}>
                 <RiDeleteBin6Line className="hover:text-pink-200" />
               </button>
             </div>
