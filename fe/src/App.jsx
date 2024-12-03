@@ -17,20 +17,24 @@ import PageNotFound from "./pages/PageNotFound";
 
 // Import các thành phần chung
 import Navbar from "./components/common/Navbar";
+
 import Dashboard from "./pages/Dashboard";
 import MyProfile from "./components/core/Dashboard/MyProfile";
 import Settings from "./components/core/Dashboard/Settings/Settings";
 import MyCourses from "./components/core/Dashboard/MyCourses";
 import EditCourse from "./components/core/Dashboard/EditCourse/EditCourse";
 import Instructor from "./components/core/Dashboard/Instructor";
+
 import Cart from "./components/core/Dashboard/Cart/Cart";
 import EnrolledCourses from "./components/core/Dashboard/EnrolledCourses";
 import AddCourse from "./components/core/Dashboard/AddCourse/AddCourse";
+
+import VideoDetails from "./components/core/ViewCourse/VideoDetails"; 
+
+import { HiArrowNarrowUp } from "react-icons/hi";
 import CreateCategory from "./components/core/Dashboard/CreateCategory";
 import AllStudents from "./components/core/Dashboard/AllStudents";
 import AllInstructors from "./components/core/Dashboard/AllInstructors";
-import VideoDetails from "./components/core/ViewCourse/VideoDetails";
-import { HiArrowNarrowUp } from "react-icons/hi";
 
 function App() {
   const { user } = useSelector((state) => state.profile);
@@ -40,6 +44,14 @@ function App() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+  
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, [location])
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
 
   // Hiển thị nút "Lên đầu trang" khi người dùng cuộn xuống
   const [showArrow, setShowArrow] = useState(false);

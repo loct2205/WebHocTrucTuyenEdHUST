@@ -31,24 +31,35 @@ export const studentEndpoints = {
 
 // COURSE ENDPOINTS
 export const courseEndpoints = {
-  GET_ALL_COURSE_API: BASE_URL + "/course/getAllCourses",
-  COURSE_DETAILS_API: BASE_URL + "/course/getCourseDetails",
-  EDIT_COURSE_API: BASE_URL + "/course/editCourse",
-  COURSE_CATEGORIES_API: BASE_URL + "/course/showAllCategories",
-  CREATE_COURSE_API: BASE_URL + "/course/createCourse",
-  CREATE_SECTION_API: BASE_URL + "/course/addSection",
-  CREATE_SUBSECTION_API: BASE_URL + "/course/addSubSection",
-  UPDATE_SECTION_API: BASE_URL + "/course/updateSection",
-  UPDATE_SUBSECTION_API: BASE_URL + "/course/updateSubSection",
-  GET_ALL_INSTRUCTOR_COURSES_API: BASE_URL + "/courses/instructor", //DONE
-  DELETE_SECTION_API: BASE_URL + "/course/deleteSection",
-  DELETE_SUBSECTION_API: BASE_URL + "/course/deleteSubSection",
-  DELETE_COURSE_API: BASE_URL + "/course/deleteCourse",
+  // course
+  GET_ALL_COURSE_API: BASE_URL + "/courses",
+  COURSE_DETAILS_API: BASE_URL + "/courses/", // + /id
+  EDIT_COURSE_API: BASE_URL + "/courses/edit/", // + /id
+  GET_ALL_INSTRUCTOR_COURSES_API: BASE_URL + "/courses/instructor/", // + /id
+  DELETE_COURSE_API: BASE_URL + "/courses/delete/", // + /id
+  CREATE_COURSE_API: BASE_URL + "/courses/create",
   GET_FULL_COURSE_DETAILS_AUTHENTICATED: BASE_URL + "/course/getFullCourseDetails",
-  LECTURE_COMPLETION_API: BASE_URL + "/course-progress", //DONE
-  CREATE_RATING_API: BASE_URL + "/ratings", // DONE
+
+  // section 
+  CREATE_SECTION_API: BASE_URL + "/sections/create", // ?courseId=123
+  UPDATE_SECTION_API: BASE_URL + "/sections/update-name/", // + /id?newName=sectionName
+  DELETE_SECTION_API: BASE_URL + "/sections/delete/", // +/id
+  
+  // subsection
+  CREATE_SUBSECTION_API: BASE_URL + "/subsections/create",
+  DELETE_SUBSECTION_API: BASE_URL + "/subsections/delete/",
+  UPDATE_SUBSECTION_INFO_API: BASE_URL + "/subsections/update/",
+  UPDATE_SUBSECTION_VIDEO_API: BASE_URL + "/subsections/update-video/",
+  // category
+  COURSE_CATEGORIES_API: BASE_URL + "/category",
   CREATE_NEW_CATEGORY: BASE_URL + "/course/createCategory",
   DELETE_CATEGORY: BASE_URL + "/course/deleteCategory",
+  
+  // course progress
+  LECTURE_COMPLETION_API: BASE_URL + "/course/updateCourseProgress",
+
+  // course rating
+  CREATE_RATING_API: BASE_URL + "/course/createRating",
 }
 
 // RATINGS AND REVIEWS
@@ -58,7 +69,7 @@ export const ratingsEndpoints = {
 
 // CATAGORIES API
 export const categories = {
-  CATEGORIES_API: BASE_URL + "/course/showAllCategories",
+  CATEGORIES_API: BASE_URL + "/category",
 }
 
 // CATALOG PAGE DATA

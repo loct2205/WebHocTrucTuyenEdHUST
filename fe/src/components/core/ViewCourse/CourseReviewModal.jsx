@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { RxCross2 } from "react-icons/rx";
 import ReactStars from "react-rating-stars-component";
+
 import IconBtn from "../../common/IconBtn";
 import Img from "../../common/Img";
 
@@ -43,7 +44,9 @@ export default function CourseReviewModal({ setReviewModal }) {
       <div className="my-10 w-11/12 max-w-[700px] rounded-lg border border-richblack-400 bg-richblack-800">
         {/* Header */}
         <div className="flex items-center justify-between rounded-t-lg bg-richblack-700 p-5">
-          <p className="text-xl font-semibold text-richblack-5">Thêm đánh giá</p>
+          <p className="text-xl font-semibold text-richblack-5">
+            Thêm đánh giá
+          </p>
           <button onClick={() => setReviewModal(false)}>
             <RxCross2 className="text-2xl text-richblack-5" />
           </button>

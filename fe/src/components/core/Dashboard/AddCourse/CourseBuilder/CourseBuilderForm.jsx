@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { MdNavigateNext } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
+import { createSection, updateSection, fetchCourseDetails } from "../../../../../services/operations/courseDetailsAPI"
 
 import { setCourse, setEditCourse, setStep } from "../../../../../slices/courseSlice";
 
@@ -13,29 +14,65 @@ export default function CourseBuilderForm() {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
 
   // Đảm bảo `course` luôn có giá trị mặc định
-  const { course } = useSelector((state) => state.course || { course: { courseContent: [] } });
+  const { course } = useSelector((state) => state.course);
+  const token = JSON.parse(localStorage.getItem("token"));
   const dispatch = useDispatch();
 
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(false)
   const [editSectionName, setEditSectionName] = useState(null); // ID của phần đang chỉnh sửa
 
   // Xử lý khi submit form
-  const onSubmit = (data) => {
-    if (editSectionName) {
-      // Giả lập cập nhật tên phần
-      const updatedSections = course?.courseContent.map((section) =>
-        section.id === editSectionName ? { ...section, name: data.sectionName } : section
-      );
-      dispatch(setCourse({ ...course, courseContent: updatedSections }));
-      setEditSectionName(null);
-    } else {
-      // Giả lập tạo phần mới
-      const newSection = { id: Date.now(), name: data.sectionName, subSection: [] };
-      dispatch(setCourse({ ...course, courseContent: [...(course?.courseContent || []), newSection] }));
+  const onSubmit = async (data) => {
+    try {
+      if (editSectionName) {
+        // Update section name
+        const updatedStatus = await updateSection(editSectionName, data.sectionName, token);
+        if (updatedStatus === 200) {
+          const courseDetails = await fetchCourseDetails(course.id, token);
+          if (courseDetails) {
+            dispatch(setCourse(courseDetails));
+          } else {
+            throw new Error("Failed to fetch updated course details");
+          } 
+        } else {
+          throw new Error("Failed to update section name");
+        }
+        setEditSectionName(null); // Reset edit mode
+      } else {
+        // Add new section
+        const courseId = course.id;
+  
+        const newSection = {
+          sectionName: data.sectionName,
+        };
+  
+        console.log("New Section Data:", newSection);
+  
+        // Create new section
+        const responseSection = await createSection(
+          JSON.stringify(newSection),
+          token,
+          courseId
+        );
+  
+        if (responseSection) {
+          // Fetch updated course details
+          const courseDetail = await fetchCourseDetails(courseId, token);
+          if (courseDetail) {
+            dispatch(setCourse(courseDetail));
+            // Clear the input field
+            setValue("sectionName", "");
+          }
+        } else {
+          throw new Error("Failed to create new section.");
+        }
+      }
+    } catch (error) {
+      console.error("Error in onSubmit:", error);
+      alert(error.message || "An unexpected error occurred.");
     }
-    setValue("sectionName", "");
   };
-
+  
   // Hủy chỉnh sửa
   const cancelEdit = () => {
     setEditSectionName(null);
@@ -54,12 +91,12 @@ export default function CourseBuilderForm() {
 
   // Chuyển đến bước tiếp theo
   const goToNext = () => {
-    console.log("courseContent: ", course?.courseContent);
-    if (!course?.courseContent || course.courseContent.length === 0) {
+    
+    if (course.sections.length === 0) {
       alert("Vui lòng thêm ít nhất một phần");
       return;
     }
-    if (course.courseContent.some((section) => section.subSection.length === 0)) {
+    if (course.sections.some((section) => section.subSections.length === 0)) {
       alert("Vui lòng thêm ít nhất một bài giảng trong mỗi phần");
       return;
     }
@@ -72,7 +109,7 @@ export default function CourseBuilderForm() {
     dispatch(setEditCourse(true));
   };
 
-  return (
+  return (  
     <div className="space-y-8 rounded-2xl border-[1px] border-richblack-700 bg-richblack-800 p-6">
       <p className="text-2xl font-semibold text-richblack-5">Xây dựng khóa học</p>
 
@@ -119,7 +156,7 @@ export default function CourseBuilderForm() {
       </form>
 
       {/* Hiển thị danh sách các phần và bài giảng */}
-      {course?.courseContent?.length > 0 && (
+      {course?.sections?.length > 0 && (
         <NestedView handleChangeEditSectionName={handleChangeEditSectionName} />
       )}
 

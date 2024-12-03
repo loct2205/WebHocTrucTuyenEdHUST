@@ -1,11 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+
 import "video-react/dist/video-react.css";
 import { BigPlayButton, Player } from "video-react";
+
+import { updateCompletedLectures } from "../../../slices/viewCourseSlice"
+import { setCourseViewSidebar } from "../../../slices/sidebarSlice"
+
 import IconBtn from "../../common/IconBtn";
 import { HiMenuAlt1 } from "react-icons/hi";
 import { markLectureAsComplete } from "../../../services/operations/courseDetailsAPI";
 import { updateCompletedLectures } from "../../../slices/viewCourseSlice";
+
 
 const VideoDetails = () => {
   const { courseId, sectionId, subSectionId } = useParams();
