@@ -6,6 +6,8 @@ import { NavbarLinks } from '../../../data/navbar-links';
 import subLinksData from '../../../data/subLinksData';
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { ACCOUNT_TYPE } from '../../utils/constants';
+import ProfileDropDown from '../core/Auth/ProfileDropDown'
+import MobileProfileDropDown from '../core/Auth/MobileProfileDropDown'
 
 const Navbar = () => {
     const { token } = useSelector((state) => state.auth);
@@ -145,10 +147,10 @@ const Navbar = () => {
                     }
 
                     {/* for large devices */}
-                    {/* {token !== null && <ProfileDropDown />} */}
+                    {token !== null && <ProfileDropDown />}
 
                     {/* for small devices */}
-                    {/* {token !== null && <MobileProfileDropDown />} */}
+                    {token !== null && <MobileProfileDropDown />}
 
                 </div>
             </div>
