@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
+import { fetchCourseDetails } from "../../../../services/operations/courseDetailsAPI"
+import { setCourse, setEditCourse } from "../../../../slices/courseSlice"
 
 import RenderSteps from "../AddCourse/RenderSteps"
 import Loading from './../../../common/Loading';
@@ -9,17 +11,22 @@ export default function EditCourse() {
   const dispatch = useDispatch()
   const { courseId } = useParams()
   const { course } = useSelector((state) => state.course)
-
+  const token = JSON.parse(localStorage.getItem("token"))
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    // Giả lập thời gian tải dữ liệu
-    setLoading(true)
-    setTimeout(() => {
-      dispatch({ type: "setEditCourse", payload: true }) // Giả lập chỉnh sửa
-      dispatch({ type: "setCourse", payload: { name: "Khóa học mẫu" } }) // Giả lập dữ liệu khóa học
+    const fetchFullCourseDetails = async () => {
+      setLoading(true)
+      const result = await fetchCourseDetails(courseId, token);
+      // console.log('Data from edit course file = ', result)
+      if (result) {
+        dispatch(setEditCourse(true))
+        dispatch(setCourse(result))
+      }
       setLoading(false)
-    }, 1000)
+    }
+
+    fetchFullCourseDetails();
   }, [])
 
   // Hiển thị màn hình chờ khi đang tải
