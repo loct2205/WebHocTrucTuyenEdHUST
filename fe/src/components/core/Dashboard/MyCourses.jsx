@@ -4,38 +4,29 @@ import { useNavigate } from "react-router-dom"
 
 import IconBtn from "../../common/IconBtn"
 import CoursesTable from "./InstructorCourses/CoursesTable"
+import { fetchInstructorCourses } from "../../../services/operations/courseDetailsAPI"
 
 export default function MyCourses() {
   const navigate = useNavigate()
-  const [courses, setCourses] = useState([
-    {
-      _id: "1",
-      courseName: "Khóa học Lập trình Cơ bản",
-      courseDescription: "Học cách viết mã với ngôn ngữ lập trình cơ bản và phát triển kỹ năng lập trình.",
-      thumbnail: "https://via.placeholder.com/270",
-      createdAt: "2024-01-01",
-      updatedAt: "2024-11-01",
-      status: "published",
-      duration: "2 giờ",
-      price: "500.000",
-    },
-    {
-      _id: "2",
-      courseName: "Khóa học Thiết kế Web",
-      courseDescription: "Xây dựng và thiết kế các trang web từ cơ bản đến nâng cao.",
-      thumbnail: "https://via.placeholder.com/270",
-      createdAt: "2023-06-01",
-      updatedAt: "2024-06-15",
-      status: "draft",
-      duration: "3 giờ",
-      price: "1.000.000",
-    },
-  ])
+  const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(false)
-
+  const token = JSON.parse(localStorage.getItem("token"))
+  const instructorId = JSON.parse(localStorage.getItem("user"))?.id
   // Cuộn lên đầu trang khi component được tải
   useEffect(() => {
     window.scrollTo(0, 0)
+  }, [])
+  useEffect(() => {
+    const fetchCourses = async () => {
+      setLoading(true);
+      const result = await fetchInstructorCourses(token, instructorId)
+      // console.log('Instructors all courses  ', result);
+      setLoading(false);
+      if (result) {
+        setCourses(result)
+      }
+    }
+    fetchCourses()
   }, [])
 
   return (

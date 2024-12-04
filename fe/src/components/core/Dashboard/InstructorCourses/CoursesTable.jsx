@@ -10,20 +10,35 @@ import { useNavigate } from "react-router-dom"
 
 import ConfirmationModal from "../../../common/ConfirmationModal"
 import Img from './../../../common/Img';
+import { deleteCourse, fetchInstructorCourses, } from "../../../../services/operations/courseDetailsAPI"
+import toast from 'react-hot-toast'
 
 export default function CoursesTable({ courses, setCourses, loading, setLoading }) {
 
   const navigate = useNavigate()
   const [confirmationModal, setConfirmationModal] = useState(null)
   const TRUNCATE_LENGTH = 25
-
+  const token = JSON.parse(localStorage.getItem("token"))
+  const instructorId = JSON.parse(localStorage.getItem("user"))?.id
   // Xóa khóa học
-  const handleCourseDelete = (courseId) => {
-    setLoading(true)
-    const updatedCourses = courses.filter(course => course._id !== courseId)
-    setCourses(updatedCourses)
-    setConfirmationModal(null)
-    setLoading(false)
+  const handleCourseDelete = async (courseId) => {
+    setLoading(true);
+    // Ensure loading is false even on errors
+    try {
+      const responseStatus = await deleteCourse(courseId, token);
+      if (responseStatus !== 200) {
+        throw new Error("Failed to delete course");
+      } else {
+        const updatedCourses = await fetchInstructorCourses(token, instructorId);
+        setCourses(updatedCourses || []);
+      }
+    } catch (error) {
+      toast.error("Error deleting course");
+    } finally {
+      setLoading(false);
+      setConfirmationModal(null);
+    }
+
   }
 
   // Skeleton loading
@@ -83,7 +98,7 @@ export default function CoursesTable({ courses, setCourses, loading, setLoading 
           ) : (
             courses?.map((course) => (
               <Tr
-                key={course._id}
+                key={course.id}
                 className="flex gap-x-10 border-b border-richblack-800 px-6 py-8"
               >
                 <Td className="flex flex-1 gap-x-4 relative">
@@ -111,7 +126,7 @@ export default function CoursesTable({ courses, setCourses, loading, setLoading 
                     </p>
 
                     {/* Trạng thái khóa học */}
-                    {course.status === "draft" ? (
+                    {course.status === "DRAFT" ? (
                       <p className="mt-2 flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-pink-100">
                         <HiClock size={14} />
                         Đang soạn
@@ -137,7 +152,7 @@ export default function CoursesTable({ courses, setCourses, loading, setLoading 
                   {/* Nút chỉnh sửa */}
                   <button
                     disabled={loading}
-                    onClick={() => { navigate(`/dashboard/edit-course/${course._id}`) }}
+                    onClick={() => { navigate(`/dashboard/edit-course/${course.id}`) }}
                     title="Chỉnh sửa"
                     className="px-2 transition-all duration-200 hover:scale-110 hover:text-caribbeangreen-300"
                   >
@@ -150,15 +165,12 @@ export default function CoursesTable({ courses, setCourses, loading, setLoading 
                     onClick={() => {
                       setConfirmationModal({
                         text1: "Bạn có muốn xóa khóa học này không?",
-                        text2:
-                          "Mọi dữ liệu liên quan đến khóa học sẽ bị xóa",
+                        text2: "Mọi dữ liệu liên quan đến khóa học sẽ bị xóa",
                         btn1Text: !loading ? "Xóa" : "Đang tải...",
                         btn2Text: "Hủy",
-                        btn1Handler: !loading
-                          ? () => handleCourseDelete(course._id)
-                          : () => { },
-                        btn2Handler: () => setConfirmationModal(null),
-                      })
+                        btn1Handler: !loading ? () => handleCourseDelete(course.id) : () => {},
+                        btn2Handler: !loading ? () => setConfirmationModal(null) : () => {},
+                      });
                     }}
                     title="Xóa"
                     className="px-1 transition-all duration-200 hover:scale-110 hover:text-[#ff0000]"
