@@ -39,7 +39,7 @@ export const courseEndpoints = {
   DELETE_COURSE_API: BASE_URL + "/courses/delete/", // + /id
   CREATE_COURSE_API: BASE_URL + "/courses/create",
   GET_FULL_COURSE_DETAILS_AUTHENTICATED: BASE_URL + "/course/getFullCourseDetails",
-
+  PUBLISH_COURSE_API: BASE_URL + "/courses/edit/done", // + ?id=&&isPublic=
   // section 
   CREATE_SECTION_API: BASE_URL + "/sections/create", // ?courseId=123
   UPDATE_SECTION_API: BASE_URL + "/sections/update-name/", // + /id?newName=sectionName

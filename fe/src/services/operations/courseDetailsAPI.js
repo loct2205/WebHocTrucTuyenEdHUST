@@ -6,6 +6,7 @@ import { apiConnector } from "../apiConnector"
 import { courseEndpoints } from "../apis"
 
 const {
+  PUBLISH_COURSE_API,
   COURSE_DETAILS_API,
   COURSE_CATEGORIES_API,
   GET_ALL_COURSE_API,
@@ -186,7 +187,34 @@ export const editCourseDetails = async (id, data, token) => {
   toast.dismiss(toastId)
   return result
 }
+export const publishCourse = async (id, isPublic, token) => {
+  let result = null
+  const toastId = toast.loading("Loading...")
 
+  try {
+    const response = await apiConnector("PATCH", PUBLISH_COURSE_API, null, {
+      Authorization: `Bearer ${token}`,
+    }, 
+    {
+      id: id, 
+      isPublic: isPublic
+    }
+  )
+    console.log("PUBLISH COURSE API RESPONSE............", response)
+
+    if (response.status != 200) {
+      throw new Error("Could Not publish course")
+    }
+
+    result = response?.status
+    toast.success("Publish successfully")
+  } catch (error) {
+    console.log("PUBLISH COURSE API ERROR............", error)
+    toast.error(error.message)
+  }
+  toast.dismiss(toastId)
+  return result
+}
 
 // ================ create Section ================
 export const createSection = async (data, token, courseId) => {
