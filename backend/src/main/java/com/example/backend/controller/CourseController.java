@@ -67,7 +67,13 @@ public class CourseController {
         CourseDto updatedCourse = courseService.updateCourse(id, courseDto, file, currentUser.getId());
         return ResponseEntity.ok(updatedCourse);
     }
-
+    // ================ update course status ================
+    @PatchMapping("edit/done")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR', 'ADMIN')")
+    public ResponseEntity<String> publishCourse(@RequestParam("id") Long id) {
+        String response = courseService.publishCourse(id);
+        return ResponseEntity.ok(response);
+    }
     // ================ delete course ================
     @DeleteMapping("delete/{id}")
     @PreAuthorize("hasAnyRole('INSTRUCTOR', 'ADMIN')")

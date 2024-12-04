@@ -199,4 +199,12 @@ public class CourseService {
         courseRepository.delete(course);
 
     }
+
+    public String publishCourse(Long id) {
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+        course.setStatus(Course.Status.PUBLISHED);
+        courseRepository.save(course);
+        return "Course published";
+    }
 }
