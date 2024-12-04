@@ -70,8 +70,8 @@ public class CourseController {
     // ================ update course status ================
     @PatchMapping("edit/done")
     @PreAuthorize("hasAnyRole('INSTRUCTOR', 'ADMIN')")
-    public ResponseEntity<String> publishCourse(@RequestParam("id") Long id) {
-        String response = courseService.publishCourse(id);
+    public ResponseEntity<String> publishCourse(@RequestParam("id") Long id, @RequestParam("isPublic") Boolean isPublic) {
+        String response = courseService.publishCourse(id, isPublic);
         return ResponseEntity.ok(response);
     }
     // ================ delete course ================

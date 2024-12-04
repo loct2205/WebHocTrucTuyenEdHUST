@@ -200,11 +200,18 @@ public class CourseService {
 
     }
 
-    public String publishCourse(Long id) {
+    public String publishCourse(Long id, Boolean isPublic) {
         Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
-        course.setStatus(Course.Status.PUBLISHED);
-        courseRepository.save(course);
-        return "Course published";
+        if (isPublic) {
+            course.setStatus(Course.Status.PUBLISHED);
+            courseRepository.save(course);
+            return "Course published";
+        } else {
+            course.setStatus(Course.Status.DRAFT);
+            courseRepository.save(course);
+            return "Course drafted";
+        }
+
     }
 }
