@@ -38,7 +38,7 @@ public class SecurityConfiguration {
                 .disable()
                 .cors().configurationSource(corsConfigurationSource()).and()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/**", "/mails/**", "payments/vnpay-payment-return", "/actuator/**", "ratings/**")
+                .requestMatchers("/auth/**", "/mails/**", "payments/vnpay-payment-return", "/actuator/**", "ratings/**", "category")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
