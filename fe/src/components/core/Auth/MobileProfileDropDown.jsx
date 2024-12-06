@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 
@@ -16,7 +16,6 @@ import { PiNotebook } from "react-icons/pi"
 export default function MobileProfileDropDown() {
     const { user } = useSelector((state) => state.profile)
     if (!user) return null
-
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const ref = useRef(null)
@@ -30,7 +29,7 @@ export default function MobileProfileDropDown() {
         <button className="relative sm:hidden" onClick={() => setOpen(true)}>
             <div className="flex items-center gap-x-1">
                 <Img
-                    src={user?.image}
+                    src={user?.imageUrl}
                     alt={`profile-${user?.firstName}`}
                     className={'aspect-square w-[30px] rounded-full object-cover'}
                 />

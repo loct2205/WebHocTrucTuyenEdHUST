@@ -57,7 +57,7 @@ function AllInstructors() {
           Thông Tin Tất Cả Giảng Viên
         </h1>
 
-        <IconBtn text="Thêm Giảng Viên" onclick={() => navigate("")}>
+        <IconBtn text="Thêm Giảng Viên" onClick={() => navigate("")}>
           <VscAdd />
         </IconBtn>
       </div>

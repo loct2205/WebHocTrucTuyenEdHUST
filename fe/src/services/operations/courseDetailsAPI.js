@@ -38,7 +38,7 @@ export const createNewCategory = async (name, description, token) => {
       Authorization: `Bearer ${token}`,
     })
     console.log("CREATE_NEW_CATEGORY RESPONSE............", response)
-    if (response.status != 200) {
+    if (!response.data) {
       console.log("Could Not create new category")
     }
 
@@ -121,11 +121,9 @@ export const fetchCourseDetails = async (courseId, token) => {
 }
 
 // ================ fetch Course Categories ================
-export const fetchCourseCategories = async (token) => {
+export const fetchCourseCategories = async () => {
   try {
-    const response = await apiConnector("GET", COURSE_CATEGORIES_API, null, {
-      Authorization: `Bearer ${token}`,
-    });
+    const response = await apiConnector("GET", COURSE_CATEGORIES_API, null);
     // Extract names from the response data
     return response.data; 
   } catch (error) {

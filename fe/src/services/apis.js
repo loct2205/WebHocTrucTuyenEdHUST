@@ -56,10 +56,10 @@ export const courseEndpoints = {
   DELETE_CATEGORY: BASE_URL + "/category/delete/",
   
   // course progress
-  LECTURE_COMPLETION_API: BASE_URL + "/course/updateCourseProgress",
+  LECTURE_COMPLETION_API: BASE_URL + "/course-progress", //DONE
 
   // course rating
-  CREATE_RATING_API: BASE_URL + "/course/createRating",
+  CREATE_RATING_API: BASE_URL + "/ratings", //DONE
 }
 
 // RATINGS AND REVIEWS
@@ -69,7 +69,7 @@ export const ratingsEndpoints = {
 
 // CATAGORIES API
 export const categories = {
-  CATEGORIES_API: BASE_URL + "/category",
+  CATEGORIES_API: BASE_URL + "/category", //DONE
 }
 
 // CATALOG PAGE DATA

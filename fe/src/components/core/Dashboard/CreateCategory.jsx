@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import IconBtn from '../../common/IconBtn';
+import { useSelector } from "react-redux";
 
 import { IoIosAdd } from "react-icons/io";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -21,7 +22,7 @@ const CreateCategory = () => {
   const [loading, setLoading] = useState(false);
   const [newCategory, setNewCategory] = useState('');
   const [description, setDescription] = useState(''); 
-  const token = JSON.parse(localStorage.getItem("token"));
+  const { token } = useSelector((state) => state.auth);
   const fetchSublinks = async () => {
     try {
       setLoading(true)
@@ -40,7 +41,7 @@ const CreateCategory = () => {
 
   // Thêm danh mục mới
   const handleCreateCategory = async () => {
-    const newCategoryData = await createNewCategory(newCategory, description,  token);
+    await createNewCategory(newCategory, description,  token);
     setNewCategory('');
     setDescription('');
     fetchSublinks();
@@ -78,7 +79,7 @@ const CreateCategory = () => {
 
         <IconBtn
           text="Thêm"
-          onclick={handleCreateCategory}
+          onClick={handleCreateCategory}
           disabled={!newCategory || !description}
         >
           <IoIosAdd />
