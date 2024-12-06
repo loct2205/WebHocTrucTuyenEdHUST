@@ -56,7 +56,7 @@ const AllStudents = () => {
                     Thông Tin Tất Cả Sinh Viên
                 </h1>
 
-                <IconBtn text="Thêm Sinh Viên" onclick={() => navigate("")}>
+                <IconBtn text="Thêm Sinh Viên" onClick={() => navigate("")}>
                     <VscAdd />
                 </IconBtn>
             </div>

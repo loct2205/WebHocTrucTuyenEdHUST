@@ -37,7 +37,7 @@ export default function MyCourses() {
         </h1>
         <IconBtn
           text="Thêm Khóa học"
-          onclick={() => navigate("/dashboard/add-course")}
+          onClick={() => navigate("/dashboard/add-course")}
         >
           <VscAdd />
         </IconBtn>

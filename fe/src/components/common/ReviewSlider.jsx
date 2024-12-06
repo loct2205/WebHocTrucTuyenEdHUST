@@ -28,7 +28,6 @@ function ReviewSlider() {
       }
     })()
   }, [])
-  console.log(reviews);
   if(!reviews) return;
 
   return (

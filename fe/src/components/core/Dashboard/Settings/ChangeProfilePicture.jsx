@@ -87,7 +87,7 @@ export default function ChangeProfilePicture() {
 
             <IconBtn
               text={loading ? "Đang tải lên..." : "Tải lên"}
-              onclick={handleFileUpload}
+              onClick={handleFileUpload}
             >
               {!loading && <FiUpload className="text-lg" />}
             </IconBtn>

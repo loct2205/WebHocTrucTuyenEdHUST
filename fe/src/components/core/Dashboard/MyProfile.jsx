@@ -69,7 +69,7 @@ export default function MyProfile() {
 
         <IconBtn
           text="Chỉnh sửa"
-          onclick={() => {
+          onClick={() => {
             navigate("/dashboard/settings")
           }}
         >
@@ -80,7 +80,7 @@ export default function MyProfile() {
       <div className="my-10 flex flex-col gap-y-10 rounded-2xl border-[1px] border-richblack-700 bg-richblack-800 p-8 px-7 sm:px-12">
         <div className="flex w-full items-center justify-between">
           <p className="text-lg font-semibold text-richblack-5">Giới thiệu</p>
-          <IconBtn text="Chỉnh sửa" onclick={() => {
+          <IconBtn text="Chỉnh sửa" onClick={() => {
             navigate("/dashboard/settings")
           }}>
             <RiEditBoxLine />
@@ -94,7 +94,7 @@ export default function MyProfile() {
       <div className="my-10 flex flex-col gap-y-10 rounded-2xl border-[1px] border-richblack-700 bg-richblack-800 p-8 px-7 sm:px-12">
         <div className="flex w-full items-center justify-between">
           <p className="text-lg font-semibold text-richblack-5">Thông tin Cá nhân</p>
-          <IconBtn text="Chỉnh sửa" onclick={() => {
+          <IconBtn text="Chỉnh sửa" onClick={() => {
             navigate("/dashboard/settings")
           }}>
             <RiEditBoxLine />

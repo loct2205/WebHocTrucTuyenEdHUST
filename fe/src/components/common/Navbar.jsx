@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux'
 import { Link, matchPath, useLocation } from 'react-router-dom';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { NavbarLinks } from '../../../data/navbar-links';
-import subLinksData from '../../../data/subLinksData';
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { ACCOUNT_TYPE } from '../../utils/constants';
 import ProfileDropDown from '../core/Auth/ProfileDropDown'
 import MobileProfileDropDown from '../core/Auth/MobileProfileDropDown'
+import { fetchCourseCategories } from '../../services/operations/courseDetailsAPI';
 
 const Navbar = () => {
     const { token } = useSelector((state) => state.auth);
@@ -15,13 +15,24 @@ const Navbar = () => {
     // console.log('USER data from Navbar (store) = ', user)
     const { totalItems } = useSelector((state) => state.cart)
     const location = useLocation();
-    const [selectedIndex, setSelectedIndex] = useState(0);
 
-    // Function to handle menu click
-    const handleMenuClick = (index) => {
-        setSelectedIndex(index);
-        console.log("Selected Index:", index); // Log chỉ số được chọn
-    };
+    const [subLinks, setSubLinks] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const fetchSublinks = async () => {
+        try {
+            setLoading(true)
+            const res = await fetchCourseCategories();
+            setSubLinks(res);
+        }
+        catch (error) {
+            console.log("Could not fetch the category list = ", error);
+        }
+        setLoading(false)
+    }
+    useEffect(() => {
+        fetchSublinks();
+    }, [])
 
     // click Navbar link then hold yellow color
     const matchRoute = (route) => {
@@ -83,16 +94,25 @@ const Navbar = () => {
                                                     group-hover:translate-y-[1.65em] group-hover:opacity-100 lg:w-[300px]"
                                         >
                                             <div className="absolute left-[50%] top-0 z-[100] h-6 w-6 translate-x-[80%] translate-y-[-40%] rotate-45 select-none rounded bg-richblack-5"></div>
-                                            {subLinksData.map((subLink, i) => ( //hard code
-                                                <Link
-                                                    to={subLink.path}
-                                                    className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
-                                                    key={i}
-                                                    onClick={() => handleMenuClick(i)} // Handle click
-                                                >
-                                                    <p>{subLink.name}</p>
-                                                </Link>
-                                            ))}
+                                            {loading ? (<p className="text-center ">Loading...</p>)
+                                                    : subLinks.length ? (
+                                                        <>
+                                                            {subLinks?.map((subLink, i) => (
+                                                                <Link
+                                                                    to={`/catalog/${subLink.name
+                                                                        .split(" ")
+                                                                        .join("-")
+                                                                        .toLowerCase()}`}
+                                                                    className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
+                                                                    key={i}
+                                                                >
+                                                                    <p>{subLink.name}</p>
+                                                                </Link>
+                                                            ))}
+                                                        </>
+                                                    ) : (
+                                                        <p className="text-center">No Courses Found</p>
+                                                    )}
                                         </div>
                                     </div>
                                 ) : (
