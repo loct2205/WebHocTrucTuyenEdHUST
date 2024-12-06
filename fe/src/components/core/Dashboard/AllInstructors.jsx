@@ -137,27 +137,28 @@ function AllInstructors() {
                 </Tr>
 
                 {instructor.managedCourses.length ? (
-                  <Tr className="flex gap-x-10 px-6 pb-5">
-                    <p className="text-yellow-50 ">Khóa học đã tạo</p>
-                    <div className="grid grid-cols-5 gap-y-5">
-                      {instructor.managedCourses.map((course) => (
-                        <div
-                          className="text-white text-sm"
-                          key={course.id}
-                        >
-                          <p>{course.courseName}</p>
-                          <p className="text-sm font-normal">
-                            Giá: {course.price.toLocaleString("vi-VN")} VND
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </Tr>
-                ) : (
-                  <div className="px-6 text-white mb-4">
-                    Không có khóa học nào
-                  </div>
-                )}
+  <Tr className="flex flex-col px-6 pb-5">
+    <p className="text-yellow-50 text-lg font-medium mb-4">Khóa học đã tạo</p>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {instructor.managedCourses.map((course) => (
+        <div
+          className="text-white text-sm bg-richblack-700 p-4 rounded-lg shadow-md border border-richblack-500"
+          key={course.id}
+        >
+          <p className="text-lg font-semibold">{course.courseName}</p>
+          <p className="text-sm font-normal">
+            Giá: {course.price.toLocaleString("vi-VN")} VND
+          </p>
+        </div>
+      ))}
+    </div>
+  </Tr>
+) : (
+  <div className="px-6 text-white mb-4">
+    Không có khóa học nào
+  </div>
+)}
+
               </div>
             ))
           )}
