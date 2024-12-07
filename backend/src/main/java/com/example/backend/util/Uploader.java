@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.UUID;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -37,10 +38,14 @@ public class Uploader {
         }
     }
 
+
     public void deleteFile(String fileUrl) {
         try {
-            // Extract the file name from the URL
-            String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+            // Extract the file name from the URL (remove query parameters)
+            String fileNameEncoded = fileUrl.substring(fileUrl.lastIndexOf("/o/") + 3, fileUrl.indexOf("?alt=media"));
+
+            // Decode the file name
+            String fileName = URLDecoder.decode(fileNameEncoded, StandardCharsets.UTF_8.toString());
 
             // Retrieve the file from the bucket
             Blob blob = StorageClient.getInstance().bucket().get(fileName);
@@ -57,5 +62,7 @@ public class Uploader {
             System.out.println("Failed to delete file: " + fileUrl);
         }
     }
+
+
 
 }
