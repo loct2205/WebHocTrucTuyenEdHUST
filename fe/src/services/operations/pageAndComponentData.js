@@ -1,30 +1,29 @@
-import React from 'react'
-// import { toast } from "react-hot-toast"
+import { toast } from "react-hot-toast"
 import { apiConnector } from '../apiConnector';
 import { catalogData } from '../apis';
 
 
 // ================ get Catalog Page Data  ================
 export const getCatalogPageData = async (categoryId) => {
-  // const toastId = toast.loading("Loading...");
-  let result = [];
+  const toastId = toast.loading("Loading...");
+  let result = null;
   try {
-    const response = await apiConnector("POST", catalogData.CATALOGPAGEDATA_API,
-      { categoryId: categoryId, });
+    const response = await apiConnector("GET", catalogData.CATALOGPAGEDATA_API, null, null, {
+      categoryId: Number(categoryId)
+    });
 
-    if (!response?.data?.success)
+    if (!response?.data)
       throw new Error("Could not Fetch Category page data");
-
+    toast.success('Fetch catalog success');
     console.log("CATALOG PAGE DATA API RESPONSE............", response)
-    result = response?.data?.data;
+    result = response?.data;
 
   }
   catch (error) {
     console.log("CATALOG PAGE DATA API ERROR....", error);
-    // toast.error(error.response?.data.message);
-    result = error.response?.data.data;
+    toast.error('Fetch catalog failed');
   }
-  // toast.dismiss(toastId);
+  toast.dismiss(toastId);
   return result;
 }
 

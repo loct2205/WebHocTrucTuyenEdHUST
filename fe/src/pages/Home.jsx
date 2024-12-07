@@ -14,6 +14,7 @@ import ReviewSlider from '../components/common/ReviewSlider'
 import Course_Slider from '../components/core/Catalog/Course_Slider'
 
 import { getCatalogPageData } from '../services/operations/pageAndComponentData'
+import { fetchCourseCategories } from '../services/operations/courseDetailsAPI';
 
 import { MdOutlineRateReview } from 'react-icons/md'
 import { FaArrowRight } from "react-icons/fa"
@@ -48,9 +49,9 @@ const randomImges = [
     backgroundImg10,
     backgroundImg111,
 ];
-
-// hardcoded
-
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
 
 
 const Home = () => {
@@ -67,20 +68,34 @@ const Home = () => {
 
     // get courses data
     const [CatalogPageData, setCatalogPageData] = useState(null);
-    const categoryID = "6506c9dff191d7ffdb4a3fe2" // hard coded
+    const [categoryId, setCategoryId] = useState(null);
     const dispatch = useDispatch();
+    
+    useEffect(() => {
+        ; (async () => {
+            try {
+                const res = await fetchCourseCategories();
+                if(res && res.length > 0) {
+                    const index = getRandomInt(res.length);
+                    setCategoryId(res[index].id);
+                }
+            } catch (error) {
+                console.log("Could not fetch Categories.", error)
+            }
+        })()
+    }, [])
 
     useEffect(() => {
         const fetchCatalogPageData = async () => {
 
-            const result = await getCatalogPageData(categoryID, dispatch);
+            const result = await getCatalogPageData(categoryId, dispatch);
             setCatalogPageData(result);
             // console.log("page data ==== ",CatalogPageData);
         }
-        if (categoryID) {
+        if (categoryId) {
             fetchCatalogPageData();
         }
-    }, [categoryID])
+    }, [categoryId])
 
 
     // console.log('================ CatalogPageData?.selectedCourses ================ ', CatalogPageData)
