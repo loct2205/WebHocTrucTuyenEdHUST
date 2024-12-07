@@ -61,7 +61,7 @@ export default function RenderCartCourses() {
               <span>Xóa</span>
             </button>
             <p className="mb-6 text-3xl font-medium text-yellow-100">
-              ₹ {course?.price}
+              {course?.price} đ
             </p>
           </div>
         </div>

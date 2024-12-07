@@ -22,7 +22,7 @@ function Course_Card({ course, Height }) {
 
   return (
     <div className='hover:scale-[1.03] transition-all duration-200 z-50 '>
-      <Link to={`/courses/${course._id}`}>
+      <Link to={`/courses/${course.id}`}>
         <div className="">
           <div className="rounded-lg">
             <Img
