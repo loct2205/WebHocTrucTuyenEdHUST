@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -121,5 +122,11 @@ public class CourseMapper {
         }
 
         return builder.build();
+    }
+
+    public List<CourseDto> convertToDtoList(List<Course> courses) {
+        return courses.stream()
+                .map(this::convertToDto)
+                .toList();
     }
 }

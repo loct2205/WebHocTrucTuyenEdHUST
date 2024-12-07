@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.CategoryDto;
+import com.example.backend.dto.CategoryPageDetailDto;
 import com.example.backend.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -41,5 +42,15 @@ public class CategoryController {
     @PutMapping("update/{id}")
     public ResponseEntity<String> updateCategory(@PathVariable Long id, @RequestBody CategoryDto categoryDto) {
         return ResponseEntity.ok(categoryService.updateCategory(id, categoryDto));
+    }
+
+    @GetMapping("page-detail/analysis")
+    public ResponseEntity<CategoryPageDetailDto> getCategoryPageDetails(@RequestParam Long categoryId) {
+        try {
+            return ResponseEntity.ok(categoryService.getCategoryPageDetails(categoryId));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
