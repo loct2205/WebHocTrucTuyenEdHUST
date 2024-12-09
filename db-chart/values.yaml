@@ -109,7 +109,7 @@ tolerations: []
 affinity: {}
 persistence:
   enabled: true
-  storageClass: ""
+  storageClass: default
   accessModes:
     - ReadWriteOnce
   size: 1Gi
