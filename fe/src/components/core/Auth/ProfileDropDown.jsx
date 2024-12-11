@@ -32,30 +32,37 @@ export default function ProfileDropdown() {
       </div>
 
       {open && (
-        <div
-          onClick={(e) => e.stopPropagation()}
-          className="absolute top-[118%] right-0 z-[1000] divide-y-[1px] divide-richblack-700 overflow-hidden rounded-md border-[1px] border-richblack-700 bg-richblack-800"
-          ref={ref}
-        >
-          <Link to="/dashboard/my-profile" onClick={() => setOpen(false)}>
-            <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25">
-              <VscDashboard className="text-lg" />
-              Trang cá nhân
-            </div>
-          </Link>
+  <div
+    onClick={(e) => e.stopPropagation()}
+    className="absolute top-[118%] right-0 z-[1000] flex flex-col divide-y-[1px] divide-richblack-700 overflow-hidden rounded-md border-[1px] border-richblack-700 bg-richblack-800"
+    ref={ref}
+  >
+    {/* Trang cá nhân */}
+    <Link
+      to="/dashboard/my-profile"
+      onClick={() => setOpen(false)}
+      className="flex w-full items-center gap-x-2 py-[8px] px-[16px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25 whitespace-nowrap"
+    >
+      <VscDashboard className="text-lg" />
+      Trang cá nhân
+    </Link>
 
-          <div
-            onClick={() => {
-              dispatch(logout(navigate))
-              setOpen(false)
-            }}
-            className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25"
-          >
-            <VscSignOut className="text-lg" />
-            Đăng xuất
-          </div>
-        </div>
-      )}
+    {/* Đăng xuất */}
+    <div
+      onClick={() => {
+        dispatch(logout(navigate))
+        setOpen(false)
+      }}
+      className="flex w-full items-center gap-x-2 py-[8px] px-[16px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25 whitespace-nowrap"
+    >
+      <VscSignOut className="text-lg" />
+      Đăng xuất
+    </div>
+  </div>
+)}
+
+
+
     </button>
   )
 }

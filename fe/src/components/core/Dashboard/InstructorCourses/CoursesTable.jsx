@@ -1,64 +1,60 @@
-import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
-import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 
-import { useState } from "react"
-import { FaCheck } from "react-icons/fa"
-import { FiEdit2 } from "react-icons/fi"
-import { HiClock } from "react-icons/hi"
-import { RiDeleteBin6Line } from "react-icons/ri"
-import { useNavigate } from "react-router-dom"
+import { useState } from 'react';
+import { FaCheck } from 'react-icons/fa';
+import { FiEdit2 } from 'react-icons/fi';
+import { HiClock } from 'react-icons/hi';
+import { RiDeleteBin6Line } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
 
-import ConfirmationModal from "../../../common/ConfirmationModal"
+import ConfirmationModal from '../../../common/ConfirmationModal';
 import Img from './../../../common/Img';
-import { deleteCourse, fetchInstructorCourses, } from "../../../../services/operations/courseDetailsAPI"
-import toast from 'react-hot-toast'
+import { deleteCourse, fetchInstructorCourses } from '../../../../services/operations/courseDetailsAPI';
+import toast from 'react-hot-toast';
 
 export default function CoursesTable({ courses, setCourses, loading, setLoading }) {
+  const navigate = useNavigate();
+  const [confirmationModal, setConfirmationModal] = useState(null);
+  const TRUNCATE_LENGTH = 25;
+  const token = JSON.parse(localStorage.getItem('token'));
+  const instructorId = JSON.parse(localStorage.getItem('user'))?.id;
 
-  const navigate = useNavigate()
-  const [confirmationModal, setConfirmationModal] = useState(null)
-  const TRUNCATE_LENGTH = 25
-  const token = JSON.parse(localStorage.getItem("token"))
-  const instructorId = JSON.parse(localStorage.getItem("user"))?.id
   // Xóa khóa học
   const handleCourseDelete = async (courseId) => {
     setLoading(true);
-    // Ensure loading is false even on errors
     try {
       const responseStatus = await deleteCourse(courseId, token);
       if (responseStatus !== 200) {
-        throw new Error("Failed to delete course");
+        throw new Error('Failed to delete course');
       } else {
         const updatedCourses = await fetchInstructorCourses(token, instructorId);
         setCourses(updatedCourses || []);
       }
     } catch (error) {
-      toast.error("Error deleting course");
+      toast.error('Error deleting course');
     } finally {
       setLoading(false);
       setConfirmationModal(null);
     }
-
-  }
+  };
 
   // Skeleton loading
   const skItem = () => {
     return (
       <div className="flex border-b border-richblack-800 px-6 py-8 w-full">
-        <div className="flex flex-1 gap-x-4 ">
-          <div className='h-[148px] min-w-[300px] rounded-xl skeleton '></div>
-
+        <div className="flex flex-1 gap-x-4">
+          <div className='h-[148px] min-w-[300px] rounded-xl skeleton'></div>
           <div className="flex flex-col w-[40%]">
             <p className="h-5 w-[50%] rounded-xl skeleton"></p>
             <p className="h-20 w-[60%] rounded-xl mt-3 skeleton"></p>
-
             <p className="h-2 w-[20%] rounded-xl skeleton mt-3"></p>
             <p className="h-2 w-[20%] rounded-xl skeleton mt-2"></p>
           </div>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -69,24 +65,26 @@ export default function CoursesTable({ courses, setCourses, loading, setLoading 
             <Th className="flex-1 text-left text-sm font-medium uppercase text-richblack-100">
               Khóa học
             </Th>
-            <Th className="text-left text-sm font-medium uppercase text-richblack-100">
+            <Th className="text-left text-sm font-medium uppercase text-richblack-100 duration-col">
               Thời lượng
             </Th>
-            <Th className="text-left text-sm font-medium uppercase text-richblack-100">
+            <Th className="text-left text-sm font-medium uppercase text-richblack-100 price-col">
               Giá
             </Th>
-            <Th className="text-left text-sm font-medium uppercase text-richblack-100">
+            <Th className="text-left text-sm font-medium uppercase text-richblack-100 action-col">
               Hành động
             </Th>
           </Tr>
         </Thead>
 
         {/* Hiển thị Skeleton khi đang tải */}
-        {loading && <div>
-          {skItem()}
-          {skItem()}
-          {skItem()}
-        </div>}
+        {loading && (
+          <div>
+            {skItem()}
+            {skItem()}
+            {skItem()}
+          </div>
+        )}
 
         <Tbody>
           {!loading && courses?.length === 0 ? (
@@ -112,11 +110,11 @@ export default function CoursesTable({ courses, setCourses, loading, setLoading 
                   <div className="flex flex-col">
                     <p className="text-lg font-semibold text-richblack-5 capitalize">{course.courseName}</p>
                     <p className="text-xs text-richblack-300 ">
-                      {course.courseDescription.split(" ").length > TRUNCATE_LENGTH
+                      {course.courseDescription.split(' ').length > TRUNCATE_LENGTH
                         ? course.courseDescription
-                          .split(" ")
-                          .slice(0, TRUNCATE_LENGTH)
-                          .join(" ") + "..."
+                            .split(' ')
+                            .slice(0, TRUNCATE_LENGTH)
+                            .join(' ') + '...'
                         : course.courseDescription}
                     </p>
 
@@ -126,7 +124,7 @@ export default function CoursesTable({ courses, setCourses, loading, setLoading 
                     </p>
 
                     {/* Trạng thái khóa học */}
-                    {course.status === "DRAFT" ? (
+                    {course.status === 'DRAFT' ? (
                       <p className="mt-2 flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-pink-100">
                         <HiClock size={14} />
                         Đang soạn
@@ -143,31 +141,30 @@ export default function CoursesTable({ courses, setCourses, loading, setLoading 
                 </Td>
 
                 {/* Thời lượng */}
-                <Td className="text-sm font-medium text-richblack-100">{course.duration}</Td>
+                <Td className="text-sm font-medium text-richblack-100 duration-col">{course.duration}</Td>
                 {/* Giá */}
-                <Td className="text-sm font-medium text-richblack-100">{course.price} VNĐ</Td>
-
+                <Td className="text-sm font-medium text-richblack-100 price-col">{course.price} VNĐ</Td>
                 {/* Hành động */}
-                <Td className="text-sm font-medium text-richblack-100 ">
-                  {/* Nút chỉnh sửa */}
+                <Td className="text-sm font-medium text-richblack-100 action-col">
                   <button
                     disabled={loading}
-                    onClick={() => { navigate(`/dashboard/edit-course/${course.id}`) }}
+                    onClick={() => {
+                      navigate(`/dashboard/edit-course/${course.id}`);
+                    }}
                     title="Chỉnh sửa"
                     className="px-2 transition-all duration-200 hover:scale-110 hover:text-caribbeangreen-300"
                   >
                     <FiEdit2 size={20} />
                   </button>
 
-                  {/* Nút xóa */}
                   <button
                     disabled={loading}
                     onClick={() => {
                       setConfirmationModal({
-                        text1: "Bạn có muốn xóa khóa học này không?",
-                        text2: "Mọi dữ liệu liên quan đến khóa học sẽ bị xóa",
-                        btn1Text: !loading ? "Xóa" : "Đang tải...",
-                        btn2Text: "Hủy",
+                        text1: 'Bạn có muốn xóa khóa học này không?',
+                        text2: 'Mọi dữ liệu liên quan đến khóa học sẽ bị xóa',
+                        btn1Text: !loading ? 'Xóa' : 'Đang tải...',
+                        btn2Text: 'Hủy',
                         btn1Handler: !loading ? () => handleCourseDelete(course.id) : () => {},
                         btn2Handler: !loading ? () => setConfirmationModal(null) : () => {},
                       });
@@ -184,8 +181,7 @@ export default function CoursesTable({ courses, setCourses, loading, setLoading 
         </Tbody>
       </Table>
 
-      {/* Modal xác nhận */}
       {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}
     </>
-  )
+  );
 }
