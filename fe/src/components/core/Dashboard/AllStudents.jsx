@@ -56,7 +56,7 @@ const AllStudents = () => {
                 <Thead>
                     <Tr className="flex gap-x-10 rounded-t-md border-b border-2 border-b-richblack-500 px-6 py-2">
                         <Th className="flex-1 text-left text-sm font-medium uppercase text-richblack-100">
-                            Tổng Sinh Viên: {studentsCount}
+                            Danh Sách Sinh Viên
                         </Th>
 
                         <Th className="w-[150px] text-center text-sm font-medium uppercase text-richblack-100">

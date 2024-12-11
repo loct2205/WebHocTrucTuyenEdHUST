@@ -31,7 +31,7 @@ const {
 
 // ================ createNewCategory ================
 export const createNewCategory = async (name, description, token) => {
-  const toastId = toast.loading("Loading...")
+  const toastId = toast.loading("Đang tải...")
 
   try {
     const response = await apiConnector("POST", CREATE_NEW_CATEGORY, { name, description }, {
@@ -39,13 +39,13 @@ export const createNewCategory = async (name, description, token) => {
     })
     console.log("CREATE_NEW_CATEGORY RESPONSE............", response)
     if (!response.data) {
-      console.log("Could Not create new category")
+      console.log("Không thể tạo danh mục mới")
     }
 
-    toast.success("New Category Created !")
+    toast.success("Đã tạo danh mục mới!")
   } catch (error) {
     console.log("CREATE_NEW_CATEGORY API ERROR............", error)
-    toast.error(error.message)
+    toast.error("Lỗi: " + error.message)
   }
   toast.dismiss(toastId)
 }
@@ -53,7 +53,7 @@ export const createNewCategory = async (name, description, token) => {
 
 // ================ delete Category ================
 export const deleteCategory = async (categoryId, token) => {
-  const toastId = toast.loading("Loading...")
+  const toastId = toast.loading("Đang tải...")
 
   try {
     const response = await apiConnector("DELETE", DELETE_CATEGORY + `${categoryId}`, null, {
@@ -61,33 +61,32 @@ export const deleteCategory = async (categoryId, token) => {
     })
     console.log("DELETE_CATEGORY RESPONSE............", response)
     if (response.status != 200) {
-      console.log("Could Not delete category")
+      console.log("Không thể xóa danh mục")
     }
 
-    toast.success("Category Deleted !")
+    toast.success("Đã xóa danh mục!")
   } catch (error) {
     console.log("DELETE_CATEGORY API ERROR............", error)
-    toast.error(error.message)
+    toast.error("Lỗi: " + error.message)
   }
   toast.dismiss(toastId)
 }
 
 
-
 // ================ get All Courses ================
 export const getAllCourses = async () => {
-  const toastId = toast.loading("Loading...")
+  const toastId = toast.loading("Đang tải...")
   let result = []
 
   try {
     const response = await apiConnector("GET", GET_ALL_COURSE_API)
     if (!response?.data?.success) {
-      throw new Error("Could Not Fetch Course Categories")
+      throw new Error("Không thể lấy thông tin các khóa học")
     }
     result = response?.data?.data
   } catch (error) {
     console.log("GET_ALL_COURSE_API API ERROR............", error)
-    toast.error(error.message)
+    toast.error("Lỗi: " + error.message)
   }
   toast.dismiss(toastId)
   return result
@@ -96,8 +95,6 @@ export const getAllCourses = async () => {
 
 // ================ fetch Course Details ================
 export const fetchCourseDetails = async (courseId, token) => {
-  // const toastId = toast.loading('Loading')
-  //   dispatch(setLoading(true));
   let result = null;
 
   try {
@@ -113,10 +110,7 @@ export const fetchCourseDetails = async (courseId, token) => {
   } catch (error) {
     console.log("COURSE_DETAILS_API API ERROR............", error)
     result = error.response.data
-    // toast.error(error.response.data.message);
   }
-  // toast.dismiss(toastId)
-  //   dispatch(setLoading(false));
   return result
 }
 
@@ -124,11 +118,10 @@ export const fetchCourseDetails = async (courseId, token) => {
 export const fetchCourseCategories = async () => {
   try {
     const response = await apiConnector("GET", COURSE_CATEGORIES_API, null);
-    // Extract names from the response data
     return response.data; 
   } catch (error) {
     console.log("COURSE_CATEGORY_API API ERROR............", error);
-    toast.error(error.message);
+    toast.error("Lỗi: " + error.message);
     throw error;
   }
 };
@@ -136,7 +129,7 @@ export const fetchCourseCategories = async () => {
 
 // ================ add Course Details ================
 export const addCourseDetails = async (data, token) => {
-  const toastId = toast.loading("Loading...")
+  const toastId = toast.loading("Đang tải...")
   let result = null;
 
   try {
@@ -146,14 +139,14 @@ export const addCourseDetails = async (data, token) => {
     })
     console.log("CREATE COURSE API RESPONSE............", response)
     if (response?.status != 200) {
-      throw new Error("Course creation failed!"); 
+      throw new Error("Tạo khóa học không thành công!"); 
     }
     result = response?.data
-    toast.success("Course Details Added Successfully")
+    toast.success("Thông tin khóa học đã được thêm thành công")
     return result; 
   } catch (error) {
     console.log("CREATE COURSE API ERROR............", error)
-    toast.error(error.message)
+    toast.error("Lỗi: " + error.message)
   } finally {
     toast.dismiss(toastId)
   }
@@ -163,7 +156,7 @@ export const addCourseDetails = async (data, token) => {
 // ================ edit Course Details ================
 export const editCourseDetails = async (id, data, token) => {
   let result = null
-  const toastId = toast.loading("Loading...")
+  const toastId = toast.loading("Đang tải...")
 
   try {
     const response = await apiConnector("POST", EDIT_COURSE_API + `${id}`, data, {
@@ -173,21 +166,22 @@ export const editCourseDetails = async (id, data, token) => {
     console.log("EDIT COURSE API RESPONSE............", response)
 
     if (response.status != 200) {
-      throw new Error("Could Not Update Course Details")
+      throw new Error("Không thể cập nhật thông tin khóa học")
     }
 
     result = response?.data
-    toast.success("Course Details Updated Successfully")
+    toast.success("Thông tin khóa học đã được cập nhật thành công")
   } catch (error) {
     console.log("EDIT COURSE API ERROR............", error)
-    toast.error(error.message)
+    toast.error("Lỗi: " + error.message)
   }
   toast.dismiss(toastId)
   return result
 }
+
 export const publishCourse = async (id, isPublic, token) => {
   let result = null
-  const toastId = toast.loading("Loading...")
+  const toastId = toast.loading("Đang tải...")
 
   try {
     const response = await apiConnector("PATCH", PUBLISH_COURSE_API, null, {
@@ -196,28 +190,28 @@ export const publishCourse = async (id, isPublic, token) => {
     {
       id: id, 
       isPublic: isPublic
-    }
-  )
+    })
     console.log("PUBLISH COURSE API RESPONSE............", response)
 
     if (response.status != 200) {
-      throw new Error("Could Not publish course")
+      throw new Error("Không thể xuất bản khóa học")
     }
 
     result = response?.status
-    toast.success("Publish successfully")
+    toast.success("Đã xuất bản khóa học thành công")
   } catch (error) {
     console.log("PUBLISH COURSE API ERROR............", error)
-    toast.error(error.message)
+    toast.error("Lỗi: " + error.message)
   }
   toast.dismiss(toastId)
   return result
 }
 
+
 // ================ create Section ================
 export const createSection = async (data, token, courseId) => {
   let result = null
-  const toastId = toast.loading("Loading...")
+  const toastId = toast.loading("Đang tải...")
 
   try {
     const response = await apiConnector("POST", CREATE_SECTION_API, data, {
@@ -228,14 +222,14 @@ export const createSection = async (data, token, courseId) => {
     console.log("CREATE SECTION API RESPONSE............", response)
 
     if (response?.status != 200) {
-      throw new Error("Could Not Create Section")
+      throw new Error("Không thể tạo phần học")
     }
     
     result = response?.data
-    toast.success("Course Section Created")
+    toast.success("Đã tạo phần học thành công")
   } catch (error) {
     console.log("CREATE SECTION API ERROR............", error)
-    toast.error(error.message)
+    toast.error("Lỗi: " + error.message)
   }
   toast.dismiss(toastId)
   return result
@@ -245,7 +239,7 @@ export const createSection = async (data, token, courseId) => {
 // ================ create SubSection ================
 export const createSubSection = async (data, token) => {
   let result = null
-  const toastId = toast.loading("Loading...")
+  const toastId = toast.loading("Đang tải...")
 
   try {
     const response = await apiConnector("POST", CREATE_SUBSECTION_API, data, {
@@ -254,14 +248,14 @@ export const createSubSection = async (data, token) => {
     console.log("CREATE SUB-SECTION API RESPONSE............", response)
 
     if (response.status != 200) {
-      throw new Error("Could Not Add Lecture")
+      throw new Error("Không thể thêm bài giảng")
     }
 
     result = response?.data
-    toast.success("Lecture Added")
+    toast.success("Bài giảng đã được thêm thành công")
   } catch (error) {
     console.log("CREATE SUB-SECTION API ERROR............", error)
-    toast.error(error.message)
+    toast.error("Lỗi: " + error.message)
   }
   toast.dismiss(toastId)
   return result
@@ -271,7 +265,7 @@ export const createSubSection = async (data, token) => {
 // ================ Update Section ================
 export const updateSection = async (sectionId, sectionName, token) => {
   let result = null
-  const toastId = toast.loading("Loading...")
+  const toastId = toast.loading("Đang tải...")
 
   try {
     const response = await apiConnector("PATCH", UPDATE_SECTION_API + `${sectionId}`, null, {
@@ -283,14 +277,14 @@ export const updateSection = async (sectionId, sectionName, token) => {
     console.log("UPDATE SECTION API RESPONSE............", response)
 
     if (response.status != 200) {
-      throw new Error("Could Not Update Section")
+      throw new Error("Không thể cập nhật phần học")
     }
 
     result = response.status
-    toast.success("Course Section Updated")
+    toast.success("Phần học đã được cập nhật thành công")
   } catch (error) {
     console.log("UPDATE SECTION API ERROR............", error)
-    toast.error(error.message)
+    toast.error("Lỗi: " + error.message)
   }
   toast.dismiss(toastId)
   return result
@@ -300,7 +294,6 @@ export const updateSection = async (sectionId, sectionName, token) => {
 // ================ Update SubSection ================
 export const updateSubSectionInfo = async (id, data, sectionId, token) => {
   let result = null
-  // const toastId = toast.loading("Loading...")
 
   try {
     const response = await apiConnector("PUT", UPDATE_SUBSECTION_INFO_API + `${id}`, data, {
@@ -313,22 +306,19 @@ export const updateSubSectionInfo = async (id, data, sectionId, token) => {
     console.log("UPDATE SUB-SECTION API RESPONSE............", response)
 
     if (response.status != 200) {
-      throw new Error("Could Not Update Lecture")
+      throw new Error("Không thể cập nhật bài giảng")
     }
 
     result = response?.status
-    // toast.success("Lecture Updated")
   } catch (error) {
     console.log("UPDATE SUB-SECTION API ERROR............", error)
-    toast.error(error.message)
+    toast.error("Lỗi: " + error.message)
   }
-  // toast.dismiss(toastId)
   return result
 }
 
 export const updateSubSectionVideo = async (id, formData, sectionId, token) => {
   let result = null
-  // const toastId = toast.loading("Loading...")
 
   try {
     const response = await apiConnector("PUT", UPDATE_SUBSECTION_VIDEO_API + `${id}`, formData, {
@@ -341,23 +331,21 @@ export const updateSubSectionVideo = async (id, formData, sectionId, token) => {
     console.log("UPDATE SUB-SECTION API RESPONSE............", response)
 
     if (!response?.status != 200) {
-      throw new Error("Could Not Update Lecture")
+      throw new Error("Không thể cập nhật bài giảng")
     }
 
     result = response?.status
-  //  toast.success("Lecture Updated")
   } catch (error) {
     console.log("UPDATE SUB-SECTION API ERROR............", error)
-    toast.error(error.message)
+    toast.error("Lỗi: " + error.message)
   }
-  // toast.dismiss(toastId)
   return result
 }
   
 // ================ delete Section ================
 export const deleteSection = async (sectionId, token) => {
   let result = null
-  const toastId = toast.loading("Loading...")
+  const toastId = toast.loading("Đang tải...")
 
   try {
     const response = await apiConnector("DELETE", DELETE_SECTION_API + `${sectionId}`, null, {
@@ -366,14 +354,14 @@ export const deleteSection = async (sectionId, token) => {
     console.log("DELETE SECTION API RESPONSE............", response)
 
     if (response.status != 200) {
-      throw new Error("Could Not Delete Section")
+      throw new Error("Không thể xóa phần học")
     }
 
     result = response?.status
-    toast.success("Course Section Deleted")
+    toast.success("Đã xóa phần học")
   } catch (error) {
     console.log("DELETE SECTION API ERROR............", error)
-    toast.error(error.message)
+    toast.error("Lỗi: " + error.message)
   }
   toast.dismiss(toastId)
   return result
@@ -383,20 +371,20 @@ export const deleteSection = async (sectionId, token) => {
 // ================ delete SubSection ================
 export const deleteSubSection = async (id, token) => {
   let result = null
-  const toastId = toast.loading("Loading...")
+  const toastId = toast.loading("Đang tải...")
   try {
     const response = await apiConnector("DELETE", DELETE_SUBSECTION_API + `${id}`, null, {
       Authorization: `Bearer ${token}`,
     })
     console.log("DELETE SUB-SECTION API RESPONSE............", response)
     if (response.status != 200) {
-      throw new Error("Could Not Delete Lecture")
+      throw new Error("Không thể xóa bài giảng")
     }
     result = response?.status
-    toast.success("Lecture Deleted")
+    toast.success("Bài giảng đã được xóa")
   } catch (error) {
     console.log("DELETE SUB-SECTION API ERROR............", error)
-    toast.error(error.message)
+    toast.error("Lỗi: " + error.message)
   }
   toast.dismiss(toastId)
   return result
@@ -405,7 +393,6 @@ export const deleteSubSection = async (id, token) => {
 // ================ fetch Instructor Courses ================
 export const fetchInstructorCourses = async (token, instructorId) => {
   let result = []
-  // const toastId = toast.loading("Loading...")
   try {
     const response = await apiConnector(
       "GET",
@@ -417,21 +404,20 @@ export const fetchInstructorCourses = async (token, instructorId) => {
     )
     console.log("INSTRUCTOR COURSES API RESPONSE", response)
     if (!response?.data) {
-      throw new Error("Could Not Fetch Instructor Courses")
+      throw new Error("Không thể lấy thông tin các khóa học của giảng viên")
     }
     result = response?.data;
   } catch (error) {
     console.log("INSTRUCTOR COURSES API ERROR............", error)
-    toast.error(error.message)
+    toast.error("Lỗi: " + error.message)
   }
   return result
 }
 
 
-
 // ================ delete Course ================
 export const deleteCourse = async (courseId, token) => {
-  const toastId = toast.loading("Loading...")
+  const toastId = toast.loading("Đang tải...")
   let result = null
   try {
     const response = await apiConnector("DELETE", DELETE_COURSE_API  + `${courseId}`, null, {
@@ -439,13 +425,13 @@ export const deleteCourse = async (courseId, token) => {
     })
     console.log("DELETE COURSE API RESPONSE............", response)
     if (response?.status != 200) {
-      throw new Error("Could Not Delete Course")
+      throw new Error("Không thể xóa khóa học")
     }
-    toast.success("Course Deleted")
+    toast.success("Khóa học đã bị xóa")
     result = response.status
   } catch (error) {
     console.log("DELETE COURSE API ERROR............", error)
-    toast.error(error.message)
+    toast.error("Lỗi: " + error.message)
   }
   toast.dismiss(toastId)
   return result
@@ -454,8 +440,6 @@ export const deleteCourse = async (courseId, token) => {
 
 // ================ get Full Details Of Course ================
 export const getFullDetailsOfCourse = async (courseId, token) => {
-  // const toastId = toast.loading("Loading...")
-  //   dispatch(setLoading(true));
   let result = null
   try {
     const response = await apiConnector(
@@ -477,10 +461,7 @@ export const getFullDetailsOfCourse = async (courseId, token) => {
   } catch (error) {
     console.log("COURSE_FULL_DETAILS_API API ERROR............", error)
     result = error.response.data
-    // toast.error(error.response.data.message);
   }
-  // toast.dismiss(toastId)
-  //   dispatch(setLoading(false));
   return result
 }
 
@@ -488,8 +469,7 @@ export const getFullDetailsOfCourse = async (courseId, token) => {
 // ================ mark Lecture As Complete ================
 export const markLectureAsComplete = async (data, token) => {
   let result = null
-  // console.log("mark complete data", data)
-  const toastId = toast.loading("Loading...")
+  const toastId = toast.loading("Đang tải...")
   try {
     const response = await apiConnector("PUT", LECTURE_COMPLETION_API, data, {
       Authorization: `Bearer ${token}`,
@@ -497,13 +477,13 @@ export const markLectureAsComplete = async (data, token) => {
     console.log("MARK_LECTURE_AS_COMPLETE_API API RESPONSE............", response)
 
     if (!response.data) {
-      throw new Error('Update course progress failed!')
+      throw new Error('Cập nhật tiến độ khóa học không thành công!')
     }
-    toast.success("Lecture Completed")
+    toast.success("Bài giảng đã hoàn thành")
     result = true
   } catch (error) {
     console.log("MARK_LECTURE_AS_COMPLETE_API API ERROR............", error)
-    toast.error(error.message)
+    toast.error("Lỗi: " + error.message)
     result = false
   }
   toast.dismiss(toastId)
@@ -513,7 +493,7 @@ export const markLectureAsComplete = async (data, token) => {
 
 // ================ create Course Rating  ================
 export const createRating = async (data, token) => {
-  const toastId = toast.loading("Loading...")
+  const toastId = toast.loading("Đang tải...")
   let success = false
   try {
     const response = await apiConnector("POST", CREATE_RATING_API, data, {
@@ -521,14 +501,14 @@ export const createRating = async (data, token) => {
     })
     console.log("CREATE RATING API RESPONSE............", response)
     if (!response?.data || !response?.data?.id) {
-      throw new Error("Could Not Create Rating")
+      throw new Error("Không thể tạo đánh giá")
     }
-    toast.success("Rating Created")
+    toast.success("Đánh giá đã được tạo")
     success = true
   } catch (error) {
     success = false
     console.log("CREATE RATING API ERROR............", error)
-    toast.error(error.message)
+    toast.error("Lỗi: " + error.message)
   }
   toast.dismiss(toastId)
   return success

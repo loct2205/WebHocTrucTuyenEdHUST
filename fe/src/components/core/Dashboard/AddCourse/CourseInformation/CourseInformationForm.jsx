@@ -8,7 +8,9 @@ import IconBtn from "../../../../common/IconBtn";
 import Upload from "../Upload";
 import ChipInput from "./ChipInput";
 import RequirementsField from "./RequirementField";
-import { addCourseDetails, editCourseDetails, fetchCourseCategories } from "../../../../../services/operations/courseDetailsAPI"
+import { addCourseDetails, editCourseDetails, fetchCourseCategories } from "../../../../../services/operations/courseDetailsAPI";
+import { toast } from "react-hot-toast";
+
 export default function CourseInformationForm() {
   const {
     register,
@@ -21,7 +23,6 @@ export default function CourseInformationForm() {
   const dispatch = useDispatch();
   const { course, editCourse } = useSelector((state) => state.course);
   const token = JSON.parse(localStorage.getItem("token"));
-  // const [loading] = useState(false);
   const [loading, setLoading] = useState(false);
 
   // Fetch data for categories
@@ -35,10 +36,10 @@ export default function CourseInformationForm() {
           _id: category.id.toString(),
           name: category.name,
         }));
-        console.log(categories);
         setCourseCategories(categories);
       } catch (error) {
-        console.error("Failed to fetch course categories:", error);
+        console.error("Không thể tải danh mục khóa học:", error);
+        toast.error("Không thể tải danh mục khóa học");
       } finally {
         setLoading(false);
       }
@@ -46,6 +47,7 @@ export default function CourseInformationForm() {
 
     fetchCategories();
   }, [token]);
+
   useEffect(() => {
     if (editCourse) {
       setValue("courseTitle", course.courseName);
@@ -56,7 +58,6 @@ export default function CourseInformationForm() {
       setValue("courseCategory", course.categoryName);
       setValue("courseRequirements", course.instructions);
       setValue("courseImage", course.thumbnail);
-      console.log(course.thumbnail);
     }
   }, [editCourse, course, setValue]);
 
@@ -69,8 +70,7 @@ export default function CourseInformationForm() {
       currentValues.courseTags.toString() !== course.tag.toString() ||
       currentValues.courseBenefits !== course.whatYouWillLearn ||
       currentValues.courseCategory !== course.categoryName ||
-      currentValues.courseRequirements.toString() !==
-        course.instructions.toString() ||
+      currentValues.courseRequirements.toString() !== course.instructions.toString() ||
       currentValues.courseImage !== course.thumbnail
     ) {
       return true;
@@ -81,13 +81,10 @@ export default function CourseInformationForm() {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      
-  
       // Check for edit mode and updated form
       if (editCourse && isFormUpdated()) {
-        const currentValues = getValues()
-        const formData = new FormData()
-        // console.log('data -> ',data)
+        const currentValues = getValues();
+        const formData = new FormData();
         const courseDto = {
           courseName: currentValues.courseTitle,
           courseDescription: currentValues.courseShortDesc,
@@ -96,30 +93,29 @@ export default function CourseInformationForm() {
           instructions: currentValues.courseRequirements,
           price: currentValues.coursePrice,
           tag: currentValues.courseTags,
-        }
-        formData.append("courseDto", new Blob([JSON.stringify(courseDto)], { type: "application/json" }))
+        };
+        formData.append("courseDto", new Blob([JSON.stringify(courseDto)], { type: "application/json" }));
         if (currentValues.courseImage) {
-          console.log(currentValues.courseImage);
-          formData.append("file", currentValues.courseImage)
+          formData.append("file", currentValues.courseImage);
         } else {
-          throw new Error("Course image is required.")
+          throw new Error("Ảnh đại diện khóa học là bắt buộc.");
         }
-        // send data to backend
-        setLoading(true)
-        const result = await editCourseDetails(course.id ,formData, token)
-        setLoading(false)
+        setLoading(true);
+        const result = await editCourseDetails(course.id, formData, token);
+        setLoading(false);
         if (result) {
-          dispatch(setStep(2))
-          dispatch(setCourse(result))
+          dispatch(setStep(2));
+          dispatch(setCourse(result));
+          toast.success("Cập nhật khóa học thành công");
         } else {
-          throw new Error("Failed to edit course.")
+          throw new Error("Không thể cập nhật khóa học.");
         }
       } else if (editCourse) {
-        alert("Không có thay đổi nào để lưu.");
+        toast.warning("Không có thay đổi nào để lưu.");
       } else {
-          // Create a new FormData instance
+        // Create a new FormData instance
         const formData = new FormData();
-    
+
         // Append the course data as a stringified JSON
         const courseDto = {
           courseName: data.courseTitle,
@@ -131,32 +127,30 @@ export default function CourseInformationForm() {
           tag: data.courseTags,
         };
         formData.append("courseDto", new Blob([JSON.stringify(courseDto)], { type: "application/json" }));
-    
+
         // Append the course image file
         if (data.courseImage) {
           formData.append("file", data.courseImage);
         } else {
-          throw new Error("Course image is required.");
+          throw new Error("Ảnh đại diện khóa học là bắt buộc.");
         }
-        console.log("Data to be added:", courseDto);
-        console.log("Submitting FormData:", formData);
-  
+
         const responseData = await addCourseDetails(formData, token);
         if (responseData.id) {
-          console.log("Course added successfully:", responseData);
           dispatch(setStep(2));
-          dispatch(setCourse(responseData)); 
+          dispatch(setCourse(responseData));
+          toast.success("Thêm khóa học thành công!");
         } else {
-          throw new Error("Failed to add course.");
+          throw new Error("Không thể thêm khóa học.");
         }
       }
     } catch (error) {
-      console.error("Failed to add course:", error);
+      console.error("Lỗi khi thêm khóa học:", error);
+      toast.error("Có lỗi xảy ra khi thêm khóa học.");
     } finally {
       setLoading(false);
     }
   };
-  
 
   return (
     <form

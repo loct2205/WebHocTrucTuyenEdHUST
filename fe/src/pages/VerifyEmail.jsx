@@ -5,7 +5,8 @@ import { BiArrowBack } from "react-icons/bi";
 import { RxCountdownTimer } from "react-icons/rx";
 import Loading from './../components/common/Loading';
 import { useDispatch, useSelector } from "react-redux";
-import { signUp } from "../services/operations/authAPI";
+import { signUp, sendOtp } from "../services/operations/authAPI";
+import { toast } from "react-hot-toast";
 
 function VerifyEmail() {
   const [otp, setOtp] = useState("");
@@ -13,14 +14,14 @@ function VerifyEmail() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-// Điều hướng
+  // Điều hướng
   useEffect(() => {
     if (!signupData) {
       navigate("/signup");
     }
   }, [signupData, navigate]);
 
-// Xử lý
+  // Xử lý
   const handleVerifyAndSignup = (e) => {
     e.preventDefault();
     const { accountType, firstName, lastName, email, password, confirmPassword, } = signupData;
@@ -28,11 +29,12 @@ function VerifyEmail() {
     dispatch(signUp(accountType, firstName, lastName, email, password, confirmPassword, otp, navigate));
   };
 
-// ResendOTP
-  // const handleResendOtp = () => {
-  //   setOtp("");
-  //   alert("Mã OTP đã được đến Email của bạn!");
-  // };
+  // Resend OTP
+  const handleResendOtp = () => {
+    setOtp("");
+    dispatch(sendOtp(signupData.email, navigate)); // Gửi lại mã OTP
+    toast.success("Mã OTP đã được gửi lại đến Email của bạn!");
+  };
 
   return (
     <div className="min-h-[calc(100vh-3.5rem)] grid place-items-center">
@@ -40,7 +42,7 @@ function VerifyEmail() {
         <Loading />
       ) : (
         <div className="max-w-[500px] p-4 lg:p-8">
-          <h1 className="text-richblack-5 font-semibold text-[1.875rem] leading-[2.375rem]">Verify Email</h1>
+          <h1 className="text-richblack-5 font-semibold text-[1.875rem] leading-[2.375rem]">Xác Thực Email</h1>
 
           <p className="text-[1.125rem] leading-[1.625rem] my-4 text-richblack-100">
             Vui lòng nhập mã xác thực bạn đã nhận được
@@ -71,7 +73,7 @@ function VerifyEmail() {
               type="submit"
               className="w-full bg-yellow-50 py-[12px] px-[12px] rounded-[8px] mt-6 font-medium text-richblack-900"
             >
-              Xác thực Email
+              Xác Thực Email
             </button>
           </form>
 
@@ -84,7 +86,7 @@ function VerifyEmail() {
 
             <button
               className="flex items-center text-blue-100 gap-x-2"
-              onClick={() => dispatch(sendOtp(signupData.email, navigate), setOtp(''))}
+              onClick={handleResendOtp}
             >
               <RxCountdownTimer />
               Gửi lại mã OTP

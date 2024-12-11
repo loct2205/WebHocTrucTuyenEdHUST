@@ -6,7 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { resetCourseState, setStep } from "../../../../../slices/courseSlice";
 import { COURSE_STATUS } from "../../../../../utils/constants";
 import IconBtn from "../../../../common/IconBtn";
-import { publishCourse } from "../../../../../services/operations/courseDetailsAPI"
+import { publishCourse } from "../../../../../services/operations/courseDetailsAPI";
+import { toast } from "react-hot-toast";
+
 export default function PublishCourse() {
   const { register, handleSubmit, setValue, getValues } = useForm();
 
@@ -15,6 +17,7 @@ export default function PublishCourse() {
   const { course } = useSelector((state) => state.course);
   const [loading, setLoading] = useState(false);
   const token = JSON.parse(localStorage.getItem("token"));
+
   useEffect(() => {
     if (course?.status === COURSE_STATUS.PUBLISHED) {
       setValue("public", true);
@@ -41,10 +44,12 @@ export default function PublishCourse() {
     const isPublic = getValues("public");
     setLoading(true);
     const response = await publishCourse(course.id, isPublic, token); // publish course
-    if (response == 200) {
+    if (response === 200) {
       goToCourses();
+      toast.success("Khóa học đã được cập nhật trạng thái thành công!");
+    } else {
+      toast.error("Có lỗi xảy ra khi cập nhật trạng thái khóa học.");
     }
-    alert("Khóa học đã được cập nhật trạng thái!");
     setLoading(false);
   };
 

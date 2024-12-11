@@ -11,10 +11,11 @@ const {
   RESETPASSWORD_API,
 } = endpoints;
 const { GET_USER_DETAILS_API } = profileEndpoints;
+
 // ================ Login ================
 export function login(email, password, navigate) {
   return async (dispatch) => {
-    const toastId = toast.loading("Loading...");
+    const toastId = toast.loading("Đang tải...");
     dispatch(setLoading(true));
 
     try {
@@ -26,17 +27,17 @@ export function login(email, password, navigate) {
       console.log("LOGIN API RESPONSE............", response);
 
       if (!response.data || !response.data.token) {
-        throw new Error("Login failed. Token not received.");
+        throw new Error("Đăng nhập thất bại. Không nhận được token.");
       }
 
-      toast.success("Login Successful");
+      toast.success("Đăng nhập thành công");
       dispatch(setToken(response.data.token));
       localStorage.setItem("token", JSON.stringify(response.data?.token));
 
       navigate("/dashboard/my-profile");
     } catch (error) {
       console.log("LOGIN API ERROR.......", error);
-      toast.error(error.response?.data?.description);
+      toast.error(error.response?.data?.description || "Lỗi khi đăng nhập");
     }
     dispatch(setLoading(false));
     toast.dismiss(toastId);
@@ -46,7 +47,7 @@ export function login(email, password, navigate) {
 // ================ send Otp ================
 export function sendOtp(email, navigate) {
   return async (dispatch) => {
-    const toastId = toast.loading("Loading...");
+    const toastId = toast.loading("Đang tải...");
     dispatch(setLoading(true));
 
     try {
@@ -55,15 +56,14 @@ export function sendOtp(email, navigate) {
       });
 
       if (!response.data) {
-        throw new Error('Send OTP failed.');
+        throw new Error('Gửi OTP thất bại.');
       }
 
       navigate("/verify-email");
-      toast.success("OTP Sent Successfully");
+      toast.success("OTP đã gửi thành công");
     } catch (error) {
       console.log("SENDOTP API ERROR --> ", error);
-      toast.error(error.response?.data?.description);
-      // toast.error("Could Not Send OTP")
+      toast.error(error.response?.data?.description || "Lỗi khi gửi OTP");
     }
     dispatch(setLoading(false));
     toast.dismiss(toastId);
@@ -74,32 +74,28 @@ export function sendOtp(email, navigate) {
 export function signUp(accountType, firstName, lastName, email, password, confirmPassword, otp, navigate) {
   return async (dispatch) => {
 
-    const toastId = toast.loading("Loading...");
+    const toastId = toast.loading("Đang tải...");
     dispatch(setLoading(true));
     try {
       const response = await apiConnector("POST", SIGNUP_API, {
-        // accountType,
         firstName,
         lastName,
         email,
         password,
         confirmPassword,
         otp,
-      })
+      });
 
-      // console.log("SIGNUP API RESPONSE --> ", response);
       if (!response.data || !response.data.password) {
-        toast.error('SignUp failed.');
+        toast.error('Đăng ký thất bại.');
         throw new Error('SignUp failed.');
       }
 
-      toast.success("Signup Successful");
+      toast.success("Đăng ký thành công");
       navigate("/login");
     } catch (error) {
       console.log("SIGNUP API ERROR --> ", error);
-      // toast.error(error.response.data.message);
-      toast.error("Invalid OTP");
-      // navigate("/signup")
+      toast.error("OTP không hợp lệ");
     }
     dispatch(setLoading(false))
     toast.dismiss(toastId)
@@ -110,37 +106,34 @@ export function signUp(accountType, firstName, lastName, email, password, confir
 export function getPasswordResetToken(email, setEmailSent) {
   return async (dispatch) => {
 
-    const toastId = toast.loading("Loading...")
-    dispatch(setLoading(true))
+    const toastId = toast.loading("Đang tải...");
+    dispatch(setLoading(true));
+
     try {
       const response = await apiConnector("POST", RESETPASSTOKEN_API, {
         email,
-      })
-
-      console.log("RESET PASS TOKEN RESPONSE............", response)
+      });
 
       if (!response.data) {
-        throw new Error('Request Get password reset token failed.')
+        throw new Error('Yêu cầu lấy token reset mật khẩu thất bại.');
       }
 
-      toast.success("Reset Email Sent")
-      setEmailSent(true)
+      toast.success("Đã gửi email reset mật khẩu");
+      setEmailSent(true);
     } catch (error) {
-      console.log("RESET PASS TOKEN ERROR............", error)
-      toast.error(error.response?.data?.description)
-      // toast.error("Failed To Send Reset Email")
+      console.log("RESET PASS TOKEN ERROR............", error);
+      toast.error(error.response?.data?.description || "Lỗi khi gửi email reset mật khẩu");
     }
-    toast.dismiss(toastId)
-    dispatch(setLoading(false))
+    toast.dismiss(toastId);
+    dispatch(setLoading(false));
   }
 }
-
 
 // ================ reset Password ================
 export function resetPassword(password, confirmPassword, token, navigate) {
   return async (dispatch) => {
-    const toastId = toast.loading("Loading...")
-    dispatch(setLoading(true))
+    const toastId = toast.loading("Đang tải...");
+    dispatch(setLoading(true));
 
     try {
       const response = await apiConnector("POST", RESETPASSWORD_API, {
@@ -148,35 +141,31 @@ export function resetPassword(password, confirmPassword, token, navigate) {
         confirmPassword,
       }, {
         Authorization: `Bearer ${token}`,
-      })
-
-      console.log("RESETPASSWORD RESPONSE............", response)
+      });
 
       if (!response.data) {
-        throw new Error('Reset password failed.')
+        throw new Error('Reset mật khẩu thất bại.');
       }
 
-      toast.success("Password Reset Successfully")
-      navigate("/login")
+      toast.success("Đổi mật khẩu thành công");
+      navigate("/login");
     } catch (error) {
-      console.log("RESETPASSWORD ERROR............", error)
-      toast.error(error.response?.data?.description)
-      // toast.error("Failed To Reset Password");
+      console.log("RESETPASSWORD ERROR............", error);
+      toast.error(error.response?.data?.description || "Lỗi khi đổi mật khẩu");
     }
-    toast.dismiss(toastId)
-    dispatch(setLoading(false))
+    toast.dismiss(toastId);
+    dispatch(setLoading(false));
   }
 }
 
 // ================ Logout ================
 export function logout(navigate) {
   return (dispatch) => {
-    dispatch(setToken(null))
-    dispatch(setUser(null))
-    // dispatch(resetCart())
-    localStorage.removeItem("token")
-    localStorage.removeItem("user")
-    toast.success("Logged Out")
-    navigate("/")
-  }
+    dispatch(setToken(null));
+    dispatch(setUser(null));
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    toast.success("Đăng xuất thành công");
+    navigate("/");
+  };
 }

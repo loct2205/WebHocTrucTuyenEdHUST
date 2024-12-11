@@ -5,8 +5,7 @@ import { MdEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { RxDropdownMenu } from "react-icons/rx";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteSection, fetchCourseDetails, deleteSubSection} from "../../../../../services/operations/courseDetailsAPI"
-
+import { deleteSection, fetchCourseDetails, deleteSubSection } from "../../../../../services/operations/courseDetailsAPI";
 import { setCourse } from "../../../../../slices/courseSlice";
 import ConfirmationModal from "../../../../common/ConfirmationModal";
 import SubSectionModal from "./SubSectionModal";
@@ -31,15 +30,15 @@ export default function NestedView({ handleChangeEditSectionName }) {
         if (courseDetail) {
           dispatch(setCourse(courseDetail));
         } else {
-          throw new Error("Failed to fetch updated course details");
+          throw new Error("Không thể lấy thông tin khóa học đã cập nhật");
         }
       } else {
-        throw new Error("Failed to delete section");
+        throw new Error("Không thể xóa phần học");
       }
-      console.log("Deleted section:", sectionId);
+      console.log("Đã xóa phần học:", sectionId);
       setConfirmationModal(null);
     } catch (error) {
-      console.error("Failed to delete section:", error);
+      console.error("Xóa phần học thất bại:", error);
     }
   };
 
@@ -47,13 +46,13 @@ export default function NestedView({ handleChangeEditSectionName }) {
   const handleDeleteSubSection = async (subSectionId, sectionId) => {
     const responseStatus = await deleteSubSection(subSectionId, token);
     if (responseStatus !== 200) {
-      throw new Error("Failed to delete subsection");
+      throw new Error("Không thể xóa bài giảng");
     }
     const updatedCourse = await fetchCourseDetails(course.id, token);
     if (updatedCourse) {
       dispatch(setCourse(updatedCourse));
     }
-    console.log("Deleted subsection:", subSectionId);
+    console.log("Đã xóa bài giảng:", subSectionId);
     setConfirmationModal(null);
   };
 
@@ -74,10 +73,10 @@ export default function NestedView({ handleChangeEditSectionName }) {
                 <button
                   onClick={() =>
                     setConfirmationModal({
-                      text1: "Delete this section?",
-                      text2: "All subsections within this section will be deleted.",
-                      btn1Text: "Delete",
-                      btn2Text: "Cancel",
+                      text1: "Bạn có chắc chắn muốn xóa phần học này?",
+                      text2: "Tất cả bài giảng trong phần này sẽ bị xóa.",
+                      btn1Text: "Xóa",
+                      btn2Text: "Hủy",
                       btn1Handler: () => handleDeleteSection(section.id),
                       btn2Handler: () => setConfirmationModal(null),
                     })
@@ -107,10 +106,10 @@ export default function NestedView({ handleChangeEditSectionName }) {
                     <button
                       onClick={() =>
                         setConfirmationModal({
-                          text1: "Delete this subsection?",
-                          text2: "This subsection will be deleted.",
-                          btn1Text: "Delete",
-                          btn2Text: "Cancel",
+                          text1: "Bạn có chắc chắn muốn xóa bài giảng này?",
+                          text2: "Bài giảng này sẽ bị xóa.",
+                          btn1Text: "Xóa",
+                          btn2Text: "Hủy",
                           btn1Handler: () => handleDeleteSubSection(subSection.id, section.id),
                           btn2Handler: () => setConfirmationModal(null),
                         })
@@ -122,11 +121,11 @@ export default function NestedView({ handleChangeEditSectionName }) {
                 </div>
               ))}
               <button
-                onClick={() => setAddSubsection({sectionId: section.id})}
+                onClick={() => setAddSubsection({ sectionId: section.id })}
                 className="mt-3 flex items-center gap-x-1 text-yellow-50"
               >
                 <FaPlus className="text-lg" />
-                <p>Add Subsection</p>
+                <p>Thêm bài giảng</p>
               </button>
             </div>
           </details>

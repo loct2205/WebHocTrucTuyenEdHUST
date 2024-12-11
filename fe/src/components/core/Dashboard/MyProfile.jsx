@@ -44,7 +44,7 @@ export default function MyProfile() {
   }, []);
 
   // Handle if user data is not yet loaded
-  if (!user) return <p>Loading...</p>;
+  if (!user) return <p>Đang tải...</p>;
 
   return (
     <>

@@ -3,10 +3,10 @@ import { useForm } from "react-hook-form";
 import { RxCross2 } from "react-icons/rx";
 import IconBtn from "../../../../common/IconBtn";
 import Upload from "../Upload";
-import {createSubSection, updateSubSectionInfo, updateSubSectionVideo, fetchCourseDetails} from "../../../../../services/operations/courseDetailsAPI"
-import { setCourse } from "../../../../../slices/courseSlice"
+import { createSubSection, updateSubSectionInfo, updateSubSectionVideo, fetchCourseDetails } from "../../../../../services/operations/courseDetailsAPI";
+import { setCourse } from "../../../../../slices/courseSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-hot-toast"
+import { toast } from "react-hot-toast";
 
 export default function SubSectionModal({
   modalData,
@@ -27,6 +27,7 @@ export default function SubSectionModal({
   const [loading, setLoading] = useState(false);
   const token = JSON.parse(localStorage.getItem("token"));
   const { course } = useSelector((state) => state.course);
+
   useEffect(() => {
     if (view || edit) {
       setValue("lectureTitle", modalData.title);
@@ -55,29 +56,29 @@ export default function SubSectionModal({
         formData.append("file", currentValues.lectureVideo);
         const responseStatus = await updateSubSectionVideo(modalData.id, formData, modalData.sectionId, token);
         if (responseStatus !== 200) {
-          throw new Error("Failed to update video");
+          throw new Error("Cập nhật video thất bại");
         }
       }
       if (currentValues.lectureTitle !== modalData.title || currentValues.lectureDesc !== modalData.description) {
         const subSectionDto = {
-          title : currentValues.lectureTitle,
-          description : currentValues.lectureDesc,
-        }
+          title: currentValues.lectureTitle,
+          description: currentValues.lectureDesc,
+        };
         console.log("subSectionDto: ", JSON.stringify(subSectionDto));
         const responseStatus = await updateSubSectionInfo(modalData.id, JSON.stringify(subSectionDto), modalData.sectionId, token);
         if (responseStatus !== 200) {
-          throw new Error("Failed to update subsection info");
+          throw new Error("Cập nhật thông tin bài giảng thất bại");
         }
       }
       const updatedCourse = await fetchCourseDetails(course.id, token);
       if (updatedCourse) {
         dispatch(setCourse(updatedCourse));
       } else {
-        throw new Error("Failed to fetch updated course details");
+        throw new Error("Không thể lấy thông tin khóa học đã cập nhật");
       }
-      toast.success("Lecture Updated")
+      toast.success("Đã cập nhật bài giảng thành công");
     } else {
-      alert("Không có thay đổi nào được thực hiện.");
+      toast.warning("Không có thay đổi nào được thực hiện.");
     }
     setModalData(null);
     setLoading(false);
@@ -92,10 +93,10 @@ export default function SubSectionModal({
     }
     const formData = new FormData(); 
     const subSectionDto = {
-      title : data.lectureTitle,
-      description : data.lectureDesc,
-    }
-    formData.append("subSectionDto", new Blob([JSON.stringify(subSectionDto)], { type: "application/json" }))
+      title: data.lectureTitle,
+      description: data.lectureDesc,
+    };
+    formData.append("subSectionDto", new Blob([JSON.stringify(subSectionDto)], { type: "application/json" }));
     formData.append("file", data.lectureVideo); 
     formData.append("sectionId", modalData.sectionId);
     const createdSubsection = await createSubSection(formData, token);
@@ -105,12 +106,12 @@ export default function SubSectionModal({
       if (courseDetail) {
         dispatch(setCourse(courseDetail));
       } else {
-        throw new Error("Failed to fetch updated course details");
+        throw new Error("Không thể lấy thông tin khóa học đã cập nhật");
       }
+      toast.success("Đã thêm bài giảng mới thành công!");
     } else {
-      throw new Error("Failed to create new subsection.");
+      throw new Error("Không thể tạo bài giảng mới");
     }
-    alert("Đã thêm bài giảng mới thành công!");
     setModalData(null);
     setLoading(false);
   };

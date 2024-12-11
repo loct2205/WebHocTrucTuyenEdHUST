@@ -94,7 +94,7 @@ const Navbar = () => {
                                                     group-hover:translate-y-[1.65em] group-hover:opacity-100 lg:w-[300px]"
                                         >
                                             <div className="absolute left-[50%] top-0 z-[100] h-6 w-6 translate-x-[80%] translate-y-[-40%] rotate-45 select-none rounded bg-richblack-5"></div>
-                                            {loading ? (<p className="text-center ">Loading...</p>)
+                                            {loading ? (<p className="text-center ">Đang tải...</p>)
                                                     : subLinks.length ? (
                                                         <>
                                                             {subLinks?.map((subLink, i) => (
