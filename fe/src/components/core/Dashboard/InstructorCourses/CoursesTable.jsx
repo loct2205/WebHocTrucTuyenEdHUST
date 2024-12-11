@@ -118,10 +118,10 @@ export default function CoursesTable({ courses, setCourses, loading, setLoading 
                         : course.courseDescription}
                     </p>
 
-                    {/* Thời gian tạo */}
+                    {/* Thời gian tạo
                     <p className="text-[12px] text-richblack-100 mt-4">
                       Ngày tạo: {course.createdAt}
-                    </p>
+                    </p> */}
 
                     {/* Trạng thái khóa học */}
                     {course.status === 'DRAFT' ? (
