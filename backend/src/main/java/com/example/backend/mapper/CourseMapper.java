@@ -7,6 +7,7 @@ import com.example.backend.dto.UserDto;
 import com.example.backend.dto.profile.CourseEnrolledDto;
 import com.example.backend.entity.*;
 import com.example.backend.repository.CategoryRepository;
+import com.example.backend.utils.helpers.Duration;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -53,6 +54,9 @@ public class CourseMapper {
                                 .toList() : new ArrayList<>())
                 .tag(course.getTag() != null ?
                         new ArrayList<>(course.getTag()) : new ArrayList<>())
+                .createdAt(course.getCreatedAt())
+                .totalDuration(course.getSections() != null ?
+                        Duration.getTotalDuration(course.getSections()) : "0s")
                 .build();
         return newCourseDto;
     }
