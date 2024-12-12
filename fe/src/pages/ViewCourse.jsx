@@ -10,45 +10,31 @@ import {
   setEntireCourseData,
   setTotalNoOfLectures,
 } from "../slices/viewCourseSlice";
+import { getFullDetailsOfCourse } from "../services/operations/courseDetailsAPI";
 
 import { setCourseViewSidebar } from "../slices/sidebarSlice";
 
 export default function ViewCourse() {
   const { courseId } = useParams();
+  const { token } = useSelector((state) => state.auth)
   const dispatch = useDispatch();
   const [reviewModal, setReviewModal] = useState(false);
 
-  // Dữ liệu mẫu
-  const courseData = {
-    courseDetails: {
-      courseContent: [
-        {
-          title: "Giới thiệu về khóa học",
-          subSection: [{ title: "Bài giảng 1" }, { title: "Bài giảng 2" }],
-        },
-        {
-          title: "Phần nâng cao",
-          subSection: [{ title: "Bài giảng 3" }, { title: "Bài giảng 4" }],
-        },
-      ],
-      title: "Khóa học lập trình cơ bản",
-    },
-    completedVideos: ["Bài giảng 1", "Bài giảng 2"],
-  };
-
+ // get Full Details Of Course
   useEffect(() => {
-    // Mô phỏng dữ liệu
-    dispatch(setCourseSectionData(courseData.courseDetails.courseContent));
-    dispatch(setEntireCourseData(courseData.courseDetails));
-    dispatch(setCompletedLectures(courseData.completedVideos));
+  ; (async () => {
+    const courseData = await getFullDetailsOfCourse(courseId, token)
+    dispatch(setCourseSectionData(courseData?.sections ?? []))
+    dispatch(setEntireCourseData(courseData))
+    dispatch(setCompletedLectures(courseData?.completedLectures ?? []))
+    let lectures = 0
+    courseData?.sections?.forEach((sec) => {
+      lectures += sec?.subSections?.length ?? 0
+    })
+    dispatch(setTotalNoOfLectures(lectures))
+  })()
 
-    // Tính tổng số bài giảng
-    let lectures = 0;
-    courseData?.courseDetails?.courseContent?.forEach((sec) => {
-      lectures += sec.subSection.length;
-    });
-    dispatch(setTotalNoOfLectures(lectures));
-  }, [dispatch]);
+}, [])
 
   // Xử lý sidebar cho thiết bị nhỏ
   const { courseViewSidebar } = useSelector((state) => state.sidebar);

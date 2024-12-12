@@ -24,37 +24,12 @@ import { MdOutlineVerified } from 'react-icons/md'
 import Img from './../components/common/Img';
 import toast from "react-hot-toast"
 import { buyCourse } from "../services/operations/studentFeaturesAPI";
-const fakeUser = {
-  _id: "12345",
-  firstName: "Nguyễn",
-  lastName: "Hải",
-  email: "nguyen.hai@example.com",
-  accountType: "STUDENT",
-  profilePicture: "/images/profile-picture.jpg",
-  additionalDetails: {
-    about: "Học viên đầy nhiệt huyết với đam mê lập trình."
-  },
-};
-
-const guestUser = {
-  _id: null,
-  firstName: "Khách",
-  lastName: "Vãng Lai",
-  email: "",
-  accountType: "GUEST",
-  isAuthenticated: false,
-  profilePicture: "/images/default-profile.jpg",
-  additionalDetails: {
-    about: "Người dùng chưa đăng nhập."
-  },
-};
-
 
 function CourseDetails() {
-  const { user } = useSelector((state) => state.profile) || { user: guestUser }
-  const { token } = useSelector((state) => state.auth || {})
-  const { loading } = useSelector((state) => state.profile || {})
-  const { paymentLoading } = useSelector((state) => state.course || {})
+  const { user } = useSelector((state) => state.profile);
+  const { token } = useSelector((state) => state.auth)
+  const { loading } = useSelector((state) => state.profile)
+  const { paymentLoading } = useSelector((state) => state.course)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -64,18 +39,24 @@ function CourseDetails() {
   // Declare a state to save the course details
   const [response, setResponse] = useState(null)
   const [confirmationModal, setConfirmationModal] = useState(null)
+
   useEffect(() => {
-    // Thay thế việc gọi API bằng việc lấy dữ liệu từ SampleData
-    const courseDetails = SampleData.selectedCategory.courses.find(
-      (course) => course._id === courseId
-    );
-    setResponse({ data: { courseDetails } });
+    // Calling fetchCourseDetails fucntion to fetch the details
+    const fectchCourseDetailsData = async () => {
+      try {
+        const res = await fetchCourseDetails(courseId, token)
+        setResponse(res)
+      } catch (error) {
+        console.log("Could not fetch Course Details")
+      }
+    }
+    fectchCourseDetailsData();
   }, [courseId])
 
   // Calculate avg rating and review count
   const [avgReviewCount, setAvgReviewCount] = useState(0)
   useEffect(() => {
-    const count = GetAvgRating(response?.data?.courseDetails.ratingAndReviews)
+    const count = GetAvgRating(response?.rating)
     setAvgReviewCount(count)
   }, [response])
 
@@ -95,34 +76,53 @@ function CourseDetails() {
   const [totalNoOfLectures, setTotalNoOfLectures] = useState(0)
   useEffect(() => {
     let lectures = 0
-    response?.data?.courseDetails?.courseContent?.forEach((sec) => {
-      lectures += sec.subSection.length || 0
+    response?.sections?.forEach((sec) => {
+      lectures += sec?.subSections?.length || 0
     })
     setTotalNoOfLectures(lectures)
   }, [response])
 
+  // Scroll to the top of the page when the component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
+
   if (paymentLoading || loading || !response) {
     return (
       <div className={`mt-24 p-5 flex flex-col justify-center gap-4  `}>
-        {/* Loading Skeleton */}
+        <div className="flex flex-col sm:flex-col-reverse  gap-4 ">
+          <p className="h-44 sm:h-24 sm:w-[60%] rounded-xl skeleton"></p>
+          <p className="h-9 sm:w-[39%] rounded-xl skeleton"></p>
+        </div>
+
+        <p className="h-4 w-[55%] lg:w-[25%] rounded-xl skeleton"></p>
+        <p className="h-4 w-[75%] lg:w-[30%] rounded-xl skeleton"></p>
+        <p className="h-4 w-[35%] lg:w-[10%] rounded-xl skeleton"></p>
+
+        {/* Floating Courses Card */}
+        <div className="right-[1.5rem] top-[20%] hidden lg:block lg:absolute min-h-[450px] w-1/3 max-w-[410px] 
+            translate-y-24 md:translate-y-0 rounded-xl skeleton">
+        </div>
+
+        <p className="mt-24 h-60 lg:w-[60%] rounded-xl skeleton"></p>
       </div>
     )
   }
 
   const {
-    _id: course_id,
+    id,
     courseName,
     courseDescription,
     thumbnail,
     price,
     whatYouWillLearn,
-    courseContent,
-    ratingAndReviews,
+    sections,
+    rating,
     instructor,
     studentsEnrolled,
     createdAt,
     tag
-  } = response?.data?.courseDetails
+  } = response;
 
   const handleBuyCourse = () => {
     if (token) {
@@ -146,7 +146,7 @@ function CourseDetails() {
       return
     }
     if (token) {
-      dispatch(addToCart(response?.data.courseDetails))
+      dispatch(addToCart(response))
       return
     }
     setConfirmationModal({
@@ -188,8 +188,8 @@ function CourseDetails() {
               <div className="text-md flex flex-wrap items-center gap-2">
                 <span className="text-yellow-25">{avgReviewCount}</span>
                 <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
-                <span>{`(${ratingAndReviews.length} đánh giá)`}</span>
-                <span>{`${studentsEnrolled} học viên đăng ký`}</span>
+                <span>{`(${rating?.length ?? 0} đánh giá)`}</span>
+                <span>{`${studentsEnrolled?.length ?? 0} học viên đăng ký`}</span>
               </div>
               <p className="capitalize "> Được tạo bởi <span className="font-semibold underline">{instructor.firstName} {instructor.lastName}</span></p>
               <div className="flex flex-wrap gap-5 text-lg">
@@ -212,7 +212,7 @@ function CourseDetails() {
           {/* Floating Courses Card */}
           <div className="right-[1.5rem] top-[60px] mx-auto hidden lg:block lg:absolute min-h-[600px] w-1/3 max-w-[410px] translate-y-24 md:translate-y-0">
             <CourseDetailsCard
-              course={response?.data?.courseDetails}
+              course={response}
               setConfirmationModal={setConfirmationModal}
               handleBuyCourse={handleBuyCourse}
             />
@@ -258,12 +258,12 @@ function CourseDetails() {
               <div className="flex flex-wrap justify-between gap-2">
                 <div className="flex gap-2">
                   <span>
-                    {courseContent.length} {`section(s)`}
+                    {sections?.length ?? 0} {`section(s)`}
                   </span>
                   <span>
                     {totalNoOfLectures} {`lecture(s)`}
                   </span>
-                  <span>{response.data?.totalDuration} Tổng thời gian</span>
+                  <span>{response?.totalDuration} Tổng thời gian</span>
                 </div>
                 <button
                   className="text-yellow-25"
@@ -276,7 +276,7 @@ function CourseDetails() {
 
             {/* Course Details Accordion - section Subsection */}
             <div className="py-4 ">
-              {courseContent?.map((course, index) => (
+              {sections?.map((course, index) => (
                 <CourseAccordionBar
                   course={course}
                   key={index}
@@ -291,7 +291,7 @@ function CourseDetails() {
               <p className="text-[28px] font-semibold">Tác giả</p>
               <div className="flex items-center gap-4 py-4">
                 <Img
-                  src={instructor.image}
+                  src={instructor?.imageUrl}
                   alt="Author"
                   className="h-14 w-14 rounded-full object-cover"
                 />

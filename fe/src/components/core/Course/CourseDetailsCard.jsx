@@ -13,15 +13,15 @@ import Img from './../../common/Img';
 
 
 function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
-  const { user } = useSelector((state) => state.profile) || {}; 
-  const { token } = useSelector((state) => state.auth) || {}; 
+  const { user } = useSelector((state) => state.profile); 
+  const { token } = useSelector((state) => state.auth); 
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const {
     thumbnail: ThumbnailImage,
     price: CurrentPrice,
-    _id: courseId,
+    id: courseId,
   } = course
 
   const handleShare = () => {
@@ -70,16 +70,16 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
             <button
               className="yellowButton outline-none"
               onClick={
-                user && course?.studentsEnrolled.includes(user?._id)
+                user && course?.studentsEnrolled?.map((student) => student.id).includes(user?.id)
                   ? () => navigate("/dashboard/enrolled-courses")
                   : handleBuyCourse
               }
             >
-              {user && course?.studentsEnrolled.includes(user?._id)
+              {user && course?.studentsEnrolled?.map((student) => student.id).includes(user?.id)
                 ? "Xem khóa học"
                 : "Mua ngay"}
             </button>
-            {(!user || !course?.studentsEnrolled.includes(user?._id)) && (
+            {(!user || !course?.studentsEnrolled?.map((student) => student.id).includes(user?.id)) && (
               <button onClick={handleAddToCart} className="blackButton outline-none">
                 Thêm vào giỏ hàng
               </button>

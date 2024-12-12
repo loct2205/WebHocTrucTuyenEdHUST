@@ -5,6 +5,8 @@ import ReactStars from "react-rating-stars-component";
 
 import IconBtn from "../../common/IconBtn";
 import Img from "../../common/Img";
+import { useSelector } from "react-redux";
+import { createRating } from "../../../services/operations/courseDetailsAPI";
 
 export default function CourseReviewModal({ setReviewModal }) {
   const { user } = useSelector((state) => state.profile)
