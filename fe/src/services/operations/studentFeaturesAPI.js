@@ -23,7 +23,7 @@ export async function buyCourse(token, coursesId, userDetails, navigate, dispatc
         if (!paymentUrl) { 
             throw new Error("Không thể lấy URL thanh toán từ VNPAY"); 
         } 
-        window.open(paymentUrl, '_blank');
+        window.location.href = paymentUrl
 
     }
     catch (error) {

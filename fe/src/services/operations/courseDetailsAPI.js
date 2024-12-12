@@ -103,13 +103,12 @@ export const fetchCourseDetails = async (courseId, token) => {
     })
     console.log("COURSE_DETAILS_API API RESPONSE............", response)
 
-    if (response.status != 200) {
-      throw new Error(response.data.message)
+    if (!response.data) {
+      throw new Error('Fetch course deatil failed!')
     }
     result = response.data
   } catch (error) {
     console.log("COURSE_DETAILS_API API ERROR............", error)
-    result = error.response.data
   }
   return result
 }
@@ -440,27 +439,20 @@ export const deleteCourse = async (courseId, token) => {
 
 // ================ get Full Details Of Course ================
 export const getFullDetailsOfCourse = async (courseId, token) => {
-  let result = null
-  try {
-    const response = await apiConnector(
-      "POST",
-      GET_FULL_COURSE_DETAILS_AUTHENTICATED,
-      {
-        courseId,
-      },
-      {
-        Authorization: `Bearer ${token}`,
-      }
-    )
-    console.log("COURSE_FULL_DETAILS_API API RESPONSE............", response)
+  let result = null;
 
-    if (!response.data.success) {
-      throw new Error(response.data.message)
+  try {
+    const response = await apiConnector("GET", COURSE_DETAILS_API + `${courseId}`, null, {
+      Authorization: `Bearer ${token}`,
+    })
+    console.log("COURSE_DETAILS_API API RESPONSE............", response)
+
+    if (!response.data) {
+      throw new Error('Fetch course deatil failed!')
     }
-    result = response?.data?.data
+    result = response.data
   } catch (error) {
-    console.log("COURSE_FULL_DETAILS_API API ERROR............", error)
-    result = error.response.data
+    console.log("COURSE_DETAILS_API API ERROR............", error)
   }
   return result
 }

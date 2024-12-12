@@ -9,45 +9,31 @@ import { IoIosArrowBack } from "react-icons/io";
 
 import { IoMdClose } from 'react-icons/io';
 import { HiMenuAlt1 } from 'react-icons/hi';
+import { useDispatch, useSelector } from "react-redux";
 
 export default function VideoDetailsSidebar({ setReviewModal }) {
   const [activeStatus, setActiveStatus] = useState(""); // store curr section id
   const [videoBarActive, setVideoBarActive] = useState(""); // store curr SubSection Id
   const navigate = useNavigate();
   const location = useLocation();
-  const [courseViewSidebar, setCourseViewSidebar] = useState(false); // quản lý trạng thái sidebar
+  const dispatch = useDispatch();
 
   const { sectionId, subSectionId } = useParams();
-
-  // Dữ liệu mẫu cho khóa học
-  const courseSectionData = [
-    {
-      _id: "section1",
-      sectionName: "Phần 1",
-      subSection: [
-        { _id: "subsection1", title: "Bài 1" },
-        { _id: "subsection2", title: "Bài 2" }
-      ]
-    },
-    {
-      _id: "section2",
-      sectionName: "Phần 2",
-      subSection: [
-        { _id: "subsection3", title: "Bài 3" }
-      ]
-    }
-  ];
-  const courseEntireData = { _id: "course1", courseName: "Tên khóa học mẫu" };
-  const totalNoOfLectures = 3;
-  const completedLectures = ["subsection1"]; // Dữ liệu hoàn thành mẫu
+  const {
+    courseSectionData,
+    courseEntireData,
+    totalNoOfLectures,
+    completedLectures,
+  } = useSelector((state) => state.viewCourse)
+  const { courseViewSidebar } = useSelector(state => state.sidebar)
 
   // Đặt phần và bài học đang hoạt động
   useEffect(() => {
     if (!courseSectionData.length) return;
-    const currentSectionIndex = courseSectionData.findIndex((data) => data._id === sectionId);
-    const currentSubSectionIndex = courseSectionData?.[currentSectionIndex]?.subSection.findIndex((data) => data._id === subSectionId);
-    const activeSubSectionId = courseSectionData[currentSectionIndex]?.subSection?.[currentSubSectionIndex]?._id;
-    setActiveStatus(courseSectionData?.[currentSectionIndex]?._id);
+    const currentSectionIndex = courseSectionData.findIndex((data) => data.id === Number(sectionId));
+    const currentSubSectionIndex = courseSectionData[currentSectionIndex]?.subSections.findIndex((data) => data.id === Number(subSectionId));
+    const activeSubSectionId = courseSectionData[currentSectionIndex]?.subSections[currentSubSectionIndex]?.id;
+    setActiveStatus(courseSectionData[currentSectionIndex]?.id);
     setVideoBarActive(activeSubSectionId);
   }, [courseSectionData, location.pathname, sectionId, subSectionId]);
 
@@ -73,35 +59,35 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
 
             <IconBtn
               text="Thêm đánh giá"
-              onclick={() => setReviewModal(true)}
+              onClick={() => setReviewModal(true)}
             />
           </div>
 
           <div className="flex flex-col">
-            <p>{courseEntireData.courseName || "Tên khóa học"}</p>
+            <p>{courseEntireData?.courseName || "Tên khóa học"}</p>
             <p className="text-sm font-semibold text-richblack-500">
-              {completedLectures.length} / {totalNoOfLectures}
+              {completedLectures?.length} / {totalNoOfLectures}
             </p>
           </div>
         </div>
 
         <div className="h-[calc(100vh - 5rem)] overflow-y-auto">
-          {courseSectionData.map((section, index) => (
+          {courseSectionData?.map((section, index) => (
             <div
               className="mt-2 cursor-pointer text-sm text-richblack-5"
-              onClick={() => setActiveStatus(section._id)}
+              onClick={() => setActiveStatus(section.id)}
               key={index}
             >
               <div className="flex justify-between bg-richblack-700 px-5 py-4">
                 <div className="w-[70%] font-semibold">
-                  {section.sectionName || "Tên phần học"}
+                  {section?.sectionName || "Tên phần học"}
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-[12px] font-medium">
-                    Bài học {section.subSection.length}
+                    Bài học {section?.subSections?.length}
                   </span>
                   <span
-                    className={`${activeStatus === section._id
+                    className={`${activeStatus === section?.id
                       ? "rotate-0 transition-all duration-500"
                       : "rotate-180"
                       } `}
@@ -111,24 +97,24 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
                 </div>
               </div>
 
-              {activeStatus === section._id && (
+              {activeStatus === section.id && (
                 <div className="transition-[height] duration-500 ease-in-out">
-                  {section.subSection.map((topic, i) => (
+                  {section.subSections.map((topic, i) => (
                     <div
-                      className={`flex gap-3 px-5 py-2 ${videoBarActive === topic._id
+                      className={`flex gap-3 px-5 py-2 ${videoBarActive === topic.id
                         ? "bg-yellow-200 font-semibold text-richblack-800"
                         : "hover:bg-richblack-900"
                         } `}
                       key={i}
                       onClick={() => {
-                        navigate(`/view-course/${courseEntireData._id}/section/${section._id}/sub-section/${topic._id}`);
-                        setVideoBarActive(topic._id);
+                        navigate(`/view-course/${courseEntireData.id}/section/${section.id}/sub-section/${topic.id}`);
+                        setVideoBarActive(topic.id);
                         courseViewSidebar && window.innerWidth <= 640 && setCourseViewSidebar(false);
                       }}
                     >
                       <input
                         type="checkbox"
-                        checked={completedLectures.includes(topic._id)}
+                        checked={completedLectures?.includes(topic.id)}
                         onChange={() => { }}
                       />
                       {topic.title || "Tên bài học"}
