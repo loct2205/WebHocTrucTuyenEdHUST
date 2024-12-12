@@ -1,5 +1,6 @@
 package com.example.backend.utils.helpers;
 
+import com.example.backend.entity.Section;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.bramp.ffmpeg.FFprobe;
 import net.bramp.ffmpeg.probe.FFmpegProbeResult;
@@ -15,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 @Component
 public class Duration {
@@ -82,6 +84,16 @@ public class Duration {
 
         // Convert to total seconds
         return hours * 3600 + minutes * 60 + seconds;
+    }
+
+    public static String getTotalDuration(List<Section> sections) {
+        int totalDurationInSeconds = 0;
+        for (Section section : sections) {
+            totalDurationInSeconds += section.getSubSections().stream()
+                    .mapToInt(subSection -> convertTimeToSeconds(subSection.getTimeDuration()))
+                    .sum();
+        }
+        return convertSecondsToDuration(totalDurationInSeconds);
     }
 
     public static void main(String[] args) {

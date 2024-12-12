@@ -33,6 +33,7 @@ public class CourseService {
     private final UserMapper userMapper;
     private final Uploader uploader;
     private final SectionService sectionService;
+    private final CourseProgressRepository courseProgressRepository;
 
 
     public CourseDto createCourse(CourseDto courseDto, MultipartFile file, Integer userId) {
@@ -122,9 +123,14 @@ public class CourseService {
                                     .toList() : new ArrayList<>())
                     .tag(course.getTag() != null ?
                             new ArrayList<>(course.getTag()) : new ArrayList<>())
+                    .createdAt(course.getCreatedAt())
                     .build();
         }
-        return courseMapper.convertToDto(course);
+        CourseDto res =  courseMapper.convertToDto(course);
+        CourseProgress courseProgress = courseProgressRepository.findByUserIdAndCourseId(userId, id)
+                .orElseThrow(() -> new RuntimeException("Course progress not found"));
+        res.setCompletedLectures(courseProgress.getCompletedVideos().stream().map(SubSection::getId).toList());
+        return  res;
     }
 
     public List<CourseDto> getCoursesByInstructorId(Integer instructorId) {

@@ -3,6 +3,7 @@ package com.example.backend.dto;
 import com.example.backend.entity.User;
 import lombok.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -24,4 +25,7 @@ public class CourseDto {
     private List<RatingAndReviewDto> rating;
     private List<SectionDto> sections;
     private List<String> tag;
+    private Date createdAt;
+    private String totalDuration;
+    private List<Long> completedLectures;
 }
