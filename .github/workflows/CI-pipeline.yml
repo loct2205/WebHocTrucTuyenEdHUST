@@ -2,39 +2,28 @@ name: CI/CD Workflow
 
 on:
   push:
-    branches:
-      - main
     tags:
-      - "*" 
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch: # Allow manual runs
-
+      - '*' 
 jobs:
   backend-build:
-    if: "!startsWith(github.ref, 'refs/tags/')"
+    if: "startsWith(github.ref, 'refs/tags/')"
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
-
       - name: Create firebase.config.json
         run: |
            echo "${{ secrets.FIREBASE_CONFIG_JSON }}" | base64 -d > backend/src/main/resources/firebase.config.json
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
       - name: Build Docker image
         run: |
           cd backend
           TAG_NAME=$(echo "${GITHUB_REF}" | sed 's/refs\/tags\///')
           docker build . -t ${{ secrets.DOCKERHUB_USERNAME }}/edtech-dockerfile:${TAG_NAME}
-
       - name: Push Docker image to Docker Hub
         run: |
           cd backend
@@ -42,19 +31,17 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/edtech-dockerfile:${TAG_NAME}
 
   frontend-deploy:
-    if: "startsWith(github.ref, 'refs/tags/') && github.ref_name == 'main'"
+    if: "startsWith(github.ref, 'refs/tags/')"
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
-
       - name: Set up Firebase CLI
         uses: w9jds/firebase-action@v2.2.0
         with:
           args: login:ci
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
       - name: Deploy Frontend to Firebase
         run: |
           cd fe
@@ -63,18 +50,16 @@ jobs:
           firebase deploy --only hosting --project ${{ secrets.FIREBASE_PROJECT }}
 
   update-values:
-    if: "startsWith(github.ref, 'refs/tags/') && github.ref_name == 'main'"
+    if: "startsWith(github.ref, 'refs/tags/')"
     needs: frontend-deploy
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
-
       - name: Update values.yaml with tag
         run: |
           TAG_NAME=$(echo "${GITHUB_REF}" | sed 's/refs\/tags\///')
           sed -i "s/tag:.*/tag: ${TAG_NAME}/" backend-chart/values.yaml
-
       - name: Commit and Push changes
         run: |
           git config --global user.name "github-actions[bot]"
