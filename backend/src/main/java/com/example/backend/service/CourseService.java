@@ -128,8 +128,8 @@ public class CourseService {
         }
         CourseDto res =  courseMapper.convertToDto(course);
         CourseProgress courseProgress = courseProgressRepository.findByUserIdAndCourseId(userId, id)
-                .orElseThrow(() -> new RuntimeException("Course progress not found"));
-        res.setCompletedLectures(courseProgress.getCompletedVideos().stream().map(SubSection::getId).toList());
+                .orElseGet(CourseProgress::new);
+        res.setCompletedLectures(courseProgress.getCompletedVideos() != null ? courseProgress.getCompletedVideos().stream().map(SubSection::getId).toList() : new ArrayList<>());
         return  res;
     }
 
