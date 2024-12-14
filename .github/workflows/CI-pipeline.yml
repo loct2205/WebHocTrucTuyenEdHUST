@@ -2,14 +2,8 @@ name: CI/CD Workflow
 
 on:
   push:
-    branches:
-      - main
     tags:
-      - "*" 
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch: # Allow manual runs
+      - '*'
 
 jobs:
   backend-build:
