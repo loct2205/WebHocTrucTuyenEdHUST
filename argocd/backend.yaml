@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: web-backend
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: 'https://github.com/loct2205/WebHocTrucTuyenEdHUST.git'
+      path: backend-chart
+      targetRevision: 'helm-chart'
+      helm:
+        valueFiles:
+          -  values.yaml
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

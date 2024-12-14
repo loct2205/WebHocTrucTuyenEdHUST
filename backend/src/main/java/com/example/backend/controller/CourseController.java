@@ -59,15 +59,21 @@ public class CourseController {
     }
 
     // ================ update course ================
-    @PatchMapping("edit/{id}")
+    @PostMapping("edit/{id}")
     @PreAuthorize("hasAnyRole('INSTRUCTOR', 'ADMIN')")
-    public ResponseEntity<CourseDto> updateCourse(@PathVariable Long courseId, @RequestPart CourseDto courseDto, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<CourseDto> updateCourse(@PathVariable Long id, @RequestPart CourseDto courseDto,  @RequestParam(value = "file", required = false) MultipartFile file) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
-        CourseDto updatedCourse = courseService.updateCourse(courseId, courseDto, file, currentUser.getId());
+        CourseDto updatedCourse = courseService.updateCourse(id, courseDto, file, currentUser.getId());
         return ResponseEntity.ok(updatedCourse);
     }
-
+    // ================ update course status ================
+    @PatchMapping("edit/done")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR', 'ADMIN')")
+    public ResponseEntity<String> publishCourse(@RequestParam("id") Long id, @RequestParam("isPublic") Boolean isPublic) {
+        String response = courseService.publishCourse(id, isPublic);
+        return ResponseEntity.ok(response);
+    }
     // ================ delete course ================
     @DeleteMapping("delete/{id}")
     @PreAuthorize("hasAnyRole('INSTRUCTOR', 'ADMIN')")

@@ -7,6 +7,7 @@ import com.example.backend.dto.UserDto;
 import com.example.backend.dto.profile.CourseEnrolledDto;
 import com.example.backend.entity.*;
 import com.example.backend.repository.CategoryRepository;
+import com.example.backend.utils.helpers.Duration;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -52,6 +54,9 @@ public class CourseMapper {
                                 .toList() : new ArrayList<>())
                 .tag(course.getTag() != null ?
                         new ArrayList<>(course.getTag()) : new ArrayList<>())
+                .createdAt(course.getCreatedAt())
+                .totalDuration(course.getSections() != null ?
+                        Duration.getTotalDuration(course.getSections()) : "0s")
                 .build();
         return newCourseDto;
     }
@@ -121,5 +126,11 @@ public class CourseMapper {
         }
 
         return builder.build();
+    }
+
+    public List<CourseDto> convertToDtoList(List<Course> courses) {
+        return courses.stream()
+                .map(this::convertToDto)
+                .toList();
     }
 }

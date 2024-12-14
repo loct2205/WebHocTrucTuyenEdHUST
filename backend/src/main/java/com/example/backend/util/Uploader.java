@@ -7,25 +7,45 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.UUID;
-
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 @Component
 public class Uploader {
     public String uploadFile(MultipartFile file) {
         try {
+            // Generate a unique file name
             String fileName = UUID.randomUUID().toString() + "-" + file.getOriginalFilename();
-            StorageClient.getInstance().bucket().create(fileName, file.getBytes(), file.getContentType());
-            return String.format("https://storage.googleapis.com/%s/%s", StorageClient.getInstance().bucket().getName(), fileName);
+    
+            // Upload file to Firebase Storage
+            StorageClient.getInstance()
+                    .bucket()
+                    .create(fileName, file.getBytes(), file.getContentType());
+    
+            // Construct the public URL for the uploaded file
+            String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8.toString());
+            String bucketName = StorageClient.getInstance().bucket().getName();
+    
+            return String.format(
+                    "https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media",
+                    bucketName,
+                    encodedFileName
+            );
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
 
+
     public void deleteFile(String fileUrl) {
         try {
-            // Extract the file name from the URL
-            String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+            // Extract the file name from the URL (remove query parameters)
+            String fileNameEncoded = fileUrl.substring(fileUrl.lastIndexOf("/o/") + 3, fileUrl.indexOf("?alt=media"));
+
+            // Decode the file name
+            String fileName = URLDecoder.decode(fileNameEncoded, StandardCharsets.UTF_8.toString());
 
             // Retrieve the file from the bucket
             Blob blob = StorageClient.getInstance().bucket().get(fileName);
@@ -42,5 +62,7 @@ public class Uploader {
             System.out.println("Failed to delete file: " + fileUrl);
         }
     }
+
+
 
 }

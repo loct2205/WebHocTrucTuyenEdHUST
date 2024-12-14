@@ -33,6 +33,7 @@ public class CourseService {
     private final UserMapper userMapper;
     private final Uploader uploader;
     private final SectionService sectionService;
+    private final CourseProgressRepository courseProgressRepository;
 
 
     public CourseDto createCourse(CourseDto courseDto, MultipartFile file, Integer userId) {
@@ -95,13 +96,16 @@ public class CourseService {
         Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
         boolean enrolled = false;
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        RoleEnum role = user.getRole().getName();
         for (User student : course.getStudentsEnrolled()) {
             if (student.getId().equals(userId)) {
                 enrolled = true;
                 break;
             }
         }
-        if (!enrolled) {
+        if (!enrolled && role == RoleEnum.STUDENT) {
             return CourseDto.builder()
                     .id(course.getId())
                     .courseName(course.getCourseName())
@@ -119,9 +123,14 @@ public class CourseService {
                                     .toList() : new ArrayList<>())
                     .tag(course.getTag() != null ?
                             new ArrayList<>(course.getTag()) : new ArrayList<>())
+                    .createdAt(course.getCreatedAt())
                     .build();
         }
-        return courseMapper.convertToDto(course);
+        CourseDto res =  courseMapper.convertToDto(course);
+        CourseProgress courseProgress = courseProgressRepository.findByUserIdAndCourseId(userId, id)
+                .orElseGet(CourseProgress::new);
+        res.setCompletedLectures(courseProgress.getCompletedVideos() != null ? courseProgress.getCompletedVideos().stream().map(SubSection::getId).toList() : new ArrayList<>());
+        return  res;
     }
 
     public List<CourseDto> getCoursesByInstructorId(Integer instructorId) {
@@ -140,10 +149,12 @@ public class CourseService {
         if (instructor.getRole().getName() != RoleEnum.INSTRUCTOR && instructor.getRole().getName() != RoleEnum.ADMIN) {
             throw new RuntimeException("Only instructors or admins can update courses");
         }
-        String fileUrl = uploader.uploadFile(file);
+        if (file != null && !file.isEmpty()) {
+            String fileUrl = uploader.uploadFile(file);
+            course.setThumbnail(fileUrl);
+        }
         course.setCourseName(courseDto.getCourseName());
         course.setCourseDescription(courseDto.getCourseDescription());
-        course.setThumbnail(fileUrl);
         course.setPrice(courseDto.getPrice());
         course.setTag(courseDto.getTag());
         course.setWhatYouWillLearn(courseDto.getWhatYouWillLearn());
@@ -192,6 +203,21 @@ public class CourseService {
         uploader.deleteFile(course.getThumbnail());
         // Delete the course
         courseRepository.delete(course);
+
+    }
+
+    public String publishCourse(Long id, Boolean isPublic) {
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+        if (isPublic) {
+            course.setStatus(Course.Status.PUBLISHED);
+            courseRepository.save(course);
+            return "Course published";
+        } else {
+            course.setStatus(Course.Status.DRAFT);
+            courseRepository.save(course);
+            return "Course drafted";
+        }
 
     }
 }
