@@ -38,8 +38,16 @@ public class SecurityConfiguration {
                 .disable()
                 .cors().configurationSource(corsConfigurationSource()).and()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/**", "/mails/**", "payments/vnpay-payment-return", "/actuator/**", "ratings/**", "category", "category/page-detail/analysis")
-                .permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Allow preflight requests
+                .requestMatchers(
+                        "/auth/**", 
+                        "/mails/**", 
+                        "/payments/vnpay-payment-return", 
+                        "/actuator/**", 
+                        "/ratings/**", 
+                        "/category/**", 
+                        "/category/page-detail/analysis"
+                ).permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
