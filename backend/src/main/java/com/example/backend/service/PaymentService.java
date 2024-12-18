@@ -97,8 +97,11 @@ public class PaymentService {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String vnp_TxnRef = VNPayConfig.getRandomNumber(8);
+        System.out.println("vnp_TxnRef: " + vnp_TxnRef);
         String vnp_IpAddr = VNPayConfig.getIpAddress(request);
+        System.out.println("vnp_IpAddr: " + vnp_IpAddr);
         String vnp_TmnCode = VNPayConfig.STATIC_vnp_TmnCode;
+        System.out.println("vnp_TmnCode: " + vnp_TmnCode);
         String orderType = "order-type";
         OrderInfo objOrderInfo = OrderInfo.builder()
                 .courseIds(enrollStudentDto.getCourseIds())
@@ -106,6 +109,7 @@ public class PaymentService {
                 .build();
         ObjectMapper objectMapper = new ObjectMapper();
         String orderInfor = objectMapper.writeValueAsString(objOrderInfo);
+        System.out.println("orderInfor: " + orderInfor);
 
         Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", vnp_Version);
@@ -123,6 +127,7 @@ public class PaymentService {
         vnp_Params.put("vnp_Locale", locate);
 
         urlReturn += VNPayConfig.STATIC_vnp_Returnurl;
+        System.out.println("vnp_ReturnUrl: " + urlReturn);
         vnp_Params.put("vnp_ReturnUrl", urlReturn);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 
@@ -171,8 +176,10 @@ public class PaymentService {
         String queryUrl = query.toString();
         String salt = VNPayConfig.STATIC_vnp_HashSecret;
         String vnp_SecureHash = VNPayConfig.hmacSHA512(salt, hashData.toString());
+        System.out.println("vnp_SecureHash: " + vnp_SecureHash);
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
         String paymentUrl = VNPayConfig.STATIC_vnp_PayUrl + "?" + queryUrl;
+        System.out.println("paymentUrl: " + paymentUrl);
         return paymentUrl;
     }
 

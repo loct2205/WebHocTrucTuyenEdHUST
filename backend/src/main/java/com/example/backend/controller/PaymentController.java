@@ -42,6 +42,7 @@ public class PaymentController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User currentUser = (User) authentication.getPrincipal();
             String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+            System.out.println(baseUrl);
             String vnpayUrl = _paymentService.createOrder(request, enrollStudentDto, currentUser.getId(), baseUrl);
             return ResponseEntity.ok(vnpayUrl);
         } catch (Exception e) {
@@ -55,12 +56,12 @@ public class PaymentController {
         try {
             int paymentStatus = _paymentService.orderReturn(request);
             if(paymentStatus == 1) {
-                redirectView.setUrl("http://localhost:5173/dashboard/enrolled-courses?status=success");
+                redirectView.setUrl("https://edtech-hust.web.app/dashboard/enrolled-courses?status=success");
             }else {
-                redirectView.setUrl("http://localhost:5173/dashboard/enrolled-courses?status=failed");
+                redirectView.setUrl("https://edtech-hust.web.app/dashboard/enrolled-courses?status=failed");
             }
         } catch (Exception e) {
-            redirectView.setUrl("http://localhost:5173/dashboard/enrolled-courses?status=failed");
+            redirectView.setUrl("https://edtech-hust.web.app/dashboard/enrolled-courses?status=failed");
         }
         return redirectView;
     }
