@@ -57,12 +57,12 @@ public class PaymentController {
         try {
             int paymentStatus = _paymentService.orderReturn(request);
             if(paymentStatus == 1) {
-                redirectView.setUrl("https://edtech-hust.web.app/dashboard/enrolled-courses?status=success");
+                redirectView.setUrl("https://ddlong07.id.vn/dashboard/enrolled-courses?status=success");
             }else {
-                redirectView.setUrl("https://edtech-hust.web.app/dashboard/enrolled-courses?status=failed");
+                redirectView.setUrl("https://ddlong07.id.vn/dashboard/enrolled-courses?status=failed");
             }
         } catch (Exception e) {
-            redirectView.setUrl("https://edtech-hust.web.app/dashboard/enrolled-courses?status=failed");
+            redirectView.setUrl("https://ddlong07.id.vn/dashboard/enrolled-courses?status=failed");
         }
         return redirectView;
     }

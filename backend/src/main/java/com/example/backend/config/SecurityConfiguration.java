@@ -58,7 +58,7 @@ public class SecurityConfiguration {
         // Add both the development and production origins
         configuration.setAllowedOrigins(List.of(
             "http://localhost:5173",
-            "https://edtech-hust.web.app"
+            "https://edtech-hust.web.app", "https://ddlong07.id.vn"
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
