@@ -52,6 +52,7 @@ public class PaymentController {
 
     @GetMapping("/vnpay-payment-return")
     public RedirectView paymentCompleted(HttpServletRequest request){
+        System.out.println("Return from vnpay" + request.getQueryString());
         RedirectView redirectView = new RedirectView();
         try {
             int paymentStatus = _paymentService.orderReturn(request);

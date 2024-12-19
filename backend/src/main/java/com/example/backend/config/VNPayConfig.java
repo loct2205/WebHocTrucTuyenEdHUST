@@ -60,7 +60,7 @@ public class VNPayConfig {
                 sb.append("&");
             }
         }
-        return hmacSHA512(STATIC_vnp_HashSecret,sb.toString());
+        return hmacSHA512("2F2I08IILF7R7VW4GGMQOF7GNUI7J9QX",sb.toString());
     }
 
     public static String hmacSHA512(final String key, final String data) {
