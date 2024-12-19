@@ -84,6 +84,7 @@ export function signUp(accountType, firstName, lastName, email, password, confir
         password,
         confirmPassword,
         otp,
+        accountType
       });
 
       if (!response.data || !response.data.password) {

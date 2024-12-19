@@ -13,4 +13,6 @@ public class RegisterUserDto {
     private String lastName;
     private String confirmPassword;
     private String otp;
+
+    private String accountType;
 }

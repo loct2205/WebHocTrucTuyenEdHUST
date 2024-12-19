@@ -59,8 +59,9 @@ public class AuthenticationService {
     }
 
     public User signup(RegisterUserDto input) {
-        Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.STUDENT);
-
+        System.out.println(input.getAccountType());
+        Optional<Role> optionalRole = Objects.equals(input.getAccountType(), "student") ? roleRepository.findByName(RoleEnum.STUDENT)
+                : Objects.equals(input.getAccountType(), "instructor") ? roleRepository.findByName(RoleEnum.INSTRUCTOR) : Optional.empty();
 
         if (optionalRole.isEmpty()) {
             return null;
@@ -171,7 +172,7 @@ public class AuthenticationService {
         User existingUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         String jwtToken = jwtService.generateToken(existingUser);
-        String url = "http://localhost:5173/update-password/" + jwtToken;
+        String url = "https://edtech-hust.web.app/update-password/" + jwtToken;
         MailRequest mailRequest = new MailRequest(email, "Password Reset Link", "Password Reset Link: " + url, false);
         mailService.sendMail(mailRequest);
         return "Email sent successfully , Please check your mail box and change password";
