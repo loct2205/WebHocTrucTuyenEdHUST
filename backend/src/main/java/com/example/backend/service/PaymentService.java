@@ -102,7 +102,7 @@ public class PaymentService {
         System.out.println("vnp_IpAddr: " + vnp_IpAddr);
         String vnp_TmnCode = VNPayConfig.STATIC_vnp_TmnCode;
         System.out.println("vnp_TmnCode: " + vnp_TmnCode);
-        String orderType = "order-type";
+        String orderType = "other";
         OrderInfo objOrderInfo = OrderInfo.builder()
                 .courseIds(enrollStudentDto.getCourseIds())
                 .userId(userId)

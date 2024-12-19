@@ -41,7 +41,7 @@ public class PaymentController {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User currentUser = (User) authentication.getPrincipal();
-            String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+            String baseUrl = "https://buckytank.io.vn";
             System.out.println(baseUrl);
             String vnpayUrl = _paymentService.createOrder(request, enrollStudentDto, currentUser.getId(), baseUrl);
             return ResponseEntity.ok(vnpayUrl);
