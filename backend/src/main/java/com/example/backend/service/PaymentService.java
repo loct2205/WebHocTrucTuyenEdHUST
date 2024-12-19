@@ -145,7 +145,9 @@ public class PaymentService {
         System.out.println("vnp_ExpireDate: " + vnp_ExpireDate);
 
         List fieldNames = new ArrayList(vnp_Params.keySet());
+        System.out.println("fieldNames: " + fieldNames);
         Collections.sort(fieldNames);
+        System.out.println("fieldNames sorted: " + fieldNames);
         StringBuilder hashData = new StringBuilder();
         StringBuilder query = new StringBuilder();
         Iterator itr = fieldNames.iterator();
@@ -174,7 +176,10 @@ public class PaymentService {
         }
 
         String queryUrl = query.toString();
+        System.out.println("queryUrl: " + queryUrl);
         String salt = VNPayConfig.STATIC_vnp_HashSecret;
+        System.out.println("salt: " + salt);
+        System.out.println("hashData: " + hashData.toString());
         String vnp_SecureHash = VNPayConfig.hmacSHA512(salt, hashData.toString());
         System.out.println("vnp_SecureHash: " + vnp_SecureHash);
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
