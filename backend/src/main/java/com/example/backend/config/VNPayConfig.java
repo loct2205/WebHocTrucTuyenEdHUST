@@ -40,7 +40,8 @@ public class VNPayConfig {
         STATIC_vnp_PayUrl = vnp_PayUrl;
         STATIC_vnp_Returnurl = vnp_Returnurl;
         STATIC_vnp_TmnCode = vnp_TmnCode;
-        STATIC_vnp_HashSecret = vnp_HashSecret;
+//        STATIC_vnp_HashSecret = vnp_HashSecret;
+        STATIC_vnp_HashSecret = "2F2I08IILF7R7VW4GGMQOF7GNUI7J9QX";
     }
 
     public static String hashAllFields(Map fields) {
