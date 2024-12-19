@@ -204,8 +204,9 @@ public class PaymentService {
                 fields.put(fieldName, fieldValue);
             }
         }
-
+        System.out.println("fields: " + fields);
         String vnp_SecureHash = request.getParameter("vnp_SecureHash");
+        System.out.println("vnp_SecureHash: " + vnp_SecureHash);
         if (fields.containsKey("vnp_SecureHashType")) {
             fields.remove("vnp_SecureHashType");
         }
@@ -213,6 +214,7 @@ public class PaymentService {
             fields.remove("vnp_SecureHash");
         }
         String signValue = VNPayConfig.hashAllFields(fields);
+        System.out.println("signValue: " + signValue);
         if (signValue.equals(vnp_SecureHash)) {
             if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
                 String orderInfo = request.getParameter("vnp_OrderInfo");
