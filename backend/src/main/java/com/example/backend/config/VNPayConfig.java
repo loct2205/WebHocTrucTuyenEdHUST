@@ -91,7 +91,7 @@ public class VNPayConfig {
         try {
             ipAdress = request.getHeader("X-FORWARDED-FOR");
             if (ipAdress == null) {
-                ipAdress = request.getLocalAddr();
+                ipAdress = request.getRemoteAddr();
             }
         } catch (Exception e) {
             ipAdress = "Invalid IP:" + e.getMessage();
