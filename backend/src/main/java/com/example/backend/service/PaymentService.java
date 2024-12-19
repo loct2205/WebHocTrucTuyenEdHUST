@@ -177,7 +177,8 @@ public class PaymentService {
 
         String queryUrl = query.toString();
         System.out.println("queryUrl: " + queryUrl);
-        String salt = VNPayConfig.STATIC_vnp_HashSecret;
+//        String salt = VNPayConfig.STATIC_vnp_HashSecret;
+        String salt = "2F2I08IILF7R7VW4GGMQOF7GNUI7J9QX";
         System.out.println("salt: " + salt);
         System.out.println("hashData: " + hashData.toString());
         String vnp_SecureHash = VNPayConfig.hmacSHA512(salt, hashData.toString());
