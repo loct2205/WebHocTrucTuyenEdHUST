@@ -1,4 +1,6 @@
-const BASE_URL = 'https://48.210.27.199'; 
+// const BASE_URL = 'https://48.210.27.199'; 
+const BASE_URL = 'https://ddlong07.click'; 
+
 // AUTH ENDPOINTS
 export const endpoints = {
     SENDOTP_API: BASE_URL + "/auth/send-otp", //DONE
