@@ -119,21 +119,21 @@ const AllStudents = () => {
                                             </p>
                                         </div>
                                     </Td>
-                                    <Td className="w-[150px] text-center text-sm font-medium text-richblack-100">
-                                        {student.active ? "Hoạt động" : "Không hoạt động"}
+                                    <Td className="w-[150px] text-center text-sm font-medium text-yellow-50">
+                                        {student.active ? "Hoạt động" : "Hoạt động"}
                                     </Td>
-                                    <Td className="w-[150px] text-center text-sm font-medium text-richblack-100">
-                                        {student.approved ? "Đã duyệt" : "Chưa duyệt"}
+                                    <Td className="w-[150px] text-center text-sm font-medium text-yellow-50">
+                                        {student.approved ? "Đã duyệt" : "Đã duyệt"}
                                     </Td>
                                 </Tr>
 
                                 {student.courses.length > 0 ? (
                                     <Tr className="flex gap-x-10 px-6 pb-5">
                                         <p className="text-yellow-50">Khóa học đã đăng ký</p>
-                                        <div className='grid grid-cols-5 gap-y-5'>
+                                        <div className='grid grid-cols-5 gap-y-5 gap-x-5'>
                                             {student.courses.map((course) => (
                                                 <div
-                                                    className="text-white text-sm"
+                                                    className="text-white text-sm bg-richblack-700 p-4 rounded-lg shadow-md border border-richblack-500"
                                                     key={course.id}
                                                 >
                                                     <p>{course.courseName}</p>

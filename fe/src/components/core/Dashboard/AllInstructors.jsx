@@ -117,11 +117,11 @@ function AllInstructors() {
                       </p>
                     </div>
                   </Td>
-                  <Td className="w-[150px] text-center text-sm font-medium text-white">
-                    {instructor.active ? "Hoạt động" : "Không hoạt động"}
+                  <Td className="w-[150px] text-center text-sm font-medium text-yellow-50">
+                    {instructor.active ? "Hoạt động" : "Hoạt động"}
                   </Td>
-                  <Td className="w-[150px] text-center text-sm font-medium text-white">
-                    {instructor.approved ? "Đã duyệt" : "Chưa duyệt"}
+                  <Td className="w-[150px] text-center text-sm font-medium text-yellow-50">
+                    {instructor.approved ? "Đã duyệt" : "Đã duyệt"}
                   </Td>
                 </Tr>
 
