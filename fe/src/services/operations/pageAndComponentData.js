@@ -4,7 +4,7 @@ import { catalogData } from '../apis';
 
 // ================ get Catalog Page Data  ================
 export const getCatalogPageData = async (categoryId) => {
-  const toastId = toast.loading("Đang tải...");
+  // const toastId = toast.loading("Đang tải...");
   let result = null;
   try {
     const response = await apiConnector("GET", catalogData.CATALOGPAGEDATA_API, null, null, {
@@ -14,14 +14,14 @@ export const getCatalogPageData = async (categoryId) => {
     if (!response?.data)
       throw new Error("Không thể lấy dữ liệu trang danh mục");
 
-    toast.success('Lấy dữ liệu danh mục thành công');
+    // toast.success('Lấy dữ liệu danh mục thành công');
     console.log("CATALOG PAGE DATA API RESPONSE............", response);
     result = response?.data;
 
   } catch (error) {
     console.log("CATALOG PAGE DATA API ERROR....", error);
-    toast.error('Lấy dữ liệu danh mục thất bại');
+    // toast.error('Lấy dữ liệu danh mục thất bại');
   }
-  toast.dismiss(toastId);
+  // toast.dismiss(toastId);
   return result;
 }
